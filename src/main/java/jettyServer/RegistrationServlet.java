@@ -70,16 +70,4 @@ public class RegistrationServlet extends HttpServlet {
 		response.getWriter().println(writer.toString());
 	}
 
-	public boolean validUser(String username){
-
-
-		return false;
-	}
-
-	public boolean validPassword(String password){
-
-
-		return false;
-	}
-
 }

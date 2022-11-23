@@ -110,41 +110,60 @@ public class DatabaseHandler {
      * @param newpass - password of new user
      */
     public String registerUser(String newuser, String newpass) {
-        // Generate salt
-        byte[] saltBytes = new byte[16];
-        random.nextBytes(saltBytes);
-
-        String usersalt = encodeHex(saltBytes, 32); // salt
-        String passhash = getHash(newpass, usersalt); // hashed password
-        System.out.println(usersalt);
-
         String result = "";
 
-        PreparedStatement statement;
-        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
-            System.out.println("dbConnection successful");
-            try {
-                statement = connection.prepareStatement(PreparedStatements.REGISTER_SQL);
-                statement.setString(1, newuser);
-                statement.setString(2, passhash);
-                statement.setString(3, usersalt);
-                statement.executeUpdate();
-                statement.close();
-                result = "success";
-                return result;
+        if (validUser(newuser) && validPassword(newpass)){
+            // Generate salt
+            byte[] saltBytes = new byte[16];
+            random.nextBytes(saltBytes);
+
+            String usersalt = encodeHex(saltBytes, 32); // salt
+            String passhash = getHash(newpass, usersalt); // hashed password
+            System.out.println(usersalt);
+
+            PreparedStatement statement;
+            try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+                System.out.println("dbConnection successful");
+                try {
+                    statement = connection.prepareStatement(PreparedStatements.REGISTER_SQL);
+                    statement.setString(1, newuser);
+                    statement.setString(2, passhash);
+                    statement.setString(3, usersalt);
+                    statement.executeUpdate();
+                    statement.close();
+                    result = "success";
+                }
+                catch(SQLException e) {
+                    System.out.println(e);
+                    result = e.toString();
+                }
             }
-            catch(SQLException e) {
-                System.out.println(e);
-                result = e.toString();
+            catch (SQLException ex) {
+                System.out.println(ex);
+                result = ex.toString();
             }
         }
-        catch (SQLException ex) {
-            System.out.println(ex);
-            result = ex.toString();
+        else {
+            result = "Invalid username or password";
         }
 
         System.out.println("Could not register");
         return result;
+    }
+
+    //todo add regex checks
+    public boolean validUser(String username){
+//        Must include one Upper, and one Lower character
+
+
+
+        return false;
+    }
+
+    public boolean validPassword(String password){
+//        8-16 characters, must include one Upper, one Lower and one Special character
+
+        return false;
     }
 
     public boolean authenticateUser(String username, String password) {
