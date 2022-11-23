@@ -7,6 +7,8 @@ import java.security.MessageDigest;
 import java.sql.*;
 import java.util.Properties;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -144,26 +146,26 @@ public class DatabaseHandler {
             }
         }
         else {
-            result = "Invalid username or password";
+            result = "Invalid username or password.\rUsername must include one Upper, and one Lower character.\r" +
+                    "Password must be 8-16 characters, include one Upper, one Lower, one Number and one $ % @ # ! character";
         }
 
         System.out.println("Could not register");
         return result;
     }
 
-    //todo add regex checks
     public boolean validUser(String username){
 //        Must include one Upper, and one Lower character
-
-
-
-        return false;
+        Pattern p = Pattern.compile("(?=.*[a-z])(?=.*[A-Z])");
+        Matcher m = p.matcher(username);
+        return m.find();
     }
 
     public boolean validPassword(String password){
-//        8-16 characters, must include one Upper, one Lower and one Special character
-
-        return false;
+//        8-16 characters, must include one Upper, one Lower, one Number and one Punctuation character
+        Pattern p = Pattern.compile("(?=.{8,16})(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[$%@#!])");
+        Matcher m = p.matcher(password);
+        return m.find();
     }
 
     public boolean authenticateUser(String username, String password) {
@@ -212,10 +214,12 @@ public class DatabaseHandler {
 
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
-        dhandler.createTable();
-        System.out.println("created a user table ");
-        dhandler.registerUser("luke", "lukeS1k23w");
-        System.out.println("Registered luke.");
+//        dhandler.createTable();
+//        System.out.println("created a user table ");
+//        dhandler.registerUser("luke", "lukeS1k23w");
+//        System.out.println("Registered luke.");
+        System.out.println(dhandler.validPassword("Password!2"));
+
     }
 }
 

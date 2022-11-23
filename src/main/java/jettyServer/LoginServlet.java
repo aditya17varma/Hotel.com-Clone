@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		context.put("session", session);
 
 		String sessionName = (String) session.getAttribute("username");
-		System.out.println("Sessions Name: " + sessionName);
+//		System.out.println("Sessions Name: " + sessionName);
 
 		context.put("servletPath", request.getServletPath());
 
@@ -43,7 +43,7 @@ public class LoginServlet extends HttpServlet {
 			context.put("username", sessionName);
 			Template template = ve.getTemplate("templates/postLogin.html");
 			template.merge(context, writer);
-			//redirect to search page
+			// todo redirect to search page
 		}
 
 		else  {
@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 		String pass = request.getParameter("pass");
 
 
-		System.out.println("Request user: " + user);
+//		System.out.println("Request user: " + user);
 
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 		VelocityContext context = new VelocityContext();
@@ -74,9 +74,6 @@ public class LoginServlet extends HttpServlet {
 
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 		boolean flag = dbHandler.authenticateUser(user, pass);
-		System.out.println(flag);
-//		session.setAttribute("userCheck", flag);
-//		context.put("userCheck", session.getAttribute("userCheck"));
 		if (flag) {
 			response.sendRedirect("/login?username=" + user);
 		}
