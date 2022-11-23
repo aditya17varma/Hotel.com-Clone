@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Class ReviewServlet
@@ -40,66 +41,47 @@ public class ReviewServlet extends HttpServlet {
 
         HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
 
+        JsonCreator jsCreator = new JsonCreator(hs);
+
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
         String num = request.getParameter("num");
         num = StringEscapeUtils.escapeHtml4(num);
-
-        Hotel tempHotel = hs.findHotel(hotelId);
-
-        String hotelName = tempHotel.getName();
-
-        JsonObject reviewJSON = new JsonObject();
-
+        
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
         Template template = ve.getTemplate("templates/reviewsTemplate.html");
-        context.put("hotelName", hotelName);
 
-        ArrayList<Review> reviewsResult = new ArrayList<>();
 
+        JsonObject reviewJSON = new JsonObject();
+
+        //todo add success check in reviewsTemplate
         if (hotelId != null && num != null){
+            Hotel tempHotel = hs.findHotel(hotelId);
+            String hotelName = tempHotel.getName();
+            context.put("hotelName", hotelName);
+
             List<Review> reviews = hs.findReviews(hotelId);
 
             if (reviews != null){
-                JsonArray result = new JsonArray();
-
-                for (int i = 0; i < Math.min(Integer.parseInt(num), reviews.size()); i++){
-                    reviewsResult.add(reviews.get(i));
-
-                    Review tempReview = reviews.get(i);
-                    JsonObject tempR = new JsonObject();
-                    tempR.addProperty("reviewId", tempReview.getReviewID());
-                    tempR.addProperty("title", tempReview.getTitle());
-                    tempR.addProperty("user", tempReview.getUserNickname());
-                    tempR.addProperty("reviewText", tempReview.getReviewText());
-                    tempR.addProperty("date", tempReview.getDatePosted().toString());
-                    result.add(tempR);
-                }
-
-                reviewJSON.addProperty("success", true);
-                reviewJSON.addProperty("hotelId", hotelId);
-                reviewJSON.add("reviews", result);
+                reviewJSON = jsCreator.createReviewJson(hotelId, Integer.parseInt(num));
             }
             else {
-                reviewJSON.addProperty("success", false);
-                reviewJSON.addProperty("hotelId", "invalid");
+                reviewJSON = jsCreator.setFailure();
+                context.put("hotelName", "invalid");
             }
         }
         else {
-            reviewJSON.addProperty("success", false);
-            reviewJSON.addProperty("hotelId", "invalid");
+            context.put("hotelName", "invalid");
         }
 
-        System.out.println(reviewsResult);
-        context.put("reviews", reviewsResult);
+        context.put("reviewJSON", reviewJSON);
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
 
         PrintWriter out = response.getWriter();
 
-//        out.println(reviewJSON);
         out.println(writer.toString());
 
     }
