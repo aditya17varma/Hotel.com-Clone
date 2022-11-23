@@ -61,8 +61,6 @@ public class LoginServlet extends HttpServlet {
 		String pass = request.getParameter("pass");
 
 
-//		System.out.println("Request user: " + user);
-
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 		VelocityContext context = new VelocityContext();
 		context.put("username", user);
