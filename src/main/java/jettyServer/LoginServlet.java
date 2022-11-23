@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
 		context.put("session", session);
 
 		String sessionName = (String) session.getAttribute("username");
-//		System.out.println("Sessions Name: " + sessionName);
+		sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
 		context.put("servletPath", request.getServletPath());
 

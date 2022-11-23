@@ -7,6 +7,7 @@ public class HotelData {
     private Map<String, List<Review>> reviewMap;
     private Map<String, ReviewWordCount> reviewWordCountMap;
     private InvertedIndex invertedIndex;
+    private HashMap<String, Set<Hotel>> hotelKeywordMap;
 
     /**
      * Class HotelData
@@ -19,6 +20,7 @@ public class HotelData {
         this.reviewMap = new HashMap<>();
         this.reviewWordCountMap = new HashMap<>();
         this.invertedIndex = new InvertedIndex();
+        this.hotelKeywordMap = new HashMap<>();
     }
 
     /**
@@ -141,6 +143,35 @@ public class HotelData {
     }
 
     /**
+     * createHotelKeywordMap
+     * Maps words in Hotel titles to a Set of Hotel objects
+     */
+    public void createHotelKeywordMap(){
+        for (String hotelId: this.hotelMap.keySet()){
+            Hotel tempHotel = this.hotelMap.get(hotelId);
+            String tempName = tempHotel.getName();
+            String[] nameSplit = tempName.split(" ");
+            for (String word: nameSplit){
+                if (!this.hotelKeywordMap.containsKey(word)){
+                    Set<Hotel> tempSet = new HashSet<>();
+                    this.hotelKeywordMap.put(word, tempSet);
+                }
+                Set<Hotel> wordSet = hotelKeywordMap.get(word);
+                wordSet.add(tempHotel);
+            }
+        }
+    }
+
+    /**
+     * findHotelByKeyword
+     * @param word keyword
+     * @return Set of Hotels with keyword in title
+     */
+    public Set<Hotel> findHotelByKeyword(String word){
+        return hotelKeywordMap.get(word);
+    }
+
+    /**
      * findHotel
      * @param id hotelID
      * @return Hotel object with matching ID
@@ -178,6 +209,13 @@ public class HotelData {
 
     public Map<String, List<Review>> getReviewMap(){
         return this.reviewMap;
+    }
+
+    public static void main(String[] args) {
+        HotelData hd = new HotelData();
+        hd.loadHotels("input/hotels/hotels.json");
+        hd.createHotelKeywordMap();
+        System.out.println(hd.hotelKeywordMap.get("Hilton"));
     }
 
 }

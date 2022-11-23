@@ -49,7 +49,7 @@ public class ThreadSafeHotelData extends HotelData{
      * @param numThreads number of threads to create
      */
     public void loadReviews(String reviewPath, int numThreads){
-            ThreadSafeReviewFileParser r1 = new ThreadSafeReviewFileParser(numThreads);
+            MultiThreadReviewFileParser r1 = new MultiThreadReviewFileParser(numThreads);
             r1.setThreadSafeHotelData(this);
             r1.findAndParseReviewFiles(reviewPath, false);
     }
@@ -103,6 +103,21 @@ public class ThreadSafeHotelData extends HotelData{
     }
 
     /**
+     * createHotelKeywordMap
+     * Maps words in Hotel titles to a Set of Hotel objects
+     */
+    @Override
+    public void createHotelKeywordMap(){
+        lock.writeLock().lock();
+        try{
+            super.createHotelKeywordMap();
+        }
+        finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    /**
      * sortInvertedIndex
      * Sorts the Lists of the InvertedIndex using the ReviewWordComparator
      * The values in the lists are sorted in descending order of word frequency
@@ -128,6 +143,22 @@ public class ThreadSafeHotelData extends HotelData{
         lock.readLock().lock();
         try{
             return super.findHotel(id);
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    /**
+     * findHotelByKeyword
+     * @param word keyword
+     * @return Set of Hotels with keyword in title
+     */
+    @Override
+    public Set<Hotel> findHotelByKeyword(String word){
+        lock.readLock().lock();
+        try{
+            return super.findHotelByKeyword(word);
         }
         finally {
             lock.readLock().unlock();

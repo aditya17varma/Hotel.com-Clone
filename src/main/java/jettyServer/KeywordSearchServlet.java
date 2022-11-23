@@ -3,7 +3,6 @@ package jettyServer;
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
 import hotelapp.HotelSearch;
-import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -13,14 +12,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
+import java.util.Set;
 
 public class KeywordSearchServlet extends HttpServlet {
 
-
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
@@ -32,32 +32,31 @@ public class KeywordSearchServlet extends HttpServlet {
         String keyword= request.getParameter("keyword");
         keyword = StringEscapeUtils.escapeHtml4(keyword);
 
-
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
-        Template template = ve.getTemplate("templates/searchTemplate.html");
-
+        Template template = ve.getTemplate("templates/postSearchTemplate.html");
 
         JsonObject keywordJSON = new JsonObject();
 
-//        if (hotelId != null && num != null){
-//            Hotel tempHotel = hs.findHotel(hotelId);
-//            String hotelName = tempHotel.getName();
-//            context.put("hotelName", hotelName);
-//
-//            List<Review> reviews = hs.findReviews(hotelId);
-//
-//            if (reviews != null){
-//                reviewJSON = jsCreator.createReviewJson(hotelId, Integer.parseInt(num));
-//            }
-//            else {
-//                reviewJSON = jsCreator.setFailure();
-//                context.put("hotelName", "invalid");
-//            }
-//        }
-//        else {
-//            context.put("hotelName", "invalid");
-//        }
+        context.put("servletPath", request.getServletPath());
+
+        if (keyword != null){
+            Set<Hotel> hotelSet = hs.findHotelByKeyword(keyword);
+
+            if (hotelSet != null){
+                keywordJSON = jsCreator.createKeywordJson(hotelSet);
+                keywordJSON.addProperty("keyword", keyword);
+                context.put("keyword", keyword);
+            }
+            else {
+                keywordJSON.addProperty("success", false);
+                context.put("keyword", "invalid");
+            }
+        }
+        else {
+            keywordJSON.addProperty("success", false);
+            context.put("keyword", "invalid");
+        }
 
         context.put("keywordJSON", keywordJSON);
 
@@ -67,15 +66,29 @@ public class KeywordSearchServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         out.println(writer.toString());
-
     }
 
-    public boolean keywordMatch(String keyword, String hotelName){
-        // todo regex match name and keyword
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String keyword = request.getParameter("keyword");
+        keyword = StringEscapeUtils.escapeHtml4(keyword);
 
 
-        return false;
+        VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
+        VelocityContext context = new VelocityContext();
+        context.put("keyword", keyword);
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute("keyword", keyword);
+
+        if (keyword != null){
+            response.sendRedirect("/search?keyword=" + keyword);
+        }
+        else {
+            System.out.println("no keyword");
+        }
+        response.sendRedirect("/search");
     }
-
 
 }

@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class HotelSearch {
     private static Logger logger = (Logger) LogManager.getLogger();
@@ -48,6 +49,19 @@ public class HotelSearch {
         this.threadSafeHotelData.loadReviewWordCounts();
         this.threadSafeHotelData.createInvertedIndex();
     }
+
+    /**
+     * createHotelKeywordMap
+     * Maps words in Hotel titles to a Set of Hotel objects
+     */
+    public void createHotelKeywordMap(){
+        this.threadSafeHotelData.createHotelKeywordMap();
+    }
+
+    public Set<Hotel> findHotelByKeyword(String word){
+        return this.threadSafeHotelData.findHotelByKeyword(word);
+    }
+
 
     /**
      * findHotel

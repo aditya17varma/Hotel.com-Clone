@@ -20,7 +20,7 @@ import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 
 /** Class ThreadSafeReviewFileParser */
-public class ThreadSafeReviewFileParser {
+public class MultiThreadReviewFileParser {
     private ExecutorService executor;
     private Logger logger = (Logger) LogManager.getLogger();
     private Phaser phaser;
@@ -30,7 +30,7 @@ public class ThreadSafeReviewFileParser {
      * Class ThreadSafeReviewFileParser
      * @param numThreads num of threads to create in pool
      */
-    public ThreadSafeReviewFileParser(int numThreads){
+    public MultiThreadReviewFileParser(int numThreads){
         executor = Executors.newFixedThreadPool(numThreads);
         phaser = new Phaser();
     }

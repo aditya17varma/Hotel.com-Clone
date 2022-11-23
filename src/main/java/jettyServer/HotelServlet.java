@@ -33,32 +33,22 @@ public class HotelServlet extends HttpServlet {
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
         JsonObject hotelJSON = new JsonObject();
 
+        JsonCreator jc = new JsonCreator(hsTemp);
+
         PrintWriter out = response.getWriter();
 
         if (hotelId != null){
             Hotel tempHotel = hsTemp.findHotel(hotelId);
 
-
             if (tempHotel != null){
-                hotelJSON.addProperty("success", true);
-                hotelJSON.addProperty("hotelId", tempHotel.getId());
-                hotelJSON.addProperty("name", tempHotel.getName());
-                String[] address = tempHotel.getAddress().split(",");
-                hotelJSON.addProperty("addr", address[0].strip());
-                hotelJSON.addProperty("city", address[1].strip());
-                hotelJSON.addProperty("state", address[2].strip());
-                hotelJSON.addProperty("lat", tempHotel.getLatitude());
-                hotelJSON.addProperty("lng", tempHotel.getLongitude());
-
+                hotelJSON = jc.createHotelJson(tempHotel);
             }
             else {
-                hotelJSON.addProperty("success", false);
-                hotelJSON.addProperty("hotelId", "invalid");
+                hotelJSON = jc.setFailure();
             }
         }
         else {
-            hotelJSON.addProperty("success", false);
-            hotelJSON.addProperty("hotelId", "invalid");
+            hotelJSON = jc.setFailure();
         }
 
 		out.println(hotelJSON);

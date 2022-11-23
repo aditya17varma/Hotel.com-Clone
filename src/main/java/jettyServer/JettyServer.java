@@ -25,13 +25,14 @@ public class JettyServer {
     /**
      * loadHotelSearch
      * Initializes and loads the hotelSearch instance variable
-     * Loads hotels, reviews, and creates and inverted index
+     * Loads hotels, reviews, and creates inverted index and hotelKeywordMap
      */
     public void loadHotelSearch(String hotelPath, String reviewPath, int threads){
         hs = new HotelSearch();
         hs.loadHotels(hotelPath);
         hs.loadReviews(reviewPath, threads);
         hs.createInvertedIndex();
+        hs.createHotelKeywordMap();
     }
 
     /**
@@ -61,6 +62,5 @@ public class JettyServer {
     public void setAttribute(String name, Object value){
         handler.setAttribute(name, value);
     }
-
 
 }

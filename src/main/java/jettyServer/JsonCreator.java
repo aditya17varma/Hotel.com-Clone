@@ -2,10 +2,13 @@ package jettyServer;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class JsonCreator {
     HotelSearch hs;
@@ -21,6 +24,8 @@ public class JsonCreator {
 
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
+
+        //todo add avg rating
 
         List<Review> reviews = hs.findReviews(hotelId);
 
@@ -41,6 +46,39 @@ public class JsonCreator {
         reviewJSON.add("reviews", result);
 
         return reviewJSON;
+    }
+
+    public JsonObject createKeywordJson(Set<Hotel> hotelSet){
+        JsonObject keywordJSON = new JsonObject();
+
+        keywordJSON.addProperty("success", true);
+
+        JsonArray hotels = new JsonArray();
+
+        for (Hotel hotel: hotelSet){
+            JsonObject tempHotelJSON = createHotelJson(hotel);
+            hotels.add(tempHotelJSON);
+        }
+
+        keywordJSON.add("keywordHotels", hotels);
+
+        return keywordJSON;
+    }
+
+    public JsonObject createHotelJson(Hotel hotel){
+        JsonObject hotelJSON = new JsonObject();
+
+        hotelJSON.addProperty("success", true);
+        hotelJSON.addProperty("name", hotel.getName());
+        hotelJSON.addProperty("hotelId", hotel.getId());
+        String[] address = hotel.getAddress().split(",");
+        hotelJSON.addProperty("addr", address[0].strip());
+        hotelJSON.addProperty("city", address[1].strip());
+        hotelJSON.addProperty("state", address[2].strip());
+        hotelJSON.addProperty("lat", hotel.getLatitude());
+        hotelJSON.addProperty("lng", hotel.getLongitude());
+
+        return hotelJSON;
     }
 
     public JsonObject setFailure(){
