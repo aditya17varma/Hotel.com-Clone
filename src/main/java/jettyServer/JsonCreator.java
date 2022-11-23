@@ -73,10 +73,17 @@ public class JsonCreator {
         hotelJSON.addProperty("hotelId", hotel.getId());
         String[] address = hotel.getAddress().split(",");
         hotelJSON.addProperty("addr", address[0].strip());
-        hotelJSON.addProperty("city", address[1].strip());
+        String city = address[1].strip().replaceAll(" ","-");
+        hotelJSON.addProperty("city", city);
         hotelJSON.addProperty("state", address[2].strip());
         hotelJSON.addProperty("lat", hotel.getLatitude());
         hotelJSON.addProperty("lng", hotel.getLongitude());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("https://www.expedia.com/");
+        sb.append(city).append("-Hotels-").append(hotel.getName().replaceAll(" ", "-"))
+                .append(".h").append(hotel.getId()).append(".Hotel-Information");
+        hotelJSON.addProperty("expedia", sb.toString());
 
         return hotelJSON;
     }
@@ -90,7 +97,5 @@ public class JsonCreator {
         return failureJSON;
 
     }
-
-
 
 }

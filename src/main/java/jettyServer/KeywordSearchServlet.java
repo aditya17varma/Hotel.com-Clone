@@ -38,7 +38,8 @@ public class KeywordSearchServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
-        if (sessionName != null){
+        //todo reinstate session check
+//        if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(hs);
 
             String keyword= request.getParameter("keyword");
@@ -71,11 +72,11 @@ public class KeywordSearchServlet extends HttpServlet {
 
             context.put("keywordJSON", keywordJSON);
 
-        }
-        else {
-            //redirect to login or register
-            template = ve.getTemplate("templates/noLoginTemplate.html");
-        }
+//        }
+//        else {
+//            //redirect to login or register
+//            template = ve.getTemplate("templates/noLoginTemplate.html");
+//        }
 
         template.merge(context, writer);
 

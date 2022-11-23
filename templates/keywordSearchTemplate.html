@@ -45,7 +45,7 @@
         #if($keywordJSON.success != false)
         #foreach($hotel in $keywordJSON.keywordHotels)
         <tr>
-            <td>$hotel.name</td>
+            <td><a href=$hotel.expedia>$hotel.name</a></td>
         </tr>
         #end
         #else
