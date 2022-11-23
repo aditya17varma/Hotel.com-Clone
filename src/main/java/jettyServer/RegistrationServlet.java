@@ -54,38 +54,32 @@ public class RegistrationServlet extends HttpServlet {
 		password = StringEscapeUtils.escapeHtml4(password);
 
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-		dbHandler.registerUser(usernameParam, password);
+		String registrationCheck = dbHandler.registerUser(usernameParam, password);
 
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 		VelocityContext context = new VelocityContext();
+
 		Template template = ve.getTemplate("templates/postRegistration.html");
 
-		context.put("servletPath", request.getServletPath());
 		context.put("user", usernameParam);
+		context.put("registrationCheck", registrationCheck);
 
 		StringWriter writer = new StringWriter();
 		template.merge(context, writer);
 
 		response.getWriter().println(writer.toString());
-
-//		try {
-//			Thread.sleep(1000);
-//			response.sendRedirect("/login");
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-
 	}
 
-	private static void printForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public boolean validUser(String username){
 
-		PrintWriter out = response.getWriter();
 
-		out.printf("<form method=\"post\" action=\"%s\">%n", request.getServletPath());
-		out.printf("Enter your username:<br><input type=\"text\" name=\"name\"><br>");
-		out.printf("Enter your password:<br><input type=\"password\" name=\"pass\"><br>");
-		out.printf("<p><input type=\"submit\" value=\"Enter\"></p>\n%n");
-		out.printf("</form>\n%n");
+		return false;
+	}
+
+	public boolean validPassword(String password){
+
+
+		return false;
 	}
 
 }

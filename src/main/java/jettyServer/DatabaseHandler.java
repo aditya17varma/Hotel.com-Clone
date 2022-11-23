@@ -109,7 +109,7 @@ public class DatabaseHandler {
      * @param newuser - username of new user
      * @param newpass - password of new user
      */
-    public void registerUser(String newuser, String newpass) {
+    public String registerUser(String newuser, String newpass) {
         // Generate salt
         byte[] saltBytes = new byte[16];
         random.nextBytes(saltBytes);
@@ -117,6 +117,8 @@ public class DatabaseHandler {
         String usersalt = encodeHex(saltBytes, 32); // salt
         String passhash = getHash(newpass, usersalt); // hashed password
         System.out.println(usersalt);
+
+        String result = "";
 
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -128,14 +130,21 @@ public class DatabaseHandler {
                 statement.setString(3, usersalt);
                 statement.executeUpdate();
                 statement.close();
+                result = "success";
+                return result;
             }
             catch(SQLException e) {
                 System.out.println(e);
+                result = e.toString();
             }
         }
         catch (SQLException ex) {
             System.out.println(ex);
+            result = ex.toString();
         }
+
+        System.out.println("Could not register");
+        return result;
     }
 
     public boolean authenticateUser(String username, String password) {
