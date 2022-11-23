@@ -1,6 +1,5 @@
-package servers.jettyServer;
+package jettyServer;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
 import hotelapp.HotelSearch;
@@ -17,9 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Class ReviewServlet
@@ -55,7 +52,6 @@ public class ReviewServlet extends HttpServlet {
 
         JsonObject reviewJSON = new JsonObject();
 
-        //todo add success check in reviewsTemplate
         if (hotelId != null && num != null){
             Hotel tempHotel = hs.findHotel(hotelId);
             String hotelName = tempHotel.getName();
