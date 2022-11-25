@@ -97,6 +97,14 @@ public class HotelSearch {
         return reviewsArr;
     }
 
+    public boolean checkReviewIds(String id){
+        return this.threadSafeHotelData.checkReviewIds(id);
+    }
+
+    public void addReview(Review r){
+        this.threadSafeHotelData.addReviewToReviewMap(r);
+    }
+
     /**
      * Takes a host and a string containing path/resource/query and creates a
      * string of the HTTP GET request

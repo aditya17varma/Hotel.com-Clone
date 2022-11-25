@@ -1,5 +1,7 @@
 package hotelapp;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class HotelData {
@@ -8,6 +10,7 @@ public class HotelData {
     private Map<String, ReviewWordCount> reviewWordCountMap;
     private InvertedIndex invertedIndex;
     private HashMap<String, Set<Hotel>> hotelKeywordMap;
+    private HashSet<String> reviewSet;
 
     /**
      * Class HotelData
@@ -21,6 +24,7 @@ public class HotelData {
         this.reviewWordCountMap = new HashMap<>();
         this.invertedIndex = new InvertedIndex();
         this.hotelKeywordMap = new HashMap<>();
+        this.reviewSet = new HashSet<>();
     }
 
     /**
@@ -68,6 +72,7 @@ public class HotelData {
                 List<Review> temp = this.reviewMap.get(hr.getHotelID());
                 temp.add(hr);
                 reviewSet.add(hr.getReviewID());
+                this.reviewSet.add(hr.getReviewID());
             }
         }
 
@@ -80,6 +85,7 @@ public class HotelData {
     /**
      * addReviewToReviewMap
      * adds a review to the reviewMap, mapping hotelId to review
+     * adds review ID to reviewSet
      * @param r Review
      */
     public void addReviewToReviewMap(Review r){
@@ -89,6 +95,8 @@ public class HotelData {
         }
         List<Review> temp = this.reviewMap.get(r.getHotelID());
         temp.add(r);
+
+        reviewSet.add(r.getReviewID());
     }
 
     /**
@@ -211,11 +219,35 @@ public class HotelData {
         return this.reviewMap;
     }
 
+    public boolean checkReviewIds(String id){
+        return this.reviewSet.contains(id);
+    }
+
     public static void main(String[] args) {
         HotelData hd = new HotelData();
         hd.loadHotels("input/hotels/hotels.json");
-        hd.createHotelKeywordMap();
-        System.out.println(hd.hotelKeywordMap.get("Hilton"));
+        hd.loadReviews("input/reviews");
+//        hd.createHotelKeywordMap();
+//        System.out.println(hd.hotelKeywordMap.get("Hilton"));
+//        List<Review> reviews = hd.findReview("12539");
+//        for (Review r: reviews){
+//            System.out.println(r.getReviewID());
+//        }
+
+        System.out.println(hd.reviewSet);
+
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        LocalDateTime now = LocalDateTime.now();
+//        System.out.println(dtf.format(now));
+
+        UUID uuid = new UUID(8,16);
+        UUID id = UUID.randomUUID();
+
+        while (hd.reviewSet.contains(id.toString().replaceAll("-",""))){
+            id = UUID.randomUUID();
+        }
+        System.out.println(id);
+
     }
 
 }

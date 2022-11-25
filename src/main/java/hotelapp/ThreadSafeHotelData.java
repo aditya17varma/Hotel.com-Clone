@@ -212,4 +212,26 @@ public class ThreadSafeHotelData extends HotelData{
             lock.readLock().unlock();
         }
     }
+
+    @Override
+    public boolean checkReviewIds(String id){
+        lock.readLock().lock();
+        try{
+            return super.checkReviewIds(id);
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public void addReviewToReviewMap(Review r){
+        lock.writeLock().lock();
+        try{
+            super.addReviewToReviewMap(r);
+        }
+        finally {
+            lock.writeLock().unlock();
+        }
+    }
 }

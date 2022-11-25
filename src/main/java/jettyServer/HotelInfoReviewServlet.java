@@ -74,6 +74,8 @@ public class HotelInfoReviewServlet extends HttpServlet {
             infoJSON.add("hotelData", hotelJSON);
         }
         context.put("infoJSON", infoJSON);
+        session.setAttribute("infoJSON", infoJSON);
+        System.out.println(session.getAttribute("infoJSON"));
 
 //        }
 //        else {
