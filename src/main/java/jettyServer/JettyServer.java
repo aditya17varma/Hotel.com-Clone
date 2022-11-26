@@ -57,6 +57,7 @@ public class JettyServer {
         handler.addServlet(KeywordSearchServlet.class, "/search");
         handler.addServlet(HotelInfoReviewServlet.class, "/hotelInfoReview");
         handler.addServlet(AddReviewServlet.class, "/addReview");
+        handler.addServlet(LogoutServlet.class, "/logout");
 
         handler.setAttribute("data", hs);
     }

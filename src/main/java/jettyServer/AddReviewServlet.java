@@ -44,36 +44,36 @@ public class AddReviewServlet extends HttpServlet {
         Template template;
 
         //todo reinstate session check
-//        if (sessionName != null){
-        JsonCreator jsCreator = new JsonCreator(hs);
+        if (sessionName != null){
+            JsonCreator jsCreator = new JsonCreator(hs);
 
-        String hotelId= request.getParameter("hotelId");
-        hotelId = StringEscapeUtils.escapeHtml4(hotelId);
+            String hotelId= request.getParameter("hotelId");
+            hotelId = StringEscapeUtils.escapeHtml4(hotelId);
 
-        String hotelName = request.getParameter("hotelName");
-        hotelName = StringEscapeUtils.escapeHtml4(hotelName);
+            String hotelName = request.getParameter("hotelName");
+            hotelName = StringEscapeUtils.escapeHtml4(hotelName);
 
-        String userName = sessionName;
+            String userName = sessionName;
 
-        template = ve.getTemplate("templates/addReviewTemplate.html");
+            template = ve.getTemplate("templates/addReviewTemplate.html");
 
-        JsonObject keywordJSON = new JsonObject();
+            JsonObject keywordJSON = new JsonObject();
 
-        context.put("servletPath", request.getServletPath());
+            context.put("servletPath", request.getServletPath());
 
-        if (hotelId == null){
-            response.sendRedirect("/search");
+            if (hotelId == null){
+                response.sendRedirect("/search");
+            }
+
+            context.put("hotelId", hotelId);
+            context.put("hotelName", hotelName);
+            context.put("username", userName);
+
         }
-
-        context.put("hotelId", hotelId);
-        context.put("hotelName", hotelName);
-        context.put("username", userName);
-
-//        }
-//        else {
-//            //redirect to login or register
-//            template = ve.getTemplate("templates/noLoginTemplate.html");
-//        }
+        else {
+            //redirect to login or register
+            template = ve.getTemplate("templates/noLoginTemplate.html");
+        }
 
         template.merge(context, writer);
 
@@ -87,6 +87,9 @@ public class AddReviewServlet extends HttpServlet {
         HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
 
         HttpSession session = request.getSession();
+
+        String sessionName = (String) session.getAttribute("username");
+        sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
         JsonObject infoJSON = (JsonObject) session.getAttribute("infoJSON");
         JsonObject hotelJSON = infoJSON.get("hotelData").getAsJsonObject();
@@ -106,7 +109,7 @@ public class AddReviewServlet extends HttpServlet {
         String rating = request.getParameter("rating");
         String title = request.getParameter("title");
         String reviewText = request.getParameter("reviewText");
-        String username = request.getParameter("username");
+        String username = sessionName;
         String date = dtf.format(now).toString();
 
         Review newAddition = new Review(hotelId,reviewId, rating, title, reviewText,

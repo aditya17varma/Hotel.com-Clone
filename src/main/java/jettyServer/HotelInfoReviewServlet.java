@@ -39,49 +39,52 @@ public class HotelInfoReviewServlet extends HttpServlet {
         Template template;
 
         //todo reinstate session check
-//        if (sessionName != null){
-        JsonCreator jc = new JsonCreator(hs);
+        if (sessionName != null){
+            JsonCreator jc = new JsonCreator(hs);
 
-        String hotelId = request.getParameter("hotelId");
-        hotelId = StringEscapeUtils.escapeHtml4(hotelId);
+            String hotelId = request.getParameter("hotelId");
 
-        template = ve.getTemplate("templates/hotelInfoReview.html");
+            hotelId = StringEscapeUtils.escapeHtml4(hotelId);
+            System.out.println("HotelID: " + hotelId);
 
-        JsonObject infoJSON = new JsonObject();
-        JsonObject hotelJSON = new JsonObject();
-        JsonObject reviewJSON;
+            template = ve.getTemplate("templates/hotelInfoReview.html");
 
-        context.put("servletPath", request.getServletPath());
+            JsonObject infoJSON = new JsonObject();
+            JsonObject hotelJSON = new JsonObject();
+            JsonObject reviewJSON;
 
-        if (hotelId != null) {
-            Hotel tempHotel = hs.findHotel(hotelId);
-            if (tempHotel != null) {
-                hotelJSON = jc.createHotelJson(tempHotel);
+            context.put("servletPath", request.getServletPath());
 
-                context.put("hotelName", tempHotel.getName());
-                List<Review> reviews = hs.findReviews(hotelId);
+            if (hotelId != null) {
+                Hotel tempHotel = hs.findHotel(hotelId);
+                if (tempHotel != null) {
+                    hotelJSON = jc.createHotelJson(tempHotel);
 
-                if (reviews != null) {
-                    reviewJSON = jc.createReviewJson(hotelId, reviews.size());
+                    context.put("hotelName", tempHotel.getName());
+                    List<Review> reviews = hs.findReviews(hotelId);
+
+                    if (reviews != null) {
+                        reviewJSON = jc.createReviewJson(hotelId, reviews.size());
+                    } else {
+                        reviewJSON = jc.setFailure();
+                        context.put("hotelName", "invalid");
+                    }
+                    infoJSON.add("hotelReviews", reviewJSON);
                 } else {
-                    reviewJSON = jc.setFailure();
-                    context.put("hotelName", "invalid");
+                    hotelJSON = jc.setFailure();
                 }
-                infoJSON.add("hotelReviews", reviewJSON);
-            } else {
-                hotelJSON = jc.setFailure();
+                infoJSON.add("hotelData", hotelJSON);
             }
-            infoJSON.add("hotelData", hotelJSON);
-        }
-        context.put("infoJSON", infoJSON);
-        session.setAttribute("infoJSON", infoJSON);
-        System.out.println(session.getAttribute("infoJSON"));
+            //todo redirect template that lets you search for hotel info
+            context.put("infoJSON", infoJSON);
+            session.setAttribute("infoJSON", infoJSON);
+            System.out.println(session.getAttribute("infoJSON"));
 
-//        }
-//        else {
-//            //redirect to login or register
-//            template = ve.getTemplate("templates/noLoginTemplate.html");
-//        }
+        }
+        else {
+            //redirect to login or register
+            template = ve.getTemplate("templates/noLoginTemplate.html");
+        }
 
         template.merge(context, writer);
 
