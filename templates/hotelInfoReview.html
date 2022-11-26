@@ -38,12 +38,18 @@
 </div>
 
 <div class="w3-container" style="margin:20px auto;[B]padding:20px 0;[/B]">
+ <div class="w3-bar">
   <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name&rating=$infoJSON.hotelData.rating">
-   <p><button class="w3-button w3-border w3-hover-red" type="submit">Add Review</button></p>
+   <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
   </form>
-
+ <form method="GET" action="/editReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
+  <p><button class="w3-button w3-border w3-hover-blue" type="submit">Edit Review</button></p>
+ </form>
+ <form method="POST" action="/editReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
+  <p><button class="w3-button w3-border w3-hover-red" type="submit">Delete Review</button></p>
+ </form>
+ </div>
 </div>
-
 
 <div class="w3-container">
  <h4> Reviews for $hotelName: </h4>

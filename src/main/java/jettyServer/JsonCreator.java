@@ -48,6 +48,37 @@ public class JsonCreator {
         return reviewJSON;
     }
 
+    public JsonObject createUserReviewJson(String hotelId, int num, String user){
+        JsonObject reviewJSON = new JsonObject();
+
+        reviewJSON.addProperty("success", true);
+        reviewJSON.addProperty("hotelId", hotelId);
+
+        //todo add avg rating
+
+        List<Review> reviews = hs.findReviews(hotelId);
+
+        JsonArray result = new JsonArray();
+
+        for (int i = 0; i < Math.min(num, reviews.size()); i++){
+            Review tempReview = reviews.get(i);
+            if (tempReview.getUserNickname().equals(user)){
+                JsonObject tempR = new JsonObject();
+                tempR.addProperty("reviewId", tempReview.getReviewID());
+                tempR.addProperty("title", tempReview.getTitle());
+                tempR.addProperty("user", tempReview.getUserNickname());
+                tempR.addProperty("reviewText", tempReview.getReviewText());
+                tempR.addProperty("date", tempReview.getDatePosted().toString());
+                tempR.addProperty("rating", tempReview.getRatingOverall().toString());
+                result.add(tempR);
+            }
+        }
+
+        reviewJSON.add("reviews", result);
+
+        return reviewJSON;
+    }
+
     public JsonObject createKeywordJson(Set<Hotel> hotelSet){
         JsonObject keywordJSON = new JsonObject();
 

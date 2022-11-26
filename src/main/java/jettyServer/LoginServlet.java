@@ -38,12 +38,12 @@ public class LoginServlet extends HttpServlet {
 
 		StringWriter writer = new StringWriter();
 
+		//todo password check
 		if ((sessionName != null && sessionName.equals(username)) || (username == null && sessionName != null)){
 			context.put("userCheck", true);
 			context.put("username", sessionName);
 			Template template = ve.getTemplate("templates/postLogin.html");
 			template.merge(context, writer);
-			// todo redirect to search page
 		}
 
 		else  {

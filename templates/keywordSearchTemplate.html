@@ -45,7 +45,7 @@
         #if($keywordJSON.success != false)
         #foreach($hotel in $keywordJSON.keywordHotels)
         <tr>
-            <td><a href=/hotelInfoReview?hotelId=$hotel.hotelId>$hotel.name</a></td>
+            <td><a href=/hotelInfoReview?hotelId=$hotel.hotelId.getAsString()>$hotel.name</a></td>
         </tr>
         #end
         #else
