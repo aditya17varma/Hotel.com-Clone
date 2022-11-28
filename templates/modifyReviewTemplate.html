@@ -46,6 +46,7 @@
             <th>Review Rating</th>
             <th>Review Title</th>
             <th>Review Text</th>
+            <th>Action</th>
         </tr>
         </thead>
         #if($infoJSON.hotelReviews.success != false)
@@ -57,6 +58,22 @@
             <td>$review.rating</td>
             <td>$review.title</td>
             <td>$review.reviewText</td>
+            <td>
+                <div class="w3-container">
+                    <div class="w3-bar">
+                        <form method = "POST" action="/editReview">
+                            <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId&reviewId/>
+                            <input type="hidden" name="reviewId" value=$review.reviewId/>
+                            <p><button class="w3-button w3-border w3-hover-blue" name="editButton" type="submit" >Edit</button></p>
+                        </form>
+                        <form method="POST" action="/deleteReview">
+                            <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId&reviewId/>
+                            <input type="hidden" name="reviewId" value=$review.reviewId/>
+                            <p><button class="w3-button w3-border w3-hover-red" name="deleteButton" type="submit">Delete</button></p>
+                        </form>
+                    </div>
+                    </div>
+            </td>
         </tr>
         #end
         #else

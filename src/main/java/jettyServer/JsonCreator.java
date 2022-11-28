@@ -6,7 +6,7 @@ import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public class JsonCreator {
 
 
 
-    public JsonObject createReviewJson(String hotelId, int num){
+    public JsonObject createReviewListJson(String hotelId, int num){
         JsonObject reviewJSON = new JsonObject();
 
         reviewJSON.addProperty("success", true);
@@ -46,6 +46,22 @@ public class JsonCreator {
         reviewJSON.add("reviews", result);
 
         return reviewJSON;
+    }
+
+    public JsonObject createReview(Review review){
+        JsonObject reviewJSON = new JsonObject();
+
+        reviewJSON.addProperty("success", true);
+        reviewJSON.addProperty("hotelId", review.getHotelID());
+        reviewJSON.addProperty("reviewId", review.getReviewID());
+        reviewJSON.addProperty("rating", review.getRatingOverall());
+        reviewJSON.addProperty("title", review.getTitle());
+        reviewJSON.addProperty("reviewText", review.getReviewText());
+        reviewJSON.addProperty("user", review.getUserNickname());
+        reviewJSON.addProperty("date", review.getDatePosted().toString());
+
+        return reviewJSON;
+
     }
 
     public JsonObject createUserReviewJson(String hotelId, int num, String user){

@@ -1,7 +1,5 @@
 package hotelapp;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class HotelData {
@@ -193,8 +191,34 @@ public class HotelData {
      * @param id HotelID
      * @return ArrayList of HotelReview objects with matching HotelID, empty ArrayList if none found
      */
-    public List<Review> findReview(String id){
+    public List<Review> findReviewList(String id){
         return reviewMap.get(id);
+    }
+
+    /**
+     * findReview
+     * @param hotelId HotelID
+     * @param reviewId ReviewID
+     * @return Finds a particular review
+     */
+    public Review findReview(String hotelId, String reviewId){
+        List<Review> reviews = findReviewList(hotelId);
+        for (Review r: reviews){
+            if (r.getReviewID().equals(reviewId)){
+                return r;
+            }
+        }
+        return null;
+    }
+
+    public void deleteReview(String hotelId, String reviewId){
+        List<Review> reviews = findReviewList(hotelId);
+        for (Review r: reviews){
+            if (r.getReviewID().equals(reviewId)){
+                reviews.remove(r);
+                return;
+            }
+        }
     }
 
     /**

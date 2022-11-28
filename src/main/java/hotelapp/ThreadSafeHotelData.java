@@ -171,10 +171,10 @@ public class ThreadSafeHotelData extends HotelData{
      * @return ArrayList of HotelReview objects with matching HotelID, empty ArrayList if none found
      */
     @Override
-    public List<Review> findReview(String id){
+    public List<Review> findReviewList(String id){
         lock.readLock().lock();
         try{
-            return super.findReview(id);
+            return super.findReviewList(id);
         }
         finally {
             lock.readLock().unlock();
@@ -229,6 +229,34 @@ public class ThreadSafeHotelData extends HotelData{
         lock.writeLock().lock();
         try{
             super.addReviewToReviewMap(r);
+        }
+        finally {
+            lock.writeLock().unlock();
+        }
+    }
+
+    /**
+     * findReview
+     * @param hotelId HotelID
+     * @param reviewId ReviewID
+     * @return Finds a particular review
+     */
+    @Override
+    public Review findReview(String hotelId, String reviewId){
+        lock.readLock().lock();
+        try{
+            return super.findReview(hotelId, reviewId);
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public void deleteReview(String hotelId, String reviewId){
+        lock.writeLock().lock();
+        try{
+            super.deleteReview(hotelId, reviewId);
         }
         finally {
             lock.writeLock().unlock();

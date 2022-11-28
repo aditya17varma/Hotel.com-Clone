@@ -80,11 +80,19 @@ public class HotelSearch {
     public List<Review> findReviews(String hotelID){
         List<Review> foundReviews;
 
-        foundReviews = this.threadSafeHotelData.findReview(hotelID);
+        foundReviews = this.threadSafeHotelData.findReviewList(hotelID);
 
         return foundReviews;
     }
 
+
+    public Review findReview(String hotelId, String reviewId){
+        return this.threadSafeHotelData.findReview(hotelId, reviewId);
+    }
+
+    public void deleteReview(String hotelId, String reviewId){
+        this.threadSafeHotelData.deleteReview(hotelId, reviewId);
+    }
     /**
      * findWord
      * Searches the invertedIndex for the word

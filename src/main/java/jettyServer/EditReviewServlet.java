@@ -17,9 +17,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
-public class ModifyReviewServlet extends HttpServlet {
+public class EditReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
@@ -37,50 +36,46 @@ public class ModifyReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
-        context.put("servletPath", request.getServletPath());
-
         if (sessionName != null){
             JsonCreator jc = new JsonCreator(hs);
 
             String hotelId = request.getParameter("hotelId");
-
-//            JsonObject dataJSON = (JsonObject) session.getAttribute("infoJSON");
-
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-            System.out.println("Modify HotelID: " + hotelId);
+            String reviewId = request.getParameter("reviewId");
+            reviewId = StringEscapeUtils.escapeHtml4(reviewId);
 
-            template = ve.getTemplate("templates/modifyReviewTemplate.html");
+            template = ve.getTemplate("templates/editReviewTemplate.html");
 
             JsonObject infoJSON = new JsonObject();
             JsonObject hotelJSON = new JsonObject();
-            JsonObject reviewJSON;
+            JsonObject reviewJSON = new JsonObject();
 
             context.put("servletPath", request.getServletPath());
 
-            if (hotelId != null) {
+            if (hotelId != null && reviewId != null) {
+
                 Hotel tempHotel = hs.findHotel(hotelId);
                 if (tempHotel != null) {
                     hotelJSON = jc.createHotelJson(tempHotel);
 
                     context.put("hotelName", tempHotel.getName());
-                    List<Review> reviews = hs.findReviews(hotelId);
-
-                    if (reviews != null) {
-                        reviewJSON = jc.createUserReviewJson(hotelId, reviews.size(), sessionName);
-                    } else {
-                        reviewJSON = jc.setFailure();
-                        context.put("hotelName", "invalid");
+                    context.put("hotelId", hotelId);
+                    Review tempReview = hs.findReview(hotelId, reviewId);
+                    if (tempReview != null){
+                        reviewJSON = jc.createReview(tempReview);
+                        context.put("reviewId", tempReview.getReviewID());
                     }
-                    infoJSON.add("hotelReviews", reviewJSON);
+                    else {
+                        reviewJSON = jc.setFailure();
+                    }
                 } else {
                     hotelJSON = jc.setFailure();
                 }
                 infoJSON.add("hotelData", hotelJSON);
+                infoJSON.add("reviewData", reviewJSON);
             }
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
-            System.out.println("Modify Session InfoJSON: " + session.getAttribute("infoJSON"));
-
         }
         else {
             //redirect to login or register
@@ -97,32 +92,44 @@ public class ModifyReviewServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
         JsonObject infoJSON = (JsonObject) session.getAttribute("infoJSON");
         JsonObject hotelJSON = infoJSON.get("hotelData").getAsJsonObject();
-        String hotelId = hotelJSON.get("hotelId").getAsString();
 
-        String hotelName = hotelJSON.get("name").getAsString();
+        String hotelId = request.getParameter("hotelId");
+        hotelId = StringEscapeUtils.escapeHtml4(hotelId);
+        String reviewId = request.getParameter("reviewId");
+        reviewId = StringEscapeUtils.escapeHtml4(reviewId);
+
+        String editTitle = request.getParameter("editTitle");
+        editTitle = StringEscapeUtils.escapeHtml4(editTitle);
+        String editText = request.getParameter("editText");
+        editText = StringEscapeUtils.escapeHtml4(editText);
+
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
-        context.put("hotelData", hotelJSON);
-        context.put("infoJSON", infoJSON);
 
-        session.setAttribute("hotelId", hotelId);
+        if (editText != null || editTitle != null){
+            Review tempR = hs.findReview(hotelId, reviewId);
+            if (editText != null && !editText.equals("")){
+                tempR.setReviewText(editText);
+            }
+            if (editTitle != null && !editTitle.equals("")){
+                tempR.setReviewTitle(editTitle);
+            }
+            response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
 
-        if (hotelId != null){
-            response.sendRedirect("/modifyReview?hotelId=" + hotelId + "&hotelName=" + hotelName);
+        }
+        else if (hotelId != null && reviewId != null){
+            response.sendRedirect("/editReview?hotelId=" + hotelId + "&reviewId=" + reviewId);
         }
         else {
-            System.out.println("cannot modify review");
-            response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
+            System.out.println("cannot edit review");
+            response.sendRedirect("/editReview?hotelId=" + hotelId);
         }
     }
-
-
-
-
 }

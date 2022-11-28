@@ -60,7 +60,7 @@ public class ReviewServlet extends HttpServlet {
             List<Review> reviews = hs.findReviews(hotelId);
 
             if (reviews != null){
-                reviewJSON = jsCreator.createReviewJson(hotelId, Integer.parseInt(num));
+                reviewJSON = jsCreator.createReviewListJson(hotelId, Integer.parseInt(num));
             }
             else {
                 reviewJSON = jsCreator.setFailure();

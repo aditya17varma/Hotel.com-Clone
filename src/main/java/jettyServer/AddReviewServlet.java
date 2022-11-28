@@ -103,15 +103,16 @@ public class AddReviewServlet extends HttpServlet {
 
         String reviewId = generateReviewId(hs);
         String rating = request.getParameter("rating");
+        rating = StringEscapeUtils.escapeHtml4(rating);
         String title = request.getParameter("title");
+        title = StringEscapeUtils.escapeHtml4(title);
         String reviewText = request.getParameter("reviewText");
+        reviewText = StringEscapeUtils.escapeHtml4(reviewText);
         String username = sessionName;
         String date = dtf.format(now).toString();
 
         Review newAddition = new Review(hotelId,reviewId, rating, title, reviewText,
                 username, date);
-
-        System.out.println(newAddition);
 
         if (rating != null && title != null && reviewText != null){
             hs.addReview(newAddition);

@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Set;
 
 public class HotelInfoReviewServlet extends HttpServlet {
     @Override
@@ -45,7 +44,6 @@ public class HotelInfoReviewServlet extends HttpServlet {
             String hotelId = request.getParameter("hotelId");
 
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-            System.out.println("HotelID: " + hotelId);
 
             template = ve.getTemplate("templates/hotelInfoReview.html");
 
@@ -65,7 +63,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
                     List<Review> reviews = hs.findReviews(hotelId);
 
                     if (reviews != null) {
-                        reviewJSON = jc.createReviewJson(hotelId, reviews.size());
+                        reviewJSON = jc.createReviewListJson(hotelId, reviews.size());
                     } else {
                         reviewJSON = jc.setFailure();
                         session.setAttribute("hotelName", "invalid");
@@ -80,7 +78,6 @@ public class HotelInfoReviewServlet extends HttpServlet {
             //todo redirect template that lets you search for hotel info
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
-            System.out.println(session.getAttribute("infoJSON"));
 
         }
         else {
