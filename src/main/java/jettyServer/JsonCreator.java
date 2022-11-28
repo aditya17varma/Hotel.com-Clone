@@ -126,6 +126,9 @@ public class JsonCreator {
         hotelJSON.addProperty("lat", hotel.getLatitude());
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
+//        double rating = hs.getHotelRating(hotel.getId());
+//        hotelJSON.addProperty("rating", rating);
+
         StringBuilder sb = new StringBuilder();
         sb.append("https://www.expedia.com/");
         sb.append(city).append("-Hotels-").append(hotel.getName().replaceAll(" ", "-"))

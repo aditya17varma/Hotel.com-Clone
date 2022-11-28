@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -27,17 +28,25 @@ public class RegistrationServlet extends HttpServlet {
 		response.setStatus(HttpServletResponse.SC_OK);
 		PrintWriter out = response.getWriter();
 
-		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
-		VelocityContext context = new VelocityContext();
-		Template template = ve.getTemplate("templates/registrationTemplate.html");
+		HttpSession session = request.getSession();
+		String sessionName = (String) session.getAttribute("username");
+		sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
-		context.put("servletPath", request.getServletPath());
+		if (sessionName != null){
+			response.sendRedirect("/login");
+		}
+		else {
+			VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
+			VelocityContext context = new VelocityContext();
+			Template template = ve.getTemplate("templates/registrationTemplate.html");
 
-		StringWriter writer = new StringWriter();
-		template.merge(context, writer);
+			context.put("servletPath", request.getServletPath());
 
-		out.println(writer.toString());
+			StringWriter writer = new StringWriter();
+			template.merge(context, writer);
 
+			out.println(writer.toString());
+		}
 	}
 
 	@Override

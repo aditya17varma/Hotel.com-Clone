@@ -137,20 +137,21 @@ public class DatabaseHandler {
                 }
                 catch(SQLException e) {
                     System.out.println(e);
-                    result = e.toString();
+                    String[] eSplit = e.toString().split(": ");
+                    result = eSplit[1];
                 }
             }
             catch (SQLException ex) {
-                System.out.println(ex);
-                result = ex.toString();
+                String[] eSplit = ex.toString().split(": ");
+                result = eSplit[1];
             }
         }
         else {
             result = "Invalid username or password.\rUsername must include one Upper, and one Lower character.\r" +
                     "Password must be 8-16 characters, include one Upper, one Lower, one Number and one $ % @ # ! character";
+            System.out.println("Could not register");
         }
 
-        System.out.println("Could not register");
         return result;
     }
 

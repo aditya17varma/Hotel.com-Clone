@@ -262,4 +262,26 @@ public class ThreadSafeHotelData extends HotelData{
             lock.writeLock().unlock();
         }
     }
+
+//    @Override
+//    public double getHotelRating(String hotelId){
+//        lock.readLock().lock();
+//        try{
+//            return super.getHotelRating(hotelId);
+//        }
+//        finally {
+//            lock.readLock().unlock();
+//        }
+//    }
+
+//    @Override
+//    public void modifyRating(String hotelId, int rating){
+//        lock.writeLock().lock();
+//        try{
+//            super.modifyRating(hotelId, rating);
+//        }
+//        finally {
+//            lock.writeLock().unlock();
+//        }
+//    }
 }

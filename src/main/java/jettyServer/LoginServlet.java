@@ -25,6 +25,9 @@ public class LoginServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		username = StringEscapeUtils.escapeHtml4(username);
 
+		String loginFailure = request.getParameter("loginFailure");
+		loginFailure = StringEscapeUtils.escapeHtml4(loginFailure);
+
 		HttpSession session = request.getSession();
 
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
@@ -39,15 +42,25 @@ public class LoginServlet extends HttpServlet {
 		StringWriter writer = new StringWriter();
 
 		//todo password check
-		if ((sessionName != null && sessionName.equals(username)) || (username == null && sessionName != null)){
+		System.out.println("Get user: " + username);
+		System.out.println("Get Session: " + sessionName);
+
+		if (loginFailure != null && loginFailure.equals("true")){
+			//login failure, display alert
+			context.put("loginFailure", true);
+			context.put("username", sessionName);
+			Template template = ve.getTemplate("templates/loginTemplate.html");
+			template.merge(context, writer);
+		}
+
+		else if (sessionName != null){
 			context.put("userCheck", true);
 			context.put("username", sessionName);
 			Template template = ve.getTemplate("templates/postLogin.html");
 			template.merge(context, writer);
 		}
-
-		else  {
-			// already logged in or not logged in
+		else {
+			// first page
 			Template template = ve.getTemplate("templates/loginTemplate.html");
 			template.merge(context, writer);
 		}
@@ -67,8 +80,6 @@ public class LoginServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-
-
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 		boolean flag = dbHandler.authenticateUser(user, pass);
 		if (flag) {
@@ -78,7 +89,8 @@ public class LoginServlet extends HttpServlet {
 		}
 		else
 			System.out.println("Could not authenticate");
+			context.put("loginFailure", true);
 //			session.setAttribute("username", user);
-			response.sendRedirect("/login");
+			response.sendRedirect("/login?loginFailure=true");
 	}
 }

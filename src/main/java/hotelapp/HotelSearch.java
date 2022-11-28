@@ -93,6 +93,15 @@ public class HotelSearch {
     public void deleteReview(String hotelId, String reviewId){
         this.threadSafeHotelData.deleteReview(hotelId, reviewId);
     }
+
+//    public double getHotelRating(String hotelId){
+//        return this.threadSafeHotelData.getHotelRating(hotelId);
+//    }
+//
+//    public void modifyHotelRating(String hotelId, int rating){
+//        this.threadSafeHotelData.modifyRating(hotelId, rating);
+//    }
+
     /**
      * findWord
      * Searches the invertedIndex for the word

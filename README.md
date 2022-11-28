@@ -13,3 +13,27 @@ The goal of the final project is to implement a website with a subset of the fun
 - During the interactive code review, it is the student's responsibility to demonstrate to the instructor that each feature works properly. You may not receive credit for the features you don't demonstrate at that time. Please practice showing a demo beforehand and come prepared. Make sure to show how your features handle error cases (e.g., login of a user that does not exist).  
 
 For the list of required features for milestone #1, please refer to the project description on the course webpage.
+
+
+When the password is wrong when we login - print a message ("Wrong username or password")
+
+After logging in, when the user goes to /register or /login, redirect to
+the page they see after logging in, since they are still logged in.
+
+Hotel: average rating is not showing
+Address needs to be shown
+
+A new review should show on top  - because reviews are in descending order, sorted by date.
+
+Edit review - should be able to change the rating.
+
+Need a logout button.
+
+Extra Credit
+3 months
+3 rooms default
+show list of hotels with available reservations
+
+
+
+
