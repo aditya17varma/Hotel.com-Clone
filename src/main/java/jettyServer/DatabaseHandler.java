@@ -180,6 +180,7 @@ public class DatabaseHandler {
             statement.setString(2, passhash);
             ResultSet results = statement.executeQuery();
             boolean flag = results.next();
+            System.out.println("SQL Auth Flag: " + flag);
             return flag;
         }
         catch (SQLException e) {

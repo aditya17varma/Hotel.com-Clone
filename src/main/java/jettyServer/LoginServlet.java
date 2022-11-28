@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		else  {
-			// already logged in
+			// already logged in or not logged in
 			Template template = ve.getTemplate("templates/loginTemplate.html");
 			template.merge(context, writer);
 		}
@@ -67,18 +67,18 @@ public class LoginServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		session.setAttribute("username", user);
-		session.setAttribute("password", pass);
+
 
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 		boolean flag = dbHandler.authenticateUser(user, pass);
 		if (flag) {
+			session.setAttribute("username", user);
+			session.setAttribute("password", pass);
 			response.sendRedirect("/login?username=" + user);
 		}
 		else
 			System.out.println("Could not authenticate");
-			session.setAttribute("username", user);
+//			session.setAttribute("username", user);
 			response.sendRedirect("/login");
-
 	}
 }
