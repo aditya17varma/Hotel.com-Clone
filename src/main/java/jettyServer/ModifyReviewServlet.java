@@ -19,7 +19,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
-public class EditReviewServlet extends HttpServlet {
+public class ModifyReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
@@ -43,10 +43,12 @@ public class EditReviewServlet extends HttpServlet {
 
             String hotelId = request.getParameter("hotelId");
 
+//            JsonObject dataJSON = (JsonObject) session.getAttribute("infoJSON");
+
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
             System.out.println("HotelID: " + hotelId);
 
-            template = ve.getTemplate("templates/hotelInfoReview.html");
+            template = ve.getTemplate("templates/modifyReviewTemplate.html");
 
             JsonObject infoJSON = new JsonObject();
             JsonObject hotelJSON = new JsonObject();
@@ -86,6 +88,36 @@ public class EditReviewServlet extends HttpServlet {
         template.merge(context, writer);
         PrintWriter out = response.getWriter();
         out.println(writer.toString());
+    }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+
+        HttpSession session = request.getSession();
+
+        String sessionName = (String) session.getAttribute("username");
+        sessionName = StringEscapeUtils.escapeHtml4(sessionName);
+
+        JsonObject infoJSON = (JsonObject) session.getAttribute("infoJSON");
+        JsonObject hotelJSON = infoJSON.get("hotelData").getAsJsonObject();
+        String hotelId = hotelJSON.get("hotelId").getAsString();
+
+        String hotelName = hotelJSON.get("name").getAsString();
+
+        VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
+        VelocityContext context = new VelocityContext();
+        context.put("hotelData", hotelJSON);
+
+        session.setAttribute("hotelId", hotelId);
+
+        if (hotelId != null){
+            response.sendRedirect("/editReview?hotelId=" + hotelId + "&hotelName=" + hotelName);
+        }
+        else {
+            System.out.println("cannot edit review");
+            response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
+        }
     }
 
 

@@ -42,11 +42,8 @@
   <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name&rating=$infoJSON.hotelData.rating">
    <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
   </form>
- <form method="GET" action="/editReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
-  <p><button class="w3-button w3-border w3-hover-blue" type="submit">Edit Review</button></p>
- </form>
- <form method="POST" action="/editReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
-  <p><button class="w3-button w3-border w3-hover-red" type="submit">Delete Review</button></p>
+ <form method="POST" action="/modifyReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
+  <p><button class="w3-button w3-border w3-hover-blue" type="submit">Modify Review</button></p>
  </form>
  </div>
 </div>

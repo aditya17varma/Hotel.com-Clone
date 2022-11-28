@@ -93,6 +93,14 @@ public class Review {
         return datePosted;
     }
 
+    public void setReviewText(String text){
+        this.reviewText = text;
+    }
+
+    public void setReviewTitle(String title){
+        this.title = title;
+    }
+
     /**
      * toString
      * @return string representation of the HotelReview

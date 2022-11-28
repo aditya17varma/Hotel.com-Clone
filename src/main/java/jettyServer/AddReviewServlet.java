@@ -1,7 +1,6 @@
 package jettyServer;
 
 import com.google.gson.JsonObject;
-import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
@@ -19,7 +18,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Set;
 import java.util.UUID;
 
 public class AddReviewServlet extends HttpServlet {
@@ -56,8 +54,6 @@ public class AddReviewServlet extends HttpServlet {
             String userName = sessionName;
 
             template = ve.getTemplate("templates/addReviewTemplate.html");
-
-            JsonObject keywordJSON = new JsonObject();
 
             context.put("servletPath", request.getServletPath());
 

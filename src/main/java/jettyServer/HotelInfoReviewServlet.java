@@ -60,6 +60,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
                 if (tempHotel != null) {
                     hotelJSON = jc.createHotelJson(tempHotel);
 
+                    session.setAttribute("hotelName", tempHotel.getName());
                     context.put("hotelName", tempHotel.getName());
                     List<Review> reviews = hs.findReviews(hotelId);
 
@@ -67,6 +68,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
                         reviewJSON = jc.createReviewJson(hotelId, reviews.size());
                     } else {
                         reviewJSON = jc.setFailure();
+                        session.setAttribute("hotelName", "invalid");
                         context.put("hotelName", "invalid");
                     }
                     infoJSON.add("hotelReviews", reviewJSON);
