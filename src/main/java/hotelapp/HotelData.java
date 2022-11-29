@@ -100,7 +100,6 @@ public class HotelData {
             int count = ratingArr[0];
             int total = ratingArr[1];
 
-            System.out.println(Arrays.toString(ratingArr));
             return total / (double) count;
         }
         else {
@@ -120,7 +119,6 @@ public class HotelData {
             ratingArr[0] = ratingArr[0] - 1;
             ratingArr[1] = ratingArr[1] - rating;
         }
-        System.out.println(Arrays.toString(ratingArr));
     }
 
     /**

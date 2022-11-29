@@ -108,12 +108,14 @@ public class EditReviewServlet extends HttpServlet {
         editTitle = StringEscapeUtils.escapeHtml4(editTitle);
         String editText = request.getParameter("editText");
         editText = StringEscapeUtils.escapeHtml4(editText);
+        String editRating = request.getParameter("editRating");
+        editRating = StringEscapeUtils.escapeHtml4(editRating);
 
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
 
-        if (editText != null || editTitle != null){
+        if (editText != null || editTitle != null || editRating != null){
             Review tempR = hs.findReview(hotelId, reviewId);
             if (editText != null && !editText.equals("")){
                 tempR.setReviewText(editText);
@@ -121,8 +123,15 @@ public class EditReviewServlet extends HttpServlet {
             if (editTitle != null && !editTitle.equals("")){
                 tempR.setReviewTitle(editTitle);
             }
+            if (editRating != null && !editRating.equals("")){
+                int oldRating = Integer.parseInt(hs.findReview(hotelId, reviewId).getRatingOverall());
+                //subtract old rating
+                hs.modifyHotelRating(hotelId, oldRating, false);
+                //add new rating
+                tempR.setReviewRating(editRating);
+                hs.modifyHotelRating(hotelId, Integer.parseInt(editRating), true);
+            }
             response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
-
         }
         else if (hotelId != null && reviewId != null){
             response.sendRedirect("/editReview?hotelId=" + hotelId + "&reviewId=" + reviewId);

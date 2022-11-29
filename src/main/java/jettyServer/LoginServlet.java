@@ -41,7 +41,6 @@ public class LoginServlet extends HttpServlet {
 
 		StringWriter writer = new StringWriter();
 
-		//todo password check
 		System.out.println("Get user: " + username);
 		System.out.println("Get Session: " + sessionName);
 
@@ -72,6 +71,8 @@ public class LoginServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String user = request.getParameter("username");
 		String pass = request.getParameter("pass");
+		System.out.println(user);
+		System.out.println(pass);
 
 
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");

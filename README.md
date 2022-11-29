@@ -14,8 +14,6 @@ The goal of the final project is to implement a website with a subset of the fun
 
 For the list of required features for milestone #1, please refer to the project description on the course webpage.
 
-//todo
-Edit review - should be able to change the rating.
 
 Extra Credit
 3 months

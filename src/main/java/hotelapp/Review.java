@@ -101,6 +101,10 @@ public class Review {
         this.title = title;
     }
 
+    public void setReviewRating(String rating){
+        this.ratingOverall = rating;
+    }
+
     /**
      * toString
      * @return string representation of the HotelReview
