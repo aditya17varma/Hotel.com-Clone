@@ -19,6 +19,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+
+/**
+ * Class ModifyReviewServlet
+ * Displays the Reviews by the session user and allows them to edit or delete the Reviews
+ */
 public class ModifyReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -44,10 +49,7 @@ public class ModifyReviewServlet extends HttpServlet {
 
             String hotelId = request.getParameter("hotelId");
 
-//            JsonObject dataJSON = (JsonObject) session.getAttribute("infoJSON");
-
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-            System.out.println("Modify HotelID: " + hotelId);
 
             template = ve.getTemplate("templates/modifyReviewTemplate.html");
 
@@ -79,7 +81,6 @@ public class ModifyReviewServlet extends HttpServlet {
             }
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
-            System.out.println("Modify Session InfoJSON: " + session.getAttribute("infoJSON"));
 
         }
         else {
@@ -121,8 +122,5 @@ public class ModifyReviewServlet extends HttpServlet {
             response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
         }
     }
-
-
-
 
 }

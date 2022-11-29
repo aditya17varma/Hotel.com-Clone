@@ -6,7 +6,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 /** This class uses Jetty & servlets to implement server serving hotel and review info */
 public class JettyServer {
-    private HotelSearch hs;
+    private Object hs;
     private ServletContextHandler handler;
 
     /**
@@ -29,10 +29,10 @@ public class JettyServer {
      */
     public void loadHotelSearch(String hotelPath, String reviewPath, int threads){
         hs = new HotelSearch();
-        hs.loadHotels(hotelPath);
-        hs.loadReviews(reviewPath, threads);
-        hs.createInvertedIndex();
-        hs.createHotelKeywordMap();
+        ((HotelSearch)hs).loadHotels(hotelPath);
+        ((HotelSearch)hs).loadReviews(reviewPath, threads);
+        ((HotelSearch)hs).createInvertedIndex();
+        ((HotelSearch)hs).createHotelKeywordMap();
     }
 
     /**

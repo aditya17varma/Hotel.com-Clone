@@ -6,10 +6,14 @@ import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * Class JsonCreator
+ * Helper class to create JSON objects for Hotels and Reviews
+ */
 public class JsonCreator {
     HotelSearch hs;
 
@@ -17,15 +21,18 @@ public class JsonCreator {
         this.hs = hs;
     }
 
-
-
+    /**
+     * createReviewListJson
+     * Creates a JsonObject that has a JsonArray of Reviews
+     * @param hotelId hotelId
+     * @param num number of Reviews
+     * @return JsonObject
+     */
     public JsonObject createReviewListJson(String hotelId, int num){
         JsonObject reviewJSON = new JsonObject();
 
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
-
-        //todo add avg rating
 
         List<Review> reviews = hs.findReviews(hotelId);
 
@@ -48,6 +55,12 @@ public class JsonCreator {
         return reviewJSON;
     }
 
+    /**
+     * createReview
+     * Creates a JsonObject for the Review class
+     * @param review Review
+     * @return JsonObject
+     */
     public JsonObject createReview(Review review){
         JsonObject reviewJSON = new JsonObject();
 
@@ -64,13 +77,19 @@ public class JsonCreator {
 
     }
 
+    /**
+     * createUserReviewJson
+     * Creates a JsonObject that has a JsonArray of Reviews by a single User
+     * @param hotelId HotelId
+     * @param num number of Reviews
+     * @param user User
+     * @return JsonObject
+     */
     public JsonObject createUserReviewJson(String hotelId, int num, String user){
         JsonObject reviewJSON = new JsonObject();
 
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
-
-        //todo add avg rating
 
         List<Review> reviews = hs.findReviews(hotelId);
 
@@ -95,6 +114,12 @@ public class JsonCreator {
         return reviewJSON;
     }
 
+    /**
+     * createKeywordJson
+     * Creates a JsonObject that has a JsonArray of all Hotel whose name includes the keyword
+     * @param hotelSet Set of Hotels that whose name inlcudes the keyword
+     * @return JsonObject
+     */
     public JsonObject createKeywordJson(Set<Hotel> hotelSet){
         JsonObject keywordJSON = new JsonObject();
 
@@ -112,6 +137,12 @@ public class JsonCreator {
         return keywordJSON;
     }
 
+    /**
+     * createHotelJson
+     * Creates a JsonObject for Hotel
+     * @param hotel Hotel
+     * @return JsonObject
+     */
     public JsonObject createHotelJson(Hotel hotel){
         JsonObject hotelJSON = new JsonObject();
 
@@ -138,6 +169,11 @@ public class JsonCreator {
         return hotelJSON;
     }
 
+    /**
+     * setFailure
+     * Sets JsonObject "success" to false and "hotelId" and "HotelName" to "invalid"
+     * @return JsonObject
+     */
     public JsonObject setFailure(){
         JsonObject failureJSON = new JsonObject();
         failureJSON.addProperty("success", false);

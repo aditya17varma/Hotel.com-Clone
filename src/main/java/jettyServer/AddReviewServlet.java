@@ -20,6 +20,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+/**
+ * Class AddReviewServlet
+ * Provides text fields to add review Title, review Text and review Rating
+ * Session user is set as the review Author
+ * Current date is set as the review Date
+ */
 public class AddReviewServlet extends HttpServlet {
     private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -41,7 +47,6 @@ public class AddReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
-        //todo reinstate session check
         if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(hs);
 
@@ -130,6 +135,11 @@ public class AddReviewServlet extends HttpServlet {
         }
     }
 
+    /**
+     * generateReviewId
+     * @param hs HotelSearch
+     * @return reviewId
+     */
     public String generateReviewId(HotelSearch hs){
         UUID id = UUID.randomUUID();
         while (hs.checkReviewIds(id.toString().replaceAll("-",""))){

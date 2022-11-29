@@ -155,15 +155,25 @@ public class DatabaseHandler {
         return result;
     }
 
+    /**
+     * validUser
+     * Checks if username has at least one uppercase, and one lower case character
+     * @param username username
+     * @return true if valid
+     */
     public boolean validUser(String username){
-//        Must include one Upper, and one Lower character
         Pattern p = Pattern.compile("(?=.*[a-z])(?=.*[A-Z])");
         Matcher m = p.matcher(username);
         return m.find();
     }
 
+    /**
+     * validPassword
+     * Checks if password has at least one uppercase, one lowercase and one special character, and is between 8-16 characters long
+     * @param password password
+     * @return true if valid
+     */
     public boolean validPassword(String password){
-//        8-16 characters, must include one Upper, one Lower, one Number and one Punctuation character
         Pattern p = Pattern.compile("(?=.{8,16})(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[$%@#!])");
         Matcher m = p.matcher(password);
         return m.find();
@@ -212,16 +222,6 @@ public class DatabaseHandler {
             System.out.println(e);
         }
         return salt;
-    }
-
-    public static void main(String[] args) {
-        DatabaseHandler dhandler = DatabaseHandler.getInstance();
-//        dhandler.createTable();
-//        System.out.println("created a user table ");
-//        dhandler.registerUser("luke", "lukeS1k23w");
-//        System.out.println("Registered luke.");
-        System.out.println(dhandler.validPassword("Password!2"));
-
     }
 }
 

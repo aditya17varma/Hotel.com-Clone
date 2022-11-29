@@ -93,14 +93,26 @@ public class Review {
         return datePosted;
     }
 
+    /**
+     * setReviewText
+     * @param text reviewText
+     */
     public void setReviewText(String text){
         this.reviewText = text;
     }
 
+    /**
+     * setReviewTitle
+     * @param title reviewTitle
+     */
     public void setReviewTitle(String title){
         this.title = title;
     }
 
+    /**
+     * setReviewRating
+     * @param rating reviewRating
+     */
     public void setReviewRating(String rating){
         this.ratingOverall = rating;
     }

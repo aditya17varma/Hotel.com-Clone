@@ -15,7 +15,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 
-/** An example that demonstrates how to process HTML forms with servlets.
+/** Class RegistrationServlet
+ * Allows the user to register a valid username and password pair
+ * Username and password are then stored in a database
  */
 @SuppressWarnings("serial")
 public class RegistrationServlet extends HttpServlet {

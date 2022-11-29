@@ -7,7 +7,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.eclipse.jetty.server.session.Session;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +18,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Set;
 
+/**
+ * Class KeywordSearchServlet
+ * Populates the page with a list of Hotels whose name includes the given keyword
+ * The hotelNames are links to their HotelInformation page
+ */
 public class KeywordSearchServlet extends HttpServlet {
 
     @Override
@@ -38,7 +42,6 @@ public class KeywordSearchServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
-        //todo reinstate session check
         if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(hs);
 
@@ -90,7 +93,6 @@ public class KeywordSearchServlet extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String keyword = request.getParameter("keyword");
         keyword = StringEscapeUtils.escapeHtml4(keyword);
-
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();

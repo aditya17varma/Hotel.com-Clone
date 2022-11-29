@@ -19,6 +19,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+
+/**
+ * Class HotelInfoReviewServlet
+ * Given a hotelId, populates the page with Hotel information including Hotel Name, address, Id, average rating, and a list of Reviews
+ */
 public class HotelInfoReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -37,7 +42,6 @@ public class HotelInfoReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
-        //todo reinstate session check
         if (sessionName != null){
             JsonCreator jc = new JsonCreator(hs);
 
@@ -75,7 +79,6 @@ public class HotelInfoReviewServlet extends HttpServlet {
                 }
                 infoJSON.add("hotelData", hotelJSON);
             }
-            //todo redirect template that lets you search for hotel info
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
 
@@ -86,9 +89,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
         }
 
         template.merge(context, writer);
-
         PrintWriter out = response.getWriter();
-
         out.println(writer.toString());
     }
 

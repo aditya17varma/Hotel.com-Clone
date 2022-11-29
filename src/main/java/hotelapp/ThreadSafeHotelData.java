@@ -213,6 +213,11 @@ public class ThreadSafeHotelData extends HotelData{
         }
     }
 
+    /**
+     * checkReviewIds
+     * @param id reviewId
+     * @return true if present
+     */
     @Override
     public boolean checkReviewIds(String id){
         lock.readLock().lock();
@@ -224,6 +229,10 @@ public class ThreadSafeHotelData extends HotelData{
         }
     }
 
+    /**
+     * addReviewToReviewMap
+     * @param r Review
+     */
     @Override
     public void addReviewToReviewMap(Review r){
         lock.writeLock().lock();
@@ -252,6 +261,11 @@ public class ThreadSafeHotelData extends HotelData{
         }
     }
 
+    /**
+     * deleteReview
+     * @param hotelId hotelId
+     * @param reviewId reviewId
+     */
     @Override
     public void deleteReview(String hotelId, String reviewId){
         lock.writeLock().lock();
@@ -263,6 +277,11 @@ public class ThreadSafeHotelData extends HotelData{
         }
     }
 
+    /**
+     * getHotelRating
+     * @param hotelId hotelId
+     * @return hotelRating
+     */
     @Override
     public double getHotelRating(String hotelId){
         lock.readLock().lock();
@@ -274,6 +293,12 @@ public class ThreadSafeHotelData extends HotelData{
         }
     }
 
+    /**
+     * modifyHotelRating
+     * @param hotelId hotelId
+     * @param rating review rating
+     * @param add true if adding review, false if deleting review
+     */
     @Override
     public void modifyHotelRating(String hotelId, int rating, boolean add){
         lock.writeLock().lock();

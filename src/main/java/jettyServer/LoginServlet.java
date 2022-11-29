@@ -14,6 +14,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 @SuppressWarnings("serial")
+/**
+ * Class LoginServlet
+ * Allows the user to login with an already registered username and password
+ * Queries the database to check the username and password match
+ */
 public class LoginServlet extends HttpServlet {
 
 	@Override
@@ -91,7 +96,6 @@ public class LoginServlet extends HttpServlet {
 		else
 			System.out.println("Could not authenticate");
 			context.put("loginFailure", true);
-//			session.setAttribute("username", user);
 			response.sendRedirect("/login?loginFailure=true");
 	}
 }

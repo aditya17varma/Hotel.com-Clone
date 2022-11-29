@@ -85,19 +85,43 @@ public class HotelSearch {
         return foundReviews;
     }
 
-
+    /**
+     * find Review
+     * Finds a particular Review that corrsponds to the given hotelId and reviewId
+     * @param hotelId HotelId
+     * @param reviewId ReviewId
+     * @return Review
+     */
     public Review findReview(String hotelId, String reviewId){
         return this.threadSafeHotelData.findReview(hotelId, reviewId);
     }
 
+    /**
+     * deleteReview
+     * Deletes a review from the HotelData maps
+     * @param hotelId hotelId
+     * @param reviewId reviewId
+     */
     public void deleteReview(String hotelId, String reviewId){
         this.threadSafeHotelData.deleteReview(hotelId, reviewId);
     }
 
+    /**
+     * getHotelRating
+     * @param hotelId hotelId
+     * @return hotelRating
+     */
     public double getHotelRating(String hotelId){
         return this.threadSafeHotelData.getHotelRating(hotelId);
     }
 
+    /**
+     * modifyHotelRating
+     * Modifies the average rating for the Hotel
+     * @param hotelId hotelId
+     * @param rating reviewRating
+     * @param add true if adding, false if deleting
+     */
     public void modifyHotelRating(String hotelId, int rating, boolean add){
         this.threadSafeHotelData.modifyHotelRating(hotelId, rating, add);
     }
@@ -114,10 +138,21 @@ public class HotelSearch {
         return reviewsArr;
     }
 
+    /**
+     * checkReviewIds
+     * Checks if a Review is present in the HotelData maps
+     * @param id reviewId
+     * @return true if present
+     */
     public boolean checkReviewIds(String id){
         return this.threadSafeHotelData.checkReviewIds(id);
     }
 
+    /**
+     * addReview
+     * Adds a review to the HotelData maps
+     * @param r Review
+     */
     public void addReview(Review r){
         this.threadSafeHotelData.addReviewToReviewMap(r);
     }

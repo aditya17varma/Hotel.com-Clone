@@ -94,6 +94,11 @@ public class HotelData {
         }
     }
 
+    /**
+     * getHotelRating
+     * @param hotelId hotelId
+     * @return average rating
+     */
     public double getHotelRating(String hotelId){
         Integer[] ratingArr = this.hotelRatingMap.get(hotelId);
         if (ratingArr != null){
@@ -108,6 +113,12 @@ public class HotelData {
 
     }
 
+    /**
+     * modifyHotelRating
+     * @param hotelId hotelId
+     * @param rating review rating
+     * @param add true if adding review, false if deleting review
+     */
     public void modifyHotelRating(String hotelId, int rating, boolean add){
         Integer[] ratingArr = this.hotelRatingMap.get(hotelId);
 
@@ -263,6 +274,11 @@ public class HotelData {
         return null;
     }
 
+    /**
+     * deleteReview
+     * @param hotelId hotelId
+     * @param reviewId reviewId
+     */
     public void deleteReview(String hotelId, String reviewId){
         List<Review> reviews = findReviewList(hotelId);
         for (Review r: reviews){
@@ -292,29 +308,14 @@ public class HotelData {
             return this.hotelMap.keySet();
     }
 
-    public Map<String, List<Review>> getReviewMap(){
-        return this.reviewMap;
-    }
-
+    /**
+     * checkReviewIds
+     * Checks if the reviewSet contains a reviewId
+     * @param id reviewId
+     * @return true if present
+     */
     public boolean checkReviewIds(String id){
         return this.reviewSet.contains(id);
-    }
-
-    public static void main(String[] args) {
-        HotelData hd = new HotelData();
-        hd.loadHotels("input/hotels/hotels.json");
-        hd.loadReviews("input/reviews");
-
-        System.out.println(hd.getHotelRating("12539"));
-
-        Review temp = new Review("12539", "112", "4", "A", "Hello There", "Adi",
-                "2022-11-28");
-        hd.addReviewToReviewMap(temp);
-        System.out.println(hd.getHotelRating("12539"));
-
-        hd.deleteReview("12539", "112");
-        System.out.println(hd.getHotelRating("12539"));
-
     }
 
 }

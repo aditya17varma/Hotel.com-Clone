@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Class EditReviewServlet
+ * Allows a user to edit reviews posted by them
+ * Allows edit of review Title, review Text, and review Rating
+ */
 public class EditReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -92,7 +97,6 @@ public class EditReviewServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
@@ -110,7 +114,6 @@ public class EditReviewServlet extends HttpServlet {
         editText = StringEscapeUtils.escapeHtml4(editText);
         String editRating = request.getParameter("editRating");
         editRating = StringEscapeUtils.escapeHtml4(editRating);
-
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();

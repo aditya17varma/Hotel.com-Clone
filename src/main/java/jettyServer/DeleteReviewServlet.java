@@ -1,7 +1,5 @@
 package jettyServer;
 
-import com.google.gson.JsonObject;
-import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
@@ -18,6 +16,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Class DeleteReviewServlet
+ * Deletes a review from the HotelData maps
+ * Parameters required are HotelId and ReviewId
+ */
 public class DeleteReviewServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -27,14 +30,11 @@ public class DeleteReviewServlet extends HttpServlet {
         response.sendRedirect("/login");
     }
 
-
-
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
 
         HttpSession session = request.getSession();
-
 
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
@@ -71,8 +71,6 @@ public class DeleteReviewServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         out.println(writer.toString());
-
-
     }
 
 

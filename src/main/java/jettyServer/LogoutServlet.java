@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Class LogoutServlet
+ * Sets the session user to null, effectively logging out the user
+ */
 public class LogoutServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
