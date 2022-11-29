@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -109,17 +110,15 @@ public class AddReviewServlet extends HttpServlet {
         String reviewText = request.getParameter("reviewText");
         reviewText = StringEscapeUtils.escapeHtml4(reviewText);
         String username = sessionName;
-        String date = dtf.format(now).toString();
+        String date = dtf.format(now);
 
         Review newAddition = new Review(hotelId,reviewId, rating, title, reviewText,
                 username, date);
 
-        if (rating != null && title != null && reviewText != null){
+        if (rating != null && !rating.equals("")
+                && title != null && !title.equals("")
+                && reviewText != null && !reviewId.equals("")){
             hs.addReview(newAddition);
-        }
-
-
-        if (rating != null && title != null && reviewText != null){
             response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
         }
 

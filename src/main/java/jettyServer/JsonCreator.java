@@ -126,8 +126,8 @@ public class JsonCreator {
         hotelJSON.addProperty("lat", hotel.getLatitude());
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
-//        double rating = hs.getHotelRating(hotel.getId());
-//        hotelJSON.addProperty("rating", rating);
+        double rating = hs.getHotelRating(hotel.getId());
+        hotelJSON.addProperty("rating", rating);
 
         StringBuilder sb = new StringBuilder();
         sb.append("https://www.expedia.com/");

@@ -94,13 +94,13 @@ public class HotelSearch {
         this.threadSafeHotelData.deleteReview(hotelId, reviewId);
     }
 
-//    public double getHotelRating(String hotelId){
-//        return this.threadSafeHotelData.getHotelRating(hotelId);
-//    }
-//
-//    public void modifyHotelRating(String hotelId, int rating){
-//        this.threadSafeHotelData.modifyRating(hotelId, rating);
-//    }
+    public double getHotelRating(String hotelId){
+        return this.threadSafeHotelData.getHotelRating(hotelId);
+    }
+
+    public void modifyHotelRating(String hotelId, int rating, boolean add){
+        this.threadSafeHotelData.modifyHotelRating(hotelId, rating, add);
+    }
 
     /**
      * findWord

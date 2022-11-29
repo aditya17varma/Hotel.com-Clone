@@ -14,20 +14,8 @@ The goal of the final project is to implement a website with a subset of the fun
 
 For the list of required features for milestone #1, please refer to the project description on the course webpage.
 
-
-When the password is wrong when we login - print a message ("Wrong username or password")
-
-After logging in, when the user goes to /register or /login, redirect to
-the page they see after logging in, since they are still logged in.
-
-Hotel: average rating is not showing
-Address needs to be shown
-
-A new review should show on top  - because reviews are in descending order, sorted by date.
-
+//todo
 Edit review - should be able to change the rating.
-
-Need a logout button.
 
 Extra Credit
 3 months

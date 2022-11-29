@@ -11,10 +11,14 @@
 
 </head>
 <body>
+<div class="w3-container" style="float:right;">
+    <p style="color:darkred"><a href="/logout"><small>Logout</small></a></p>
+</div>
 <div class="jumbotron text-center">
-    <h1>Hotel Information </h1>
+    <h1>Modify Hotel Reviews </h1>
     #if($hotelName != "invalid")
     <h3>$hotelName </h3>
+    <h4>$infoJSON.hotelData.addr.getAsString(), $infoJSON.hotelData.city.getAsString(), $infoJSON.hotelData.state.getAsString() </h4>
     #end
 </div>
 

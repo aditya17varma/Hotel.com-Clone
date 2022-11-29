@@ -47,11 +47,6 @@ public class JettyServer {
     public void loadServlets(){
         handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        handler.addServlet(HotelServlet.class, "/hotelInfo");
-        handler.addServlet(ReviewServlet.class, "/reviews");
-        handler.addServlet(IndexServlet.class, "/index");
-        handler.addServlet(WeatherServlet.class, "/weather");
-
         handler.addServlet(RegistrationServlet.class, "/register");
         handler.addServlet(LoginServlet.class, "/login");
         handler.addServlet(KeywordSearchServlet.class, "/search");

@@ -10,13 +10,15 @@
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-
 <body>
-
+<div class="w3-container" style="float:right;">
+ <p style="color:darkred"><a href="/logout"><small>Logout</small></a></p>
+</div>
 <div class="jumbotron text-center">
  <h1>Hotel Information </h1>
  #if($hotelName != "invalid")
  <h3>$hotelName </h3>
+ <h4>$infoJSON.hotelData.addr.getAsString(), $infoJSON.hotelData.city.getAsString(), $infoJSON.hotelData.state.getAsString() </h4>
  #end
 </div>
 
@@ -30,8 +32,8 @@
    <th>Average Rating</th>
   </tr>
   <tr>
-   <td>$infoJSON.hotelData.hotelId</td>
-   <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name</a></td>
+   <td>$infoJSON.hotelData.hotelId.getAsString()</td>
+   <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name.getAsString()</a></td>
    <td>$infoJSON.hotelData.rating</td>
   </tr>
  </table>
@@ -64,12 +66,12 @@
   #if($infoJSON.hotelReviews.success != false)
   #foreach($review in $infoJSON.hotelReviews.reviews)
   <tr>
-   <td>$review.reviewId</td>
-   <td>$review.date</td>
-   <td>$review.user</td>
-   <td>$review.rating</td>
-   <td>$review.title</td>
-   <td>$review.reviewText</td>
+   <td>$review.reviewId.getAsString()</td>
+   <td>$review.date.getAsString()</td>
+   <td>$review.user.getAsString()</td>
+   <td>$review.rating.getAsString()</td>
+   <td>$review.title.getAsString()</td>
+   <td>$review.reviewText.getAsString()</td>
   </tr>
   #end
   #else

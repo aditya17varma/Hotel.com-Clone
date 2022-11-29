@@ -9,7 +9,7 @@ public class HotelData {
     private InvertedIndex invertedIndex;
     private HashMap<String, Set<Hotel>> hotelKeywordMap;
     private HashSet<String> reviewSet;
-    private HashMap<String, Integer[]> hotelRating;
+    private HashMap<String, Integer[]> hotelRatingMap;
 
     /**
      * Class HotelData
@@ -24,7 +24,7 @@ public class HotelData {
         this.invertedIndex = new InvertedIndex();
         this.hotelKeywordMap = new HashMap<>();
         this.reviewSet = new HashSet<>();
-        this.hotelRating = new HashMap<>();
+        this.hotelRatingMap = new HashMap<>();
     }
 
     /**
@@ -65,7 +65,7 @@ public class HotelData {
 
         for (Review hr: tempReviews){
             if (!reviewSet.contains(hr.getReviewID())){
-                Double rating = Double.parseDouble(hr.getRatingOverall());
+                Integer rating = Integer.parseInt(hr.getRatingOverall());
                 if (!this.reviewMap.containsKey(hr.getHotelID())){
                     List<Review> temp = new ArrayList<>();
                     this.reviewMap.put(hr.getHotelID(), temp);
@@ -75,6 +75,16 @@ public class HotelData {
                 temp.add(hr);
                 reviewSet.add(hr.getReviewID());
                 this.reviewSet.add(hr.getReviewID());
+
+                if (!this.hotelRatingMap.containsKey(hr.getHotelID())){
+                    Integer[] ratingArr = new Integer[]{0, 0};
+                    this.hotelRatingMap.put(hr.getHotelID(), ratingArr);
+                }
+                Integer[] ratingArr = this.hotelRatingMap.get(hr.getHotelID());
+                //increment count
+                ratingArr[0] = ratingArr[0] + 1;
+                //increment total
+                ratingArr[1] = ratingArr[1] + rating;
             }
         }
 
@@ -82,6 +92,35 @@ public class HotelData {
             List<Review> temp = this.reviewMap.get(id);
             temp.sort(reviewComp.reversed());
         }
+    }
+
+    public double getHotelRating(String hotelId){
+        Integer[] ratingArr = this.hotelRatingMap.get(hotelId);
+        if (ratingArr != null){
+            int count = ratingArr[0];
+            int total = ratingArr[1];
+
+            System.out.println(Arrays.toString(ratingArr));
+            return total / (double) count;
+        }
+        else {
+            return 0;
+        }
+
+    }
+
+    public void modifyHotelRating(String hotelId, int rating, boolean add){
+        Integer[] ratingArr = this.hotelRatingMap.get(hotelId);
+
+        if (add){
+            ratingArr[0] = ratingArr[0] + 1;
+            ratingArr[1] = ratingArr[1] + rating;
+        }
+        else {
+            ratingArr[0] = ratingArr[0] - 1;
+            ratingArr[1] = ratingArr[1] - rating;
+        }
+        System.out.println(Arrays.toString(ratingArr));
     }
 
     /**
@@ -97,6 +136,17 @@ public class HotelData {
         }
         List<Review> temp = this.reviewMap.get(r.getHotelID());
         temp.add(r);
+
+        int rating = Integer.parseInt(r.getRatingOverall());
+        if (!this.hotelRatingMap.containsKey(r.getHotelID())){
+            Integer[] ratingArr = new Integer[]{0, 0};
+            this.hotelRatingMap.put(r.getHotelID(), ratingArr);
+        }
+
+        modifyHotelRating(r.getHotelID(), Integer.parseInt(r.getRatingOverall()), true);
+
+        Comparator<Review> reviewComp = new ReviewComparator();
+        temp.sort(reviewComp);
 
         reviewSet.add(r.getReviewID());
     }
@@ -219,6 +269,7 @@ public class HotelData {
         List<Review> reviews = findReviewList(hotelId);
         for (Review r: reviews){
             if (r.getReviewID().equals(reviewId)){
+                modifyHotelRating(hotelId, Integer.parseInt(r.getRatingOverall()), false);
                 reviews.remove(r);
                 return;
             }
@@ -251,31 +302,21 @@ public class HotelData {
         return this.reviewSet.contains(id);
     }
 
-//    public static void main(String[] args) {
-//        HotelData hd = new HotelData();
-//        hd.loadHotels("input/hotels/hotels.json");
-//        hd.loadReviews("input/reviews");
-////        hd.createHotelKeywordMap();
-////        System.out.println(hd.hotelKeywordMap.get("Hilton"));
-////        List<Review> reviews = hd.findReview("12539");
-////        for (Review r: reviews){
-////            System.out.println(r.getReviewID());
-////        }
-//
-//        System.out.println(hd.reviewSet);
-//
-////        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-////        LocalDateTime now = LocalDateTime.now();
-////        System.out.println(dtf.format(now));
-//
-//        UUID uuid = new UUID(8,16);
-//        UUID id = UUID.randomUUID();
-//
-//        while (hd.reviewSet.contains(id.toString().replaceAll("-",""))){
-//            id = UUID.randomUUID();
-//        }
-//        System.out.println(id);
-//
-//    }
+    public static void main(String[] args) {
+        HotelData hd = new HotelData();
+        hd.loadHotels("input/hotels/hotels.json");
+        hd.loadReviews("input/reviews");
+
+        System.out.println(hd.getHotelRating("12539"));
+
+        Review temp = new Review("12539", "112", "4", "A", "Hello There", "Adi",
+                "2022-11-28");
+        hd.addReviewToReviewMap(temp);
+        System.out.println(hd.getHotelRating("12539"));
+
+        hd.deleteReview("12539", "112");
+        System.out.println(hd.getHotelRating("12539"));
+
+    }
 
 }
