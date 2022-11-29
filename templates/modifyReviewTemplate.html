@@ -32,9 +32,9 @@
             <th>Average Rating</th>
         </tr>
         <tr>
-            <td>$infoJSON.hotelData.hotelId</td>
-            <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name</a></td>
-            <td>$infoJSON.hotelData.rating</td>
+            <td>$infoJSON.hotelData.hotelId.getAsString()</td>
+            <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name.getAsString()</a></td>
+            <td>$infoJSON.hotelData.rating.getAsString()</td>
         </tr>
     </table>
 </div>
@@ -56,12 +56,12 @@
         #if($infoJSON.hotelReviews.success != false)
         #foreach($review in $infoJSON.hotelReviews.reviews)
         <tr>
-            <td>$review.reviewId</td>
-            <td>$review.date</td>
-            <td>$review.user</td>
-            <td>$review.rating</td>
-            <td>$review.title</td>
-            <td>$review.reviewText</td>
+            <td>$review.reviewId.getAsString()</td>
+            <td>$review.date.getAsString()</td>
+            <td>$review.user.getAsString()</td>
+            <td>$review.rating.getAsString()</td>
+            <td>$review.title.getAsString()</td>
+            <td>$review.reviewText.getAsString()</td>
             <td>
                 <div class="w3-container">
                     <div class="w3-bar">
