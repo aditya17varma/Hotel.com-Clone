@@ -247,4 +247,8 @@ public class HotelSearch {
     public Map<String, Hotel> getHotelMap(){
         return this.threadSafeHotelData.getHotelMap();
     }
+
+    public Map<String, List<Review>> getReviewMap(){
+        return this.threadSafeHotelData.getReviewMap();
+    }
 }

@@ -322,4 +322,8 @@ public class HotelData {
         return this.hotelMap;
     }
 
+    public Map<String, List<Review>> getReviewMap(){
+        return reviewMap;
+    }
+
 }

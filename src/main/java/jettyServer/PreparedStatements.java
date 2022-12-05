@@ -1,5 +1,7 @@
 package jettyServer;
 
+import java.time.LocalDate;
+
 public class PreparedStatements {
     /** Prepared Statements  */
     /** For creating the users table */
@@ -26,7 +28,6 @@ public class PreparedStatements {
 
     /**
      * For creating Hotels table
-     * id, name, latitude, longitude, address
      */
     public static final String CREATE_HOTEL_TABLE =
             "CREATE TABLE hotels (" +
@@ -36,9 +37,31 @@ public class PreparedStatements {
                     "longitude VARCHAR(64) NOT NULL, " +
                     "address VARCHAR(64) NOT NULL);";
 
+    /**
+     * For inserting hotel data into hotels table
+     */
     public static final String INSERT_HOTEL =
             "INSERT IGNORE INTO hotels (hotelId, hotelName, latitude, longitude, address) " +
                     "VALUES (?, ?, ?, ?, ?);";
 
+    /**
+     * For creating reviews table
+     */
+    public static final String CREATE_REVIEW_TABLE =
+            "CREATE TABLE reviews (" +
+                    "reviewId VARCHAR(64) PRIMARY KEY, " +
+                    "hotelId VARCHAR(64) NOT NULL, " +
+                    "ratingOverall VARCHAR(64) NOT NULL, " +
+                    "title VARCHAR(64) NOT NULL, " +
+                    "reviewText TEXT NOT NULL, " +
+                    "userNickname VARCHAR(64) NOT NULL, " +
+                    "datePosted DATE NOT NULL);";
+
+    /**
+     * For inserting review data into reviews table
+     */
+    public static final String INSERT_REVIEW =
+            "INSERT IGNORE INTO reviews (reviewId, hotelId, ratingOverall, title, reviewText, userNickname, datePosted) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
 }

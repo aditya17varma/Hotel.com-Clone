@@ -1,6 +1,7 @@
 package jettyServer;
 
 import hotelapp.Hotel;
+import hotelapp.Review;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -79,6 +80,19 @@ public class DatabaseHandler {
         }
     }
 
+    public void createReviewTable(){
+        Statement statement;
+        try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            statement = dbConnection.createStatement();
+            statement.executeUpdate(PreparedStatements.CREATE_REVIEW_TABLE);
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
     public void insertHotel(Hotel hotel){
         String result = "";
         PreparedStatement statement;
@@ -105,6 +119,38 @@ public class DatabaseHandler {
             String[] eSplit = ex.toString().split(": ");
             result = eSplit[1];
         }
+    }
+
+    public void insertReviews(Review review){
+        String result = "";
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+//                reviewId, hotelId, ratingOverall, title, reviewText, userNickname, datePosted
+                statement = connection.prepareStatement(PreparedStatements.INSERT_REVIEW);
+                statement.setString(1, review.getReviewID());
+                statement.setString(2, review.getHotelID());
+                statement.setString(3, review.getRatingOverall());
+                statement.setString(4, review.getTitle());
+                statement.setString(5, review.getReviewText());
+                statement.setString(6, review.getUserNickname());
+                statement.setString(7, review.getDatePosted().toString());
+                statement.executeUpdate();
+                statement.close();
+                result = "success";
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+                result = eSplit[1];
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+            result = eSplit[1];
+        }
+
     }
 
 
@@ -269,6 +315,7 @@ public class DatabaseHandler {
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
         dhandler.createHotelTable();
+        dhandler.createReviewTable();
 //        System.out.println("created a hotel table ");
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");

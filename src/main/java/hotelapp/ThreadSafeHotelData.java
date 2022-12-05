@@ -321,4 +321,15 @@ public class ThreadSafeHotelData extends HotelData{
             lock.readLock().unlock();
         }
     }
+
+    @Override
+    public Map<String, List<Review>> getReviewMap(){
+        lock.readLock().lock();
+        try {
+            return super.getReviewMap();
+        }
+        finally {
+            lock.readLock().unlock();
+        }
+    }
 }
