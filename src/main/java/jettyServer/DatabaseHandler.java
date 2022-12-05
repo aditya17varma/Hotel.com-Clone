@@ -312,13 +312,79 @@ public class DatabaseHandler {
         return salt;
     }
 
+    public Hotel findHotel(String hotelId){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding hotel in db...");
+            statement = connection.prepareStatement(PreparedStatements.FIND_HOTEL);
+
+            statement.setString(1, hotelId);
+            ResultSet results = statement.executeQuery();
+
+            Hotel tempHotel;
+            while (results.next()){
+                String id = results.getString("hotelId");
+                String hotelName = results.getString("hotelName");
+                String latitude = results.getString("latitude");
+                String longitude = results.getString("longitude");
+                String address = results.getString("address");
+
+                tempHotel = new Hotel(hotelName, id, latitude, longitude, address);
+                return tempHotel;
+            }
+
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
+    public Review findReview(String reviewId){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding hotel in db...");
+            statement = connection.prepareStatement(PreparedStatements.FIND_REVIEW);
+
+            statement.setString(1, reviewId);
+            ResultSet results = statement.executeQuery();
+
+            Review tempReview;
+            while (results.next()){
+                String id = results.getString("reviewId");
+                String hotelId = results.getString("hotelId");
+                String rating = results.getString("ratingOverall");
+                String title = results.getString("title");
+                String reviewText = results.getString("reviewText");
+                String user = results.getString("userNickname");
+                String date = results.getString("datePosted");
+
+                tempReview = new Review(hotelId, reviewId, rating, title, reviewText, user, date);
+                return tempReview;
+            }
+
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
-        dhandler.createHotelTable();
-        dhandler.createReviewTable();
+//        dhandler.createHotelTable();
+//        dhandler.createReviewTable();
 //        System.out.println("created a hotel table ");
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");
+
+        Hotel h = dhandler.findHotel("12539");
+        System.out.println(h);
+
+        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
+        System.out.println(r);
 
     }
 }

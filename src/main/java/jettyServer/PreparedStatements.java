@@ -64,4 +64,10 @@ public class PreparedStatements {
             "INSERT IGNORE INTO reviews (reviewId, hotelId, ratingOverall, title, reviewText, userNickname, datePosted) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
+    public static final String FIND_HOTEL =
+            "SELECT * FROM hotels WHERE hotelId = ?";
+
+    public static final String FIND_REVIEW =
+            "SELECT * FROM reviews WHERE reviewId = ?";
+
 }

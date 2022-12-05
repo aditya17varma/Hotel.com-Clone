@@ -11,7 +11,7 @@ public class HotelServer {
 		js.loadHotelSearch("input/hotels/hotels.json", "input/reviews", 3);
 		js.loadServlets();
 //		js.loadHotelsTable();
-//		js.loadReviewsTable();
+		js.loadReviewsTable();
 
 		VelocityEngine velocity = new VelocityEngine();
 		velocity.init();

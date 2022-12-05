@@ -52,20 +52,56 @@ public class JettyServer {
         System.out.println("Hotels loaded into db!");
     }
 
-    public void loadReviewsTable(){
+    //todo pool of threads instead of threads[]
+    public void loadReviewsTable() {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         System.out.println("Loading reviews...");
         Map<String, List<Review>> reviewMap = ((HotelSearch)hs).getReviewMap();
+        InsertThread[] threads = new InsertThread[reviewMap.keySet().size()];
+        int i = 0;
         for (String hotelId: reviewMap.keySet()){
             List<Review> tempList = reviewMap.get(hotelId);
-            for (Review r: tempList){
-                dbHandler.insertReviews(r);
-            }
+//            for (Review r: tempList){
+//                dbHandler.insertReviews(r);
+//            }
+            threads[i] = new InsertThread(tempList, dbHandler);
+            System.out.println("Thread for :" + hotelId);
+            threads[i].start();
+            i++;
         }
 
+        try{
+            for (int j = 0; j < threads.length; j++){
+                threads[j].join();
+            }
+        }
+        catch (InterruptedException e){
+            System.out.println(e);
+        }
         System.out.println("Reviews loaded into db!");
     }
+
+    public static class InsertThread extends Thread {
+        List<Review> threadList;
+        DatabaseHandler dbh;
+
+        public InsertThread(List<Review> reviews, DatabaseHandler dbh){
+            this.threadList = reviews;
+            this.dbh = dbh;
+        }
+
+        @Override
+        public void run() {
+            for (Review r: threadList){
+                dbh.insertReviews(r);
+            }
+        }
+    }
+
+
+
+
 
     /**
      * loadServlets
