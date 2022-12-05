@@ -70,4 +70,7 @@ public class PreparedStatements {
     public static final String FIND_REVIEW =
             "SELECT * FROM reviews WHERE reviewId = ?";
 
+    public static final String GET_REVIEW_LIST =
+            "SELECT * FROM reviews WHERE hotelId = ?";
+
 }

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -344,7 +346,7 @@ public class DatabaseHandler {
     public Review findReview(String reviewId){
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
-            System.out.println("finding hotel in db...");
+            System.out.println("finding review in db...");
             statement = connection.prepareStatement(PreparedStatements.FIND_REVIEW);
 
             statement.setString(1, reviewId);
@@ -372,6 +374,42 @@ public class DatabaseHandler {
 
     }
 
+    public List<Review> findHotelReviews(String hotelId){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding reviews for: " + hotelId + " in db...");
+            statement = connection.prepareStatement(PreparedStatements.GET_REVIEW_LIST);
+
+            statement.setString(1, hotelId);
+            ResultSet results = statement.executeQuery();
+
+
+            List<Review> reviews = new ArrayList<>();
+            while (results.next()){
+                Review tempReview;
+                String reviewId = results.getString("reviewId");
+                String hId = results.getString("hotelId");
+                String rating = results.getString("ratingOverall");
+                String title = results.getString("title");
+                String reviewText = results.getString("reviewText");
+                String user = results.getString("userNickname");
+                String date = results.getString("datePosted");
+
+                tempReview = new Review(hId, reviewId, rating, title, reviewText, user, date);
+//                System.out.println(tempReview);
+                reviews.add(tempReview);
+            }
+
+            return reviews;
+
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
 //        dhandler.createHotelTable();
@@ -380,11 +418,14 @@ public class DatabaseHandler {
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");
 
-        Hotel h = dhandler.findHotel("12539");
-        System.out.println(h);
+//        Hotel h = dhandler.findHotel("12539");
+//        System.out.println(h);
+//
+//        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
+//        System.out.println(r);
 
-        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
-        System.out.println(r);
+        List<Review> reviews = dbHandler.findHotelReviews("12539");
+        System.out.println(reviews);
 
     }
 }
