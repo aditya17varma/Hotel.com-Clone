@@ -99,10 +99,6 @@ public class JettyServer {
         }
     }
 
-
-
-
-
     /**
      * loadServlets
      * Initializes the handler instance variable

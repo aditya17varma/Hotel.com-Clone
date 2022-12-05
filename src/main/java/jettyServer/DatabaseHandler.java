@@ -407,6 +407,39 @@ public class DatabaseHandler {
             System.out.println(e);
         }
         return null;
+    }
+
+    public List<Hotel> hotelKeywordSearch (String keyword){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding hotel with " + keyword + " in hotelName db...");
+            statement = connection.prepareStatement(PreparedStatements.HOTEL_KEYWORD_SEARCH);
+            System.out.println(PreparedStatements.HOTEL_KEYWORD_SEARCH);
+
+            statement.setString(1, "%"+keyword+"%");
+            System.out.println(statement.toString());
+            ResultSet results = statement.executeQuery();
+
+            List<Hotel> hotels = new ArrayList<>();
+            while (results.next()){
+                Hotel tempHotel;
+                String id = results.getString("hotelId");
+                String hotelName = results.getString("hotelName");
+                String latitude = results.getString("latitude");
+                String longitude = results.getString("longitude");
+                String address = results.getString("address");
+
+                tempHotel = new Hotel(hotelName, id, latitude, longitude, address);
+                hotels.add(tempHotel);
+            }
+
+            return hotels;
+
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
 
     }
 
@@ -424,8 +457,11 @@ public class DatabaseHandler {
 //        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
 //        System.out.println(r);
 
-        List<Review> reviews = dbHandler.findHotelReviews("12539");
-        System.out.println(reviews);
+//        List<Review> reviews = dbHandler.findHotelReviews("12539");
+//        System.out.println(reviews);
+
+        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
+        System.out.println(hotels);
 
     }
 }

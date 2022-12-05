@@ -73,4 +73,7 @@ public class PreparedStatements {
     public static final String GET_REVIEW_LIST =
             "SELECT * FROM reviews WHERE hotelId = ?";
 
+    public static final String HOTEL_KEYWORD_SEARCH =
+            "SELECT * FROM hotels WHERE hotelName like ?";
+
 }
