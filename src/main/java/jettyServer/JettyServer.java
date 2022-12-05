@@ -1,8 +1,11 @@
 package jettyServer;
 
+import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import java.util.Map;
 
 /** This class uses Jetty & servlets to implement server serving hotel and review info */
 public class JettyServer {
@@ -35,6 +38,18 @@ public class JettyServer {
         ((HotelSearch)hs).createHotelKeywordMap();
     }
 
+    public void loadHotelsTable(){
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
+
+        System.out.println("Loading hotels in to db...");
+        Map<String, Hotel> hotelMap = ((HotelSearch)hs).getHotelMap();
+        for (String hotelId: hotelMap.keySet()){
+            Hotel tempHotel = hotelMap.get(hotelId);
+            dbHandler.insertHotel(tempHotel);
+        }
+        System.out.println("Hotels loaded into db!");
+    }
+
     /**
      * loadServlets
      * Initializes the handler instance variable
@@ -56,6 +71,7 @@ public class JettyServer {
         handler.addServlet(ModifyReviewServlet.class, "/modifyReview");
         handler.addServlet(EditReviewServlet.class, "/editReview");
         handler.addServlet(DeleteReviewServlet.class, "/deleteReview");
+//        handler.addServlet(RegistrationServlet.class, "/reservation");
 
         handler.setAttribute("data", hs);
     }

@@ -2,6 +2,7 @@ package hotelapp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -307,6 +308,17 @@ public class ThreadSafeHotelData extends HotelData{
         }
         finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    @Override
+    public Map<String, Hotel> getHotelMap(){
+        lock.readLock().lock();
+        try{
+            return super.getHotelMap();
+        }
+        finally {
+            lock.readLock().unlock();
         }
     }
 }

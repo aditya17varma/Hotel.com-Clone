@@ -1,5 +1,7 @@
 package jettyServer;
 
+import hotelapp.Hotel;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -62,6 +64,46 @@ public class DatabaseHandler {
         }
         catch (SQLException ex) {
              System.out.println(ex);
+        }
+    }
+
+    public void createHotelTable(){
+        Statement statement;
+        try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            statement = dbConnection.createStatement();
+            statement.executeUpdate(PreparedStatements.CREATE_HOTEL_TABLE);
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void insertHotel(Hotel hotel){
+        String result = "";
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.INSERT_HOTEL);
+                statement.setString(1, hotel.getId());
+                statement.setString(2, hotel.getName());
+                statement.setString(3, hotel.getLatitude());
+                statement.setString(4, hotel.getLongitude());
+                statement.setString(5, hotel.getAddress());
+                statement.executeUpdate();
+                statement.close();
+                result = "success";
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+                result = eSplit[1];
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+            result = eSplit[1];
         }
     }
 
@@ -222,6 +264,15 @@ public class DatabaseHandler {
             System.out.println(e);
         }
         return salt;
+    }
+
+    public static void main(String[] args) {
+        DatabaseHandler dhandler = DatabaseHandler.getInstance();
+        dhandler.createHotelTable();
+//        System.out.println("created a hotel table ");
+//        dhandler.registerUser("luke", "lukeS1k23w");
+//        System.out.println("Registered luke.");
+
     }
 }
 

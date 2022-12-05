@@ -11,10 +11,11 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class HotelSearch {
-    private static Logger logger = (Logger) LogManager.getLogger();
+//    private static Logger logger = (Logger) LogManager.getLogger();
     private ThreadSafeHotelData threadSafeHotelData;
 
     public HotelSearch(){
@@ -241,5 +242,9 @@ public class HotelSearch {
         JsonObject weather = weatherObject.getAsJsonObject("current_weather");
 
         return weather;
+    }
+
+    public Map<String, Hotel> getHotelMap(){
+        return this.threadSafeHotelData.getHotelMap();
     }
 }

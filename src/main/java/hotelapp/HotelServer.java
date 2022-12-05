@@ -10,6 +10,7 @@ public class HotelServer {
 		JettyServer js = new JettyServer();
 		js.loadHotelSearch("input/hotels/hotels.json", "input/reviews", 3);
 		js.loadServlets();
+		js.loadHotelsTable();
 
 		VelocityEngine velocity = new VelocityEngine();
 		velocity.init();
@@ -17,10 +18,5 @@ public class HotelServer {
 		js.setAttribute("templateEngine", velocity);
 
 		js.start(PORT);
-
 	}
-
-
-
-
 }

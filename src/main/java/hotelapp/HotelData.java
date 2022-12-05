@@ -318,4 +318,8 @@ public class HotelData {
         return this.reviewSet.contains(id);
     }
 
+    public Map<String, Hotel> getHotelMap(){
+        return this.hotelMap;
+    }
+
 }

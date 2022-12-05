@@ -71,7 +71,7 @@
                             <p><button class="w3-button w3-border w3-hover-blue" name="editButton" type="submit" >Edit</button></p>
                         </form>
                         <form method="POST" action="/deleteReview">
-                            <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId&reviewId/>
+                            <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>
                             <input type="hidden" name="reviewId" value=$review.reviewId/>
                             <p><button class="w3-button w3-border w3-hover-red" name="deleteButton" type="submit">Delete</button></p>
                         </form>

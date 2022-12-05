@@ -47,6 +47,11 @@
  <form method="POST" action="/modifyReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
   <p><button class="w3-button w3-border w3-hover-blue" type="submit">Modify Review</button></p>
  </form>
+  <form method="POST" action="/reservation">
+   <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>
+   <input type="hidden" name="hotelName" value=$infoJSON.hotelData.name/>
+   <p><button class="w3-button w3-border w3-hover-orange" type="submit">Reserve Room</button></p>
+  </form>
  </div>
 </div>
 

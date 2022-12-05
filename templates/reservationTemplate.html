@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hotel Reservation</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="w3-container" style="float:right;">
+    <p style="color:darkred"><a href="/logout"><small>Logout</small></a></p>
+</div>
+<div class="jumbotron text-center">
+    <h1>Reserve Hotel Rooms </h1>
+    #if($hotelName != "invalid")
+    <h3>$hotelName </h3>
+    <h4>$infoJSON.hotelData.addr.getAsString(), $infoJSON.hotelData.city.getAsString(), $infoJSON.hotelData.state.getAsString() </h4>
+    #end
+</div>
+
+<div class="w3-container">
+    <h3>Hotel Information</h3>
+    <table class="w3-table-all w3-card-4">
+        <tr>
+            <th>Hotel Id</th>
+            <th>Hotel Name</th>
+            <th>Average Rating</th>
+            <th>Available Rooms</th>
+        </tr>
+        <tr>
+            <td>$infoJSON.hotelData.hotelId.getAsString()</td>
+            <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name.getAsString()</a></td>
+            <td>$infoJSON.hotelData.rating.getAsString()</td>
+            <td>$availableRooms</td>
+        </tr>
+    </table>
+</div>
+<div>
+    <form class="w3-container" method="post" action=$servletPath >
+        <h4>Please enter Reservation Dates:</h4>
+        <p><small>(yyyy-mm-dd)</small></p>
+        <p><small>Currently supported for dates between 2022-12-01 and 2023-02-28</small></p>
+        <p>
+            <label class="w3-text-blue"><b>Start Date</b></label>
+            <input class="w3-input w3-border w3-sand" name="startDate" type="text"></p>
+        <p>
+            <label class="w3-text-blue"><b>End Date</b></label>
+            <input class="w3-input w3-border w3-sand" name="endDate" type="text"></p>
+        <p>
+            <input type="hidden" name="hotelId" value=$hotelId>
+            <button class="w3-btn w3-blue" type = "submit" value = "EditReview">Check Dates</button></p>
+    </form>
+</div>
+
+
+</body>
+</html>

@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 /** Class ThreadSafeReviewFileParser */
 public class MultiThreadReviewFileParser {
     private ExecutorService executor;
-    private Logger logger = (Logger) LogManager.getLogger();
+//    private Logger logger = (Logger) LogManager.getLogger();
     private Phaser phaser;
     private static ThreadSafeHotelData threadSafeHotelData;
 
@@ -81,7 +81,7 @@ public class MultiThreadReviewFileParser {
                     threadReviewList.add(tempHR);
                 }
                 combineReviews(threadReviewList);
-                logger.debug("Worker is done processing " + dir + " added " + threadReviewList.size() + " reviews");
+//                logger.debug("Worker is done processing " + dir + " added " + threadReviewList.size() + " reviews");
             }
 
             catch (IOException e){
@@ -119,7 +119,7 @@ public class MultiThreadReviewFileParser {
             for (Path path: pathsInDir){
                 if (!Files.isDirectory(path) && (path.toString().endsWith("json"))){
                     FileWorker worker = new FileWorker(path);
-                    logger.debug("Created a worker for " + path);
+//                    logger.debug("Created a worker for " + path);
                     phaser.register();
                     executor.submit(worker);
                 }

@@ -24,4 +24,21 @@ public class PreparedStatements {
             "SELECT username FROM users " +
                     "WHERE username = ? AND password = ?";
 
+    /**
+     * For creating Hotels table
+     * id, name, latitude, longitude, address
+     */
+    public static final String CREATE_HOTEL_TABLE =
+            "CREATE TABLE hotels (" +
+                    "hotelId VARCHAR(64) PRIMARY KEY, " +
+                    "hotelName VARCHAR(64) NOT NULL, " +
+                    "latitude VARCHAR(64) NOT NULL, " +
+                    "longitude VARCHAR(64) NOT NULL, " +
+                    "address VARCHAR(64) NOT NULL);";
+
+    public static final String INSERT_HOTEL =
+            "INSERT IGNORE INTO hotels (hotelId, hotelName, latitude, longitude, address) " +
+                    "VALUES (?, ?, ?, ?, ?);";
+
+
 }
