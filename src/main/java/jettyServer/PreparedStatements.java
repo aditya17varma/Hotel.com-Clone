@@ -76,4 +76,12 @@ public class PreparedStatements {
     public static final String HOTEL_KEYWORD_SEARCH =
             "SELECT * FROM hotels WHERE hotelName like ?";
 
+    public static final String DELETE_REVIEW =
+            "DELETE FROM reviews WHERE reviewId = ?";
+
+    public static final String EDIT_REVIEW =
+            "UPDATE reviews SET title = ?," +
+                    "reviewText = ?," +
+                    "ratingOverall = ? WHERE reviewId = ?";
+
 }

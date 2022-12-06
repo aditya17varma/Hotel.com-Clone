@@ -64,6 +64,7 @@ public class DatabaseHandler {
             System.out.println("dbConnection successful");
             statement = dbConnection.createStatement();
             statement.executeUpdate(PreparedStatements.CREATE_USER_TABLE);
+            statement.close();
         }
         catch (SQLException ex) {
              System.out.println(ex);
@@ -76,6 +77,7 @@ public class DatabaseHandler {
             System.out.println("dbConnection successful");
             statement = dbConnection.createStatement();
             statement.executeUpdate(PreparedStatements.CREATE_HOTEL_TABLE);
+            statement.close();
         }
         catch (SQLException ex) {
             System.out.println(ex);
@@ -88,6 +90,7 @@ public class DatabaseHandler {
             System.out.println("dbConnection successful");
             statement = dbConnection.createStatement();
             statement.executeUpdate(PreparedStatements.CREATE_REVIEW_TABLE);
+            statement.close();
         }
         catch (SQLException ex) {
             System.out.println(ex);
@@ -323,7 +326,7 @@ public class DatabaseHandler {
             statement.setString(1, hotelId);
             ResultSet results = statement.executeQuery();
 
-            Hotel tempHotel;
+            Hotel tempHotel = null;
             while (results.next()){
                 String id = results.getString("hotelId");
                 String hotelName = results.getString("hotelName");
@@ -332,9 +335,11 @@ public class DatabaseHandler {
                 String address = results.getString("address");
 
                 tempHotel = new Hotel(hotelName, id, latitude, longitude, address);
-                return tempHotel;
+                break;
             }
-
+            statement.close();
+            results.close();
+            return tempHotel;
         }
         catch (SQLException e) {
             System.out.println(e);
@@ -352,7 +357,7 @@ public class DatabaseHandler {
             statement.setString(1, reviewId);
             ResultSet results = statement.executeQuery();
 
-            Review tempReview;
+            Review tempReview = null;
             while (results.next()){
                 String id = results.getString("reviewId");
                 String hotelId = results.getString("hotelId");
@@ -363,8 +368,11 @@ public class DatabaseHandler {
                 String date = results.getString("datePosted");
 
                 tempReview = new Review(hotelId, reviewId, rating, title, reviewText, user, date);
-                return tempReview;
+                break;
             }
+            statement.close();
+            results.close();
+            return tempReview;
 
         }
         catch (SQLException e) {
@@ -396,10 +404,11 @@ public class DatabaseHandler {
                 String date = results.getString("datePosted");
 
                 tempReview = new Review(hId, reviewId, rating, title, reviewText, user, date);
-//                System.out.println(tempReview);
                 reviews.add(tempReview);
             }
 
+            statement.close();
+            results.close();
             return reviews;
 
         }
@@ -414,10 +423,8 @@ public class DatabaseHandler {
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             System.out.println("finding hotel with " + keyword + " in hotelName db...");
             statement = connection.prepareStatement(PreparedStatements.HOTEL_KEYWORD_SEARCH);
-            System.out.println(PreparedStatements.HOTEL_KEYWORD_SEARCH);
 
             statement.setString(1, "%"+keyword+"%");
-            System.out.println(statement.toString());
             ResultSet results = statement.executeQuery();
 
             List<Hotel> hotels = new ArrayList<>();
@@ -432,7 +439,8 @@ public class DatabaseHandler {
                 tempHotel = new Hotel(hotelName, id, latitude, longitude, address);
                 hotels.add(tempHotel);
             }
-
+            statement.close();
+            results.close();
             return hotels;
 
         }
@@ -440,7 +448,68 @@ public class DatabaseHandler {
             System.out.println(e);
         }
         return null;
+    }
 
+    public void deleteReview(String reviewId){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                System.out.println("Deleting review: " + reviewId + " from db...");
+                statement = connection.prepareStatement(PreparedStatements.DELETE_REVIEW);
+                statement.setString(1, reviewId);
+                statement.executeUpdate();
+                statement.close();
+                System.out.println("Deleted review from db.");
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+        }
+    }
+
+    public void editReview(Review review, String editedTitle, String editedText, String editedRating){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                System.out.println("Editing review: " + review.getReviewID() + " in db...");
+                statement = connection.prepareStatement(PreparedStatements.EDIT_REVIEW);
+                if (editedTitle != null){
+                    statement.setString(1, editedTitle);
+                }
+                else {
+                    statement.setString(1, review.getTitle());
+                }
+                if (editedText != null){
+                    statement.setString(2, editedText);
+                }
+                else {
+                    statement.setString(2, review.getReviewText());
+                }
+                if (editedRating != null){
+                    statement.setString(3, editedRating);
+                }
+                else{
+                    statement.setString(3, review.getRatingOverall());
+                }
+
+                statement.setString(4, review.getReviewID());
+                statement.executeUpdate();
+                statement.close();
+                System.out.println("Edited review in db.");
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+        }
     }
 
     public static void main(String[] args) {
@@ -460,8 +529,27 @@ public class DatabaseHandler {
 //        List<Review> reviews = dbHandler.findHotelReviews("12539");
 //        System.out.println(reviews);
 
-        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
-        System.out.println(hotels);
+//        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
+//        System.out.println(hotels);
+//        System.out.println(hotels.size());
+
+        Review addR = new Review("12539", "111222", "4.0", "test",
+                "testText", "Adi", "2021-12-11");
+        dbHandler.insertReviews(addR);
+
+        Review r = dbHandler.findReview("111222");
+        System.out.println(r);
+
+        dbHandler.editReview(r, "editedTitle", "editedText", "1.5");
+        r = dbHandler.findReview("111222");
+        System.out.println(r);
+
+
+//        dbHandler.deleteReview("111222");
+//
+//        reviews = dbHandler.findHotelReviews("12539");
+//        System.out.println(reviews.size());
+
 
     }
 }
