@@ -512,7 +512,7 @@ public class DatabaseHandler {
         }
     }
 
-    public double getAvgRating(String hotelId){
+    public String getAvgRating(String hotelId){
         PreparedStatement statement;
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -522,11 +522,11 @@ public class DatabaseHandler {
                 statement.setString(1, hotelId);
                 ResultSet results = statement.executeQuery();
 
-                double rating = -1;
+                String rating = "";
 
                 while (results.next()){
-                    String d = results.getString("Average Rating");
-                    rating = Double.parseDouble(d);
+                    rating = results.getString("Average Rating");
+//                    rating = Double.parseDouble(d);
                 }
 
 
@@ -543,7 +543,7 @@ public class DatabaseHandler {
             String[] eSplit = ex.toString().split(": ");
         }
 
-        return -1;
+        return null;
     }
 
 
@@ -561,8 +561,8 @@ public class DatabaseHandler {
 //        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
 //        System.out.println(r);
 
-//        List<Review> reviews = dbHandler.findHotelReviews("12539");
-////        System.out.println(reviews);
+        List<Review> reviews = dbHandler.findHotelReviews("12539");
+        System.out.println(reviews);
 //
 ////        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
 ////        System.out.println(hotels);
@@ -584,8 +584,8 @@ public class DatabaseHandler {
 ////
 //        reviews = dbHandler.findHotelReviews("12539");
 //        System.out.println(reviews.size());
-        double rating = dhandler.getAvgRating("12539");
-        System.out.println(rating);
+//        double rating = dhandler.getAvgRating("12539");
+//        System.out.println(rating);
 
 
     }

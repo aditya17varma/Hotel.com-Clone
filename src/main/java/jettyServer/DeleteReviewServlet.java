@@ -32,7 +32,9 @@ public class DeleteReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
 
@@ -51,9 +53,11 @@ public class DeleteReviewServlet extends HttpServlet {
             reviewId = StringEscapeUtils.escapeHtml4(reviewId);
 
             if (hotelId != null && reviewId != null){
-                Review tempR = hs.findReview(hotelId, reviewId);
+                Review tempR = dbHandler.findReview(reviewId);
+//                        hs.findReview(hotelId, reviewId);
                 if (tempR != null){
-                    hs.deleteReview(hotelId, reviewId);
+//                    hs.deleteReview(hotelId, reviewId);
+                    dbHandler.deleteReview(reviewId);
                     response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
                 }
             }

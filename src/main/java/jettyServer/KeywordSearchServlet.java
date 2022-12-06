@@ -46,7 +46,7 @@ public class KeywordSearchServlet extends HttpServlet {
         Template template;
 
         if (sessionName != null){
-            JsonCreator jsCreator = new JsonCreator(hs);
+            JsonCreator jsCreator = new JsonCreator(dbHandler);
 
             String keyword= request.getParameter("keyword");
             keyword = StringEscapeUtils.escapeHtml4(keyword);

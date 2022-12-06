@@ -15,10 +15,10 @@ import java.util.Set;
  * Helper class to create JSON objects for Hotels and Reviews
  */
 public class JsonCreator {
-    HotelSearch hs;
+    DatabaseHandler dbHandler;
 
-    public JsonCreator(HotelSearch hs){
-        this.hs = hs;
+    public JsonCreator(DatabaseHandler dbHandler){
+        this.dbHandler = dbHandler;
     }
 
     /**
@@ -34,7 +34,8 @@ public class JsonCreator {
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
 
-        List<Review> reviews = hs.findReviews(hotelId);
+//        List<Review> reviews = hs.findReviews(hotelId);
+        List<Review> reviews = dbHandler.findHotelReviews(hotelId);
 
         JsonArray result = new JsonArray();
 
@@ -91,7 +92,9 @@ public class JsonCreator {
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
 
-        List<Review> reviews = hs.findReviews(hotelId);
+        List<Review> reviews = dbHandler.findHotelReviews(hotelId);
+//                hs.findReviews(hotelId);
+
 
         JsonArray result = new JsonArray();
 
@@ -117,7 +120,7 @@ public class JsonCreator {
     /**
      * createKeywordJson
      * Creates a JsonObject that has a JsonArray of all Hotel whose name includes the keyword
-     * @param hotelSet Set of Hotels that whose name inlcudes the keyword
+     * @param hotelList List of Hotels that whose name inlcudes the keyword
      * @return JsonObject
      */
     public JsonObject createKeywordJson(List<Hotel> hotelList){
@@ -158,7 +161,9 @@ public class JsonCreator {
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
         //todo change rating to double
-        double rating = hs.getHotelRating(hotel.getId());
+//        double rating = hs.getHotelRating(hotel.getId());
+        String rating = dbHandler.getAvgRating(hotel.getId());
+
         hotelJSON.addProperty("rating", rating);
 
         StringBuilder sb = new StringBuilder();

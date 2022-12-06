@@ -30,7 +30,8 @@ public class ModifyReviewServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
         String sessionName = (String) session.getAttribute("username");
@@ -45,7 +46,7 @@ public class ModifyReviewServlet extends HttpServlet {
         context.put("servletPath", request.getServletPath());
 
         if (sessionName != null){
-            JsonCreator jc = new JsonCreator(hs);
+            JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
 
@@ -60,12 +61,14 @@ public class ModifyReviewServlet extends HttpServlet {
             context.put("servletPath", request.getServletPath());
 
             if (hotelId != null) {
-                Hotel tempHotel = hs.findHotel(hotelId);
+                Hotel tempHotel = dbHandler.findHotel(hotelId);
+//                        hs.findHotel(hotelId);
                 if (tempHotel != null) {
                     hotelJSON = jc.createHotelJson(tempHotel);
 
                     context.put("hotelName", tempHotel.getName());
-                    List<Review> reviews = hs.findReviews(hotelId);
+                    List<Review> reviews = dbHandler.findHotelReviews(hotelId);
+//                            hs.findReviews(hotelId);
 
                     if (reviews != null) {
                         reviewJSON = jc.createUserReviewJson(hotelId, reviews.size(), sessionName);
@@ -94,7 +97,7 @@ public class ModifyReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
 
         HttpSession session = request.getSession();
 

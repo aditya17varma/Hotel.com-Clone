@@ -29,7 +29,8 @@ public class EditReviewServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
 
-        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
         String sessionName = (String) session.getAttribute("username");
@@ -42,7 +43,7 @@ public class EditReviewServlet extends HttpServlet {
         Template template;
 
         if (sessionName != null){
-            JsonCreator jc = new JsonCreator(hs);
+            JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
@@ -59,13 +60,15 @@ public class EditReviewServlet extends HttpServlet {
 
             if (hotelId != null && reviewId != null) {
 
-                Hotel tempHotel = hs.findHotel(hotelId);
+                Hotel tempHotel = dbHandler.findHotel(hotelId);
+//                        hs.findHotel(hotelId);
                 if (tempHotel != null) {
                     hotelJSON = jc.createHotelJson(tempHotel);
 
                     context.put("hotelName", tempHotel.getName());
                     context.put("hotelId", hotelId);
-                    Review tempReview = hs.findReview(hotelId, reviewId);
+                    Review tempReview = dbHandler.findReview(reviewId);
+//                            hs.findReview(hotelId, reviewId);
                     if (tempReview != null){
                         reviewJSON = jc.createReview(tempReview);
                         context.put("reviewId", tempReview.getReviewID());
@@ -93,7 +96,8 @@ public class EditReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
 
@@ -119,20 +123,25 @@ public class EditReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
 
         if (editText != null || editTitle != null || editRating != null){
-            Review tempR = hs.findReview(hotelId, reviewId);
+            Review tempR = dbHandler.findReview(reviewId);
+//                    hs.findReview(hotelId, reviewId);
+
             if (editText != null && !editText.equals("")){
-                tempR.setReviewText(editText);
+//                tempR.setReviewText(editText);
+                dbHandler.editReview(tempR, null, editText, null);
             }
             if (editTitle != null && !editTitle.equals("")){
-                tempR.setReviewTitle(editTitle);
+//                tempR.setReviewTitle(editTitle);
+                dbHandler.editReview(tempR, editTitle, null, null);
             }
             if (editRating != null && !editRating.equals("")){
-                int oldRating = Integer.parseInt(hs.findReview(hotelId, reviewId).getRatingOverall());
-                //subtract old rating
-                hs.modifyHotelRating(hotelId, oldRating, false);
-                //add new rating
-                tempR.setReviewRating(editRating);
-                hs.modifyHotelRating(hotelId, Integer.parseInt(editRating), true);
+//                int oldRating = Integer.parseInt(tempR.getRatingOverall());
+//                //subtract old rating
+//                hs.modifyHotelRating(hotelId, oldRating, false);
+//                //add new rating
+//                tempR.setReviewRating(editRating);
+//                hs.modifyHotelRating(hotelId, Integer.parseInt(editRating), true);
+                dbHandler.editReview(tempR, null, null, editRating);
             }
             response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
         }
