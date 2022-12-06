@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -31,6 +32,8 @@ public class KeywordSearchServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
+
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
         String sessionName = (String) session.getAttribute("username");
@@ -56,10 +59,11 @@ public class KeywordSearchServlet extends HttpServlet {
             context.put("servletPath", request.getServletPath());
 
             if (keyword != null){
-                Set<Hotel> hotelSet = hs.findHotelByKeyword(keyword);
+//                Set<Hotel> hotelSet = hs.findHotelByKeyword(keyword);
+                List<Hotel> hotelList = dbHandler.hotelKeywordSearch(keyword);
 
-                if (hotelSet != null){
-                    keywordJSON = jsCreator.createKeywordJson(hotelSet);
+                if (hotelList != null){
+                    keywordJSON = jsCreator.createKeywordJson(hotelList);
                     keywordJSON.addProperty("keyword", keyword);
                     context.put("keyword", keyword);
                 }

@@ -120,14 +120,14 @@ public class JsonCreator {
      * @param hotelSet Set of Hotels that whose name inlcudes the keyword
      * @return JsonObject
      */
-    public JsonObject createKeywordJson(Set<Hotel> hotelSet){
+    public JsonObject createKeywordJson(List<Hotel> hotelList){
         JsonObject keywordJSON = new JsonObject();
 
         keywordJSON.addProperty("success", true);
 
         JsonArray hotels = new JsonArray();
 
-        for (Hotel hotel: hotelSet){
+        for (Hotel hotel: hotelList){
             JsonObject tempHotelJSON = createHotelJson(hotel);
             hotels.add(tempHotelJSON);
         }
@@ -157,6 +157,7 @@ public class JsonCreator {
         hotelJSON.addProperty("lat", hotel.getLatitude());
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
+        //todo change rating to double
         double rating = hs.getHotelRating(hotel.getId());
         hotelJSON.addProperty("rating", rating);
 

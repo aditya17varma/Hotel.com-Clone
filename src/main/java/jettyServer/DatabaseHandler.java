@@ -512,6 +512,41 @@ public class DatabaseHandler {
         }
     }
 
+    public double getAvgRating(String hotelId){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                System.out.println("Getting avg rating for : " + hotelId + " from db...");
+                statement = connection.prepareStatement(PreparedStatements.AVG_RATING);
+                statement.setString(1, hotelId);
+                ResultSet results = statement.executeQuery();
+
+                double rating = -1;
+
+                while (results.next()){
+                    String d = results.getString("Average Rating");
+                    rating = Double.parseDouble(d);
+                }
+
+
+                statement.close();
+                System.out.println("Got avg rating from db.");
+                return rating;
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+        }
+
+        return -1;
+    }
+
+
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
 //        dhandler.createHotelTable();
@@ -527,28 +562,30 @@ public class DatabaseHandler {
 //        System.out.println(r);
 
 //        List<Review> reviews = dbHandler.findHotelReviews("12539");
-//        System.out.println(reviews);
-
-//        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
-//        System.out.println(hotels);
-//        System.out.println(hotels.size());
-
-        Review addR = new Review("12539", "111222", "4.0", "test",
-                "testText", "Adi", "2021-12-11");
-        dbHandler.insertReviews(addR);
-
-        Review r = dbHandler.findReview("111222");
-        System.out.println(r);
-
-        dbHandler.editReview(r, "editedTitle", "editedText", "1.5");
-        r = dbHandler.findReview("111222");
-        System.out.println(r);
-
-
-//        dbHandler.deleteReview("111222");
+////        System.out.println(reviews);
 //
+////        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
+////        System.out.println(hotels);
+////        System.out.println(hotels.size());
+//
+//        Review addR = new Review("12539", "111222", "4.0", "test",
+//                "testText", "Adi", "2021-12-11");
+//        dbHandler.insertReviews(addR);
+//
+//        Review r = dbHandler.findReview("111222");
+//        System.out.println(r);
+//
+//        dbHandler.editReview(r, "editedTitle", "editedText", "1.5");
+//        r = dbHandler.findReview("111222");
+//        System.out.println(r);
+//
+//
+//        dbHandler.deleteReview("111222");
+////
 //        reviews = dbHandler.findHotelReviews("12539");
 //        System.out.println(reviews.size());
+        double rating = dhandler.getAvgRating("12539");
+        System.out.println(rating);
 
 
     }

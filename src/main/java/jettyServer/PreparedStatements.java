@@ -51,7 +51,7 @@ public class PreparedStatements {
             "CREATE TABLE reviews (" +
                     "reviewId VARCHAR(64) PRIMARY KEY, " +
                     "hotelId VARCHAR(64) NOT NULL, " +
-                    "ratingOverall VARCHAR(64) NOT NULL, " +
+                    "ratingOverall DOUBLE NOT NULL, " +
                     "title VARCHAR(64) NOT NULL, " +
                     "reviewText TEXT NOT NULL, " +
                     "userNickname VARCHAR(64) NOT NULL, " +
@@ -83,5 +83,8 @@ public class PreparedStatements {
             "UPDATE reviews SET title = ?," +
                     "reviewText = ?," +
                     "ratingOverall = ? WHERE reviewId = ?";
+
+    public static final String AVG_RATING =
+            "SELECT AVG(ratingOverall) 'Average Rating' FROM reviews WHERE hotelId = ?";
 
 }
