@@ -1,5 +1,7 @@
 package jettyServer;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import hotelapp.Hotel;
 import hotelapp.Review;
 
@@ -84,6 +86,104 @@ public class DatabaseHandler {
         }
     }
 
+    public void createHotelFavoritesTable(){
+
+
+    }
+
+    public void createExpediaLinksTable() {
+        Statement statement;
+        try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            statement = dbConnection.createStatement();
+            statement.executeUpdate(PreparedStatements.CREATE_EXPEDIA_TABLE);
+            statement.close();
+            System.out.println("Expedia Links table created");
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public void insertExpedia(String hotelId, String expediaLink, String user){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.INSERT_EXPEDIA_LINK);
+                statement.setString(1, hotelId);
+                statement.setString(2, expediaLink);
+                statement.setString(3, user);
+                statement.executeUpdate();
+                statement.close();
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public JsonArray findExpediaLinks(String user){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding expedia links for " + user + "...");
+            statement = connection.prepareStatement(PreparedStatements.FIND_EXPEDIA_LINKS);
+
+            statement.setString(1,  user);
+            ResultSet results = statement.executeQuery();
+
+            JsonArray linksArr = new JsonArray();
+            while (results.next()){
+                JsonObject temp = new JsonObject();
+                String id = results.getString("hotelId");
+                String expediaLink = results.getString("expediaLink");
+                String username = results.getString("user");
+
+                temp.addProperty("id", id);
+                temp.addProperty("expediaLink", expediaLink);
+                temp.addProperty("user", username);
+
+
+                linksArr.add(temp);
+            }
+            statement.close();
+            results.close();
+            return linksArr;
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+
+    }
+
+    public void clearExpediaLinks(String hotelId, String user){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                System.out.println("Deleting expedia links for : " + hotelId + ", " + user + " from db...");
+                statement = connection.prepareStatement(PreparedStatements.CLEAR_EXPEDIA_LINKS);
+                statement.setString(1, hotelId);
+                statement.setString(2, user);
+                statement.executeUpdate();
+                statement.close();
+                System.out.println("Deleted expedia links from db.");
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+
     public void createReviewTable(){
         Statement statement;
         try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -99,7 +199,6 @@ public class DatabaseHandler {
     }
 
     public void insertHotel(Hotel hotel){
-        String result = "";
         PreparedStatement statement;
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -112,22 +211,17 @@ public class DatabaseHandler {
                 statement.setString(5, hotel.getAddress());
                 statement.executeUpdate();
                 statement.close();
-                result = "success";
             }
             catch(SQLException e) {
                 System.out.println(e);
-                String[] eSplit = e.toString().split(": ");
-                result = eSplit[1];
             }
         }
         catch (SQLException ex) {
-            String[] eSplit = ex.toString().split(": ");
-            result = eSplit[1];
+            System.out.println(ex);
         }
     }
 
     public void insertReviews(Review review){
-        String result = "";
         PreparedStatement statement;
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -143,17 +237,13 @@ public class DatabaseHandler {
                 statement.setString(7, review.getDatePosted().toString());
                 statement.executeUpdate();
                 statement.close();
-                result = "success";
             }
             catch(SQLException e) {
                 System.out.println(e);
-                String[] eSplit = e.toString().split(": ");
-                result = eSplit[1];
             }
         }
         catch (SQLException ex) {
-            String[] eSplit = ex.toString().split(": ");
-            result = eSplit[1];
+            System.out.println(ex);
         }
 
     }
@@ -551,9 +641,21 @@ public class DatabaseHandler {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
 //        dhandler.createHotelTable();
 //        dhandler.createReviewTable();
+        dbHandler.createExpediaLinksTable();
 //        System.out.println("created a hotel table ");
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");
+
+//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Adi");
+//        dbHandler.insertExpedia("12121", "Expedia/Hilton", "Adi");
+//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Test");
+
+        JsonArray linksArr = dbHandler.findExpediaLinks("Adi");
+        System.out.println(linksArr);
+
+        dbHandler.clearExpediaLinks("12539", "Test");
+
+
 
 //        Hotel h = dhandler.findHotel("12539");
 //        System.out.println(h);
@@ -561,8 +663,8 @@ public class DatabaseHandler {
 //        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
 //        System.out.println(r);
 
-        List<Review> reviews = dbHandler.findHotelReviews("12539");
-        System.out.println(reviews);
+//        List<Review> reviews = dbHandler.findHotelReviews("12539");
+//        System.out.println(reviews);
 //
 ////        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
 ////        System.out.println(hotels);
