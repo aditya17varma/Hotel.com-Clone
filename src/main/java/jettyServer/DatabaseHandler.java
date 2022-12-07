@@ -1,6 +1,7 @@
 package jettyServer;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
 import hotelapp.Review;
@@ -106,15 +107,16 @@ public class DatabaseHandler {
 
     }
 
-    public void insertExpedia(String hotelId, String expediaLink, String user){
+    public void insertExpedia(String hotelId, String hotelName, String user, String dateVisited){
         PreparedStatement statement;
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             try {
                 statement = connection.prepareStatement(PreparedStatements.INSERT_EXPEDIA_LINK);
                 statement.setString(1, hotelId);
-                statement.setString(2, expediaLink);
+                statement.setString(2, hotelName);
                 statement.setString(3, user);
+                statement.setString(4, dateVisited);
                 statement.executeUpdate();
                 statement.close();
             }
@@ -140,18 +142,20 @@ public class DatabaseHandler {
             while (results.next()){
                 JsonObject temp = new JsonObject();
                 String id = results.getString("hotelId");
-                String expediaLink = results.getString("expediaLink");
+                String hotelName = results.getString("hotelName");
                 String username = results.getString("user");
+                String dateVisited = results.getString("dateVisited");
 
-                temp.addProperty("id", id);
-                temp.addProperty("expediaLink", expediaLink);
+                temp.addProperty("hotelId", id);
+                temp.addProperty("hotelName", hotelName);
                 temp.addProperty("user", username);
-
+                temp.addProperty("dateVisited", dateVisited);
 
                 linksArr.add(temp);
             }
             statement.close();
             results.close();
+            System.out.println(linksArr);
             return linksArr;
         }
         catch (SQLException e) {
@@ -161,15 +165,14 @@ public class DatabaseHandler {
 
     }
 
-    public void clearExpediaLinks(String hotelId, String user){
+    public void clearExpediaLinks(String user){
         PreparedStatement statement;
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             try {
-                System.out.println("Deleting expedia links for : " + hotelId + ", " + user + " from db...");
+                System.out.println("Deleting expedia links for : " + user + " from db...");
                 statement = connection.prepareStatement(PreparedStatements.CLEAR_EXPEDIA_LINKS);
-                statement.setString(1, hotelId);
-                statement.setString(2, user);
+                statement.setString(1, user);
                 statement.executeUpdate();
                 statement.close();
                 System.out.println("Deleted expedia links from db.");
@@ -646,14 +649,18 @@ public class DatabaseHandler {
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");
 
-//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Adi");
-//        dbHandler.insertExpedia("12121", "Expedia/Hilton", "Adi");
-//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Test");
+//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Adi", "2022-12-06");
+//        dbHandler.insertExpedia("12121", "Expedia/Hilton", "Adi", "2022-11-05");
+//        dbHandler.insertExpedia("12539", "Expedia/Hilton", "Test", "2022-12-01");
 
-        JsonArray linksArr = dbHandler.findExpediaLinks("Adi");
-        System.out.println(linksArr);
+//        JsonArray linksArr = dbHandler.findExpediaLinks("Adi");
+//        System.out.println(linksArr);
+//        for (JsonElement je: linksArr){
+//            String id = ((JsonObject)je).get("hotelId").getAsString();
+//            System.out.println(id);
+//        }
 
-        dbHandler.clearExpediaLinks("12539", "Test");
+//        dbHandler.clearExpediaLinks("Adi");
 
 
 

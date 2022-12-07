@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Expedia Links History</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <nav class="navbar">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/search">Adi's Hotel Search</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href=/search>Hotel Search</a></li>
+                <li><a href=/expedia>Expedia Links</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span> $sessionName</a></li>
+                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>Expedia Links Visited</h1>
+    <h3>$sessionName </h3>
+</div>
+
+<div class="container" style="margin:20px auto;[B]padding:20px 0;[/B]">
+    <div class="btn-group">
+        <form method="POST" action="/clearExpedia">
+            <p><button class="w3-button w3-border w3-hover-red" type="submit">Clear History</button></p>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>Hotel Id</th>
+            <th>Hotel Name</th>
+            <th>Date Visited</th>
+        </tr>
+        #if($expediaJSON.success != false)
+        #foreach($hotel in $expediaJSON.hotelsArr)
+        <tr>
+            <td>$hotel.hotelId.getAsString()</td>
+            <td><a href=$hotel.expedia target="_blank" rel="noopener noreferrer">$hotel.name.getAsString()</a></td>
+            <td>$hotel.dateVisited.getAsString()</td>
+        </tr>
+        #end
+        #else
+        <td>$expediaJSON.hotelId</td>
+        #end
+    </table>
+</div>
+
+
+</body>
+</html>

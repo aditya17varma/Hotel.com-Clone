@@ -16,14 +16,9 @@
    </div>
    <ul class="nav navbar-nav">
     <li class="active"><a href="#">Home</a></li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-     <ul class="dropdown-menu">
-      <li><a href="#">Page 1-1</a></li>
-      <li><a href="#">Page 1-2</a></li>
-      <li><a href="#">Page 1-3</a></li>
-     </ul>
-    </li>
+    <li><a href=/search>Hotel Search</a></li>
     <li><a href=/hotelInfoReview?hotelId=$infoJSON.hotelData.hotelId.getAsString()>Hotel Info</a></li>
+    <li><a href=/expedia>Expedia Links</a></li>
    </ul>
    <ul class="nav navbar-nav navbar-right">
     <li><a href="#"><span class="glyphicon glyphicon-user"></span> $sessionName</a></li>
@@ -55,7 +50,7 @@
   </tr>
   <tr>
    <td>$infoJSON.hotelData.hotelId.getAsString()</td>
-   <td><a href=$infoJSON.hotelData.expedia>$infoJSON.hotelData.name.getAsString()</a></td>
+   <td>$infoJSON.hotelData.name.getAsString()</a></td>
    <td>$infoJSON.hotelData.rating.getAsString()</td>
   </tr>
  </table>
@@ -69,11 +64,20 @@
  <form method="POST" action="/modifyReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
   <p><button class="w3-button w3-border w3-hover-blue" type="submit">Modify Review</button></p>
  </form>
-<!--  <form method="POST" action="/reservation">-->
-<!--   <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>-->
-<!--   <input type="hidden" name="hotelName" value=$infoJSON.hotelData.name/>-->
-<!--   <p><button class="w3-button w3-border w3-hover-orange" type="submit">Reserve Room</button></p>-->
-<!--  </form>-->
+  <form method="POST" action="/updateExpedia" class="expediaForm" onsubmit="openExpediaLink()">
+   <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>
+   <input type="hidden" name="hotelName" value=$infoJSON.hotelData.name/>
+   <input type="hidden" name="expediaLink" id="expediaLink" value=$infoJSON.hotelData.expedia/>
+   <p><button class="w3-button w3-border w3-hover-yellow" type="submit">Visit Expedia Page</button></p>
+  </form>
+
+  <script>
+   function openExpediaLink(){
+    window.open(document.getElementById("expediaLink").value, '_blank')
+   }
+  </script>
+
+
  </div>
 </div>
 

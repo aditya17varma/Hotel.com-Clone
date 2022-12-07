@@ -121,6 +121,9 @@ public class JettyServer {
         handler.addServlet(EditReviewServlet.class, "/editReview");
         handler.addServlet(DeleteReviewServlet.class, "/deleteReview");
 //        handler.addServlet(RegistrationServlet.class, "/reservation");
+        handler.addServlet(ExpediaLinksServlet.class, "/expedia");
+        handler.addServlet(ClearExpediaServlet.class, "/clearExpedia");
+        handler.addServlet(UpdateExpediaServlet.class, "/updateExpedia");
 
         handler.setAttribute("data", hs);
     }

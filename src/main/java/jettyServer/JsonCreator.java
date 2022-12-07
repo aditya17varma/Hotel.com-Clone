@@ -175,6 +175,7 @@ public class JsonCreator {
         return hotelJSON;
     }
 
+
     /**
      * setFailure
      * Sets JsonObject "success" to false and "hotelId" and "HotelName" to "invalid"
@@ -187,7 +188,6 @@ public class JsonCreator {
         failureJSON.addProperty("hotelName", "invalid");
 
         return failureJSON;
-
     }
 
 }

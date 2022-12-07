@@ -91,19 +91,20 @@ public class PreparedStatements {
     public static final String CREATE_EXPEDIA_TABLE =
             "CREATE TABLE expedia (" +
                     "hotelId VARCHAR(64), " +
-                    "expediaLink TEXT NOT NULL, " +
+                    "hotelName TEXT NOT NULL, " +
                     "user VARCHAR(64) NOT NULL," +
+                    "dateVisited DATE NOT NULL," +
                     "PRIMARY KEY(hotelId, user));";
 
     public static final String INSERT_EXPEDIA_LINK =
-            "INSERT IGNORE INTO expedia (hotelId, expediaLink, user) " +
-                    "VALUES (?, ?, ?);";
+            "INSERT IGNORE INTO expedia (hotelId, hotelName, user, dateVisited) " +
+                    "VALUES (?, ?, ?, ?);";
 
     public static final String FIND_EXPEDIA_LINKS =
             "SELECT * FROM expedia WHERE user = ?";
 
     public static final String CLEAR_EXPEDIA_LINKS =
-            "DELETE FROM expedia WHERE hotelId = ? AND user = ?;";
+            "DELETE FROM expedia WHERE user = ?;";
 
 
 }
