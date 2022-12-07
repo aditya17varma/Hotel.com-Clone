@@ -4,15 +4,36 @@
     <title>HotelReview</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/search">Adi's Hotel Search</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Page 1-1</a></li>
+                    <li><a href="#">Page 1-2</a></li>
+                    <li><a href="#">Page 1-3</a></li>
+                </ul>
+            </li>
+            <li><a href=/hotelInfoReview?hotelId=$hotelId>Hotel Info</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> $sessionName</a></li>
+            <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
 <body>
-<div class="w3-container" style="float:right;">
-    <p style="color:darkred"><a href="/logout"><small>Logout</small></a></p>
-</div>
 <div class="jumbotron text-center">
     <h1>Hotel Search </h1>
     #if($keyword != "invalid")
@@ -20,13 +41,13 @@
     #end
 </div>
 
-<div class="w3-card-4">
-    <div class="w3-container w3-indigo">
+<div class="card">
+    <div class="container w3-indigo">
         <h2>Keyword Search</h2>
     </div>
 </div>
 <div>
-    <form class="w3-container" method="post" action=$servletPath >
+    <form class="container" method="post" action=$servletPath >
         <p>Please enter keyword:</p>
         <p>
             <label class="w3-text-green"><b>Keyword</b></label>
@@ -36,9 +57,9 @@
     </form>
 </div>
 
-<div class="w3-container">
-    <h4> Hotels matching $keyword: </h4>
-    <table class="w3-table-all w3-hoverable">
+<div class="container">
+    <h4 align="center"> Hotels matching $keyword: </h4>
+    <table class="table table-hover">
         <thead>
         <tr class="w3-light-grey">
             <th>Hotel</th>

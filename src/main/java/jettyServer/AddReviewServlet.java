@@ -46,6 +46,8 @@ public class AddReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
+        context.put("sessionName", sessionName);
+
         if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(dbHandler);
 

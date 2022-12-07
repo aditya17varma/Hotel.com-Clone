@@ -35,7 +35,7 @@ public class RegistrationServlet extends HttpServlet {
 		sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
 		if (sessionName != null){
-			response.sendRedirect("/login");
+			response.sendRedirect("/search");
 		}
 		else {
 			VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");

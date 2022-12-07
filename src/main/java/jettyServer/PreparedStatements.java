@@ -1,7 +1,5 @@
 package jettyServer;
 
-import java.time.LocalDate;
-
 public class PreparedStatements {
     /** Prepared Statements  */
     /** For creating the users table */

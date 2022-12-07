@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Class KeywordSearchServlet
@@ -44,6 +43,8 @@ public class KeywordSearchServlet extends HttpServlet {
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
         Template template;
+
+        context.put("sessionName", sessionName);
 
         if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(dbHandler);

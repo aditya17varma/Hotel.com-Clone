@@ -42,6 +42,8 @@ public class EditReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
+        context.put("sessionName", sessionName);
+
         if (sessionName != null){
             JsonCreator jc = new JsonCreator(dbHandler);
 

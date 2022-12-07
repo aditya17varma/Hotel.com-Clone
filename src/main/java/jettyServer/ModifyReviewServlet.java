@@ -43,6 +43,8 @@ public class ModifyReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
+        context.put("sessionName", sessionName);
+
         context.put("servletPath", request.getServletPath());
 
         if (sessionName != null){
