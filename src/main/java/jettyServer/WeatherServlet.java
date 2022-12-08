@@ -62,6 +62,7 @@ public class WeatherServlet extends HttpServlet{
         PrintWriter out = response.getWriter();
 
         out.println(weatherJSON);
+        System.out.println(weatherJSON);
 
         response.setStatus(HttpServletResponse.SC_OK);
 

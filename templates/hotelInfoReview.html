@@ -55,13 +55,13 @@
    <td>$infoJSON.hotelData.rating.getAsString()</td>
   </tr>
  </table>
- <p id="weather">Displays weather info here...</p>
+ <p id="weather"></p>
 </div>
 
 <div class="container" style="margin:20px auto;[B]padding:20px 0;[/B]">
  <div class="btn-group">
   <form>
-   <p><input type="button" value="Fetch Weather" onclick="getWeather('$hotelId')"></button></p>
+   <p><button type="button" class="w3-button w3-border w3-hover-orange" onclick="getWeather('$hotelId')">Fetch Weather</button></p>
   </form>
   <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
    <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
