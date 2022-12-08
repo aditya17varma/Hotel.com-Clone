@@ -6,9 +6,36 @@
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+       crossorigin=""/>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
  <script src="js/getWeather.js"></script>
+ <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+         crossorigin=""></script>
+ <script src="js/loadMap.js"></script>
+
+ <style>
+  .flex-container {
+   display: flex;
+  }
+
+  .flex-child {
+   flex: 1;
+   border: 2px solid yellow;
+   height: 60vh;
+   width: 50vw;
+  }
+
+  .flex-child:first-child {
+   margin-right: 20px;
+  }
+  #map { height: 60vh;
+         width: 10vw
+       }
+ </style>
 
  <nav class="navbar">
   <div class="container-fluid">
@@ -27,8 +54,6 @@
    </ul>
   </div>
  </nav>
-
-
 
 </head>
 <body>
@@ -58,8 +83,12 @@
  <p id="weather"></p>
 </div>
 
-<div class="container" style="margin:20px auto;[B]padding:20px 0;[/B]">
- <div class="btn-group">
+<div class="flex-container">
+ <div class="flex-child" style="margin-left: 5%">
+  <form>
+   <p><button type="button" class="w3-button w3-border w3-hover-orange" onclick="loadMap('$infoJSON.hotelData.lat.getAsString()',
+    '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')">Load Map</button></p>
+  </form>
   <form>
    <p><button type="button" class="w3-button w3-border w3-hover-orange" onclick="getWeather('$hotelId')">Fetch Weather</button></p>
   </form>
@@ -81,7 +110,10 @@
     window.open(document.getElementById("expediaLink").value, '_blank')
    }
   </script>
-
+ </div>
+ <div class="flex-child" style="margin-right: 5%">
+  <div id="map" onload="loadMap('$infoJSON.hotelData.lat.getAsString()',
+   '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')">Map Here</div>
 
  </div>
 </div>
