@@ -7,7 +7,7 @@ async function loadMap(lat, long, hotelName) {
 
     const map = L.map('map', {
         center: [latitude, longitude],
-        zoom: 5
+        zoom: 13.5
     });
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
