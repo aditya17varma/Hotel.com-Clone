@@ -155,7 +155,6 @@ public class DatabaseHandler {
             }
             statement.close();
             results.close();
-            System.out.println(linksArr);
             return linksArr;
         }
         catch (SQLException e) {
@@ -413,7 +412,7 @@ public class DatabaseHandler {
     public Hotel findHotel(String hotelId){
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
-            System.out.println("finding hotel in db...");
+            System.out.println("finding hotel " + hotelId + " in db...");
             statement = connection.prepareStatement(PreparedStatements.FIND_HOTEL);
 
             statement.setString(1, hotelId);
@@ -444,7 +443,6 @@ public class DatabaseHandler {
     public Review findReview(String reviewId){
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
-            System.out.println("finding review in db...");
             statement = connection.prepareStatement(PreparedStatements.FIND_REVIEW);
 
             statement.setString(1, reviewId);
@@ -610,7 +608,6 @@ public class DatabaseHandler {
 
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             try {
-                System.out.println("Getting avg rating for : " + hotelId + " from db...");
                 statement = connection.prepareStatement(PreparedStatements.AVG_RATING);
                 statement.setString(1, hotelId);
                 ResultSet results = statement.executeQuery();
@@ -619,12 +616,9 @@ public class DatabaseHandler {
 
                 while (results.next()){
                     rating = results.getString("Average Rating");
-//                    rating = Double.parseDouble(d);
                 }
 
-
                 statement.close();
-                System.out.println("Got avg rating from db.");
                 return rating;
             }
             catch(SQLException e) {

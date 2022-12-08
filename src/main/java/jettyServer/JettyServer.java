@@ -3,7 +3,10 @@ package jettyServer;
 import hotelapp.Hotel;
 import hotelapp.HotelSearch;
 import hotelapp.Review;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.Map;
 /** This class uses Jetty & servlets to implement server serving hotel and review info */
 public class JettyServer {
     private Object hs;
-    private ServletContextHandler handler;
+    private ServletContextHandler servletHandler;
 
     /**
      * Function that starts the server
@@ -21,7 +24,14 @@ public class JettyServer {
     public void start(int PORT) throws Exception {
         Server server = new Server(PORT);
 
-        server.setHandler(handler);
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setResourceBase("templates");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] {resourceHandler, servletHandler});
+
+        server.setHandler(handlers);
 
         server.start();
         server.join();
@@ -109,27 +119,28 @@ public class JettyServer {
      * WeatherServlet
      */
     public void loadServlets(){
-        handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        servletHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        handler.addServlet(RegistrationServlet.class, "/register");
-        handler.addServlet(LoginServlet.class, "/login");
-        handler.addServlet(KeywordSearchServlet.class, "/search");
-        handler.addServlet(HotelInfoReviewServlet.class, "/hotelInfoReview");
-        handler.addServlet(AddReviewServlet.class, "/addReview");
-        handler.addServlet(LogoutServlet.class, "/logout");
-        handler.addServlet(ModifyReviewServlet.class, "/modifyReview");
-        handler.addServlet(EditReviewServlet.class, "/editReview");
-        handler.addServlet(DeleteReviewServlet.class, "/deleteReview");
+        servletHandler.addServlet(RegistrationServlet.class, "/register");
+        servletHandler.addServlet(LoginServlet.class, "/login");
+        servletHandler.addServlet(KeywordSearchServlet.class, "/search");
+        servletHandler.addServlet(HotelInfoReviewServlet.class, "/hotelInfoReview");
+        servletHandler.addServlet(AddReviewServlet.class, "/addReview");
+        servletHandler.addServlet(LogoutServlet.class, "/logout");
+        servletHandler.addServlet(ModifyReviewServlet.class, "/modifyReview");
+        servletHandler.addServlet(EditReviewServlet.class, "/editReview");
+        servletHandler.addServlet(DeleteReviewServlet.class, "/deleteReview");
 //        handler.addServlet(RegistrationServlet.class, "/reservation");
-        handler.addServlet(ExpediaLinksServlet.class, "/expedia");
-        handler.addServlet(ClearExpediaServlet.class, "/clearExpedia");
-        handler.addServlet(UpdateExpediaServlet.class, "/updateExpedia");
+        servletHandler.addServlet(ExpediaLinksServlet.class, "/expedia");
+        servletHandler.addServlet(ClearExpediaServlet.class, "/clearExpedia");
+        servletHandler.addServlet(UpdateExpediaServlet.class, "/updateExpedia");
+        servletHandler.addServlet(WeatherServlet.class, "/weather");
 
-        handler.setAttribute("data", hs);
+        servletHandler.setAttribute("data", hs);
     }
 
     public void setAttribute(String name, Object value){
-        handler.setAttribute(name, value);
+        servletHandler.setAttribute(name, value);
     }
 
 }

@@ -47,12 +47,8 @@ public class UpdateExpediaServlet extends HttpServlet {
         Template template;
 
         if (sessionName != null){
-            System.out.println(sessionName);
-            System.out.println(hotelId);
-            System.out.println(hotelName);
             LocalDateTime now = LocalDateTime.now();
             String date = dtf.format(now);
-            System.out.println(date);
 
             dbHandler.insertExpedia(hotelId, hotelName, sessionName, date);
             response.sendRedirect("/hotelInfoReview?hotelId="+hotelId);

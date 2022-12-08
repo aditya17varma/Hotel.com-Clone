@@ -56,11 +56,8 @@ public class ExpediaLinksServlet extends HttpServlet {
                 JsonArray hotelArr = new JsonArray();
                 for (JsonElement je: linksArray){
                     JsonObject jo = je.getAsJsonObject();
-                    System.out.println(jo);
                     String tempId = jo.get("hotelId").getAsString();
-                    System.out.println(tempId);
                     String date = jo.get("dateVisited").getAsString();
-                    System.out.println(date);
                     Hotel tempHotel = dbHandler.findHotel(tempId);
                     JsonObject expediaHotel = jc.createHotelJson(tempHotel);
                     expediaHotel.addProperty("dateVisited", date);

@@ -79,7 +79,6 @@ public class KeywordSearchServlet extends HttpServlet {
             }
 
             context.put("keywordJSON", keywordJSON);
-            System.out.println(keywordJSON);
 
         }
         else {

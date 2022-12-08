@@ -51,6 +51,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
             String hotelId = request.getParameter("hotelId");
 
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
+            context.put("hotelId", hotelId);
 
             template = ve.getTemplate("templates/hotelInfoReview.html");
 

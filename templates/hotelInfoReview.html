@@ -8,6 +8,7 @@
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+ <script src="js/getWeather.js"></script>
 
  <nav class="navbar">
   <div class="container-fluid">
@@ -54,10 +55,14 @@
    <td>$infoJSON.hotelData.rating.getAsString()</td>
   </tr>
  </table>
+ <p id="weather">Displays weather info here...</p>
 </div>
 
 <div class="container" style="margin:20px auto;[B]padding:20px 0;[/B]">
  <div class="btn-group">
+  <form>
+   <p><input type="button" value="Fetch Weather" onclick="getWeather('$hotelId')"></button></p>
+  </form>
   <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
    <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
   </form>
