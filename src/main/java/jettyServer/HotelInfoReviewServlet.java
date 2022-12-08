@@ -44,7 +44,7 @@ public class HotelInfoReviewServlet extends HttpServlet {
 
         context.put("sessionName", sessionName);
 
-        if (sessionName != null){
+//        if (sessionName != null){
             JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
@@ -85,11 +85,11 @@ public class HotelInfoReviewServlet extends HttpServlet {
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
 
-        }
-        else {
-            //redirect to login or register
-            template = ve.getTemplate("templates/noLoginTemplate.html");
-        }
+//        }
+//        else {
+//            //redirect to login or register
+//            template = ve.getTemplate("templates/noLoginTemplate.html");
+//        }
 
         template.merge(context, writer);
         PrintWriter out = response.getWriter();

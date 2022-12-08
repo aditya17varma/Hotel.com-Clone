@@ -13,13 +13,9 @@ async function fetchReviews(hotelId) {
 
     for (let i = 0; i < reviewsArray.length; i++){
         let newRow = tbody.insertRow(tbody.length);
-        // Review Id
-        // <th>Review Date</th>
-        // <th>Review Author</th>
-        // <th>Review Rating</th>
-        // <th>Review Title</th>
-        // <th>Review Text<
-        console.log(reviewsArray[i])
+        // Review Id, Review Date, Review Author, Review Rating, Review Title, Review Text
+        let tempJSON = reviewsArray[i]
+        console.log(tempJSON)
         let idCell = newRow.insertCell(0);
         idCell.innerHTML = reviewsArray[i]["reviewId"]
 
@@ -27,12 +23,16 @@ async function fetchReviews(hotelId) {
         dateCell.innerHTML = reviewsArray[i]["date"]
 
         let userCell = newRow.insertCell(2)
-        userCell = reviewsArray[i]["user"]
+        let user = tempJSON["user"]
+        userCell.innerHTML = user;
 
-        let titleCell = newRow.insertCell(3)
+        let ratingCell = newRow.insertCell(3)
+        ratingCell.innerHTML = reviewsArray[i]["rating"]
+
+        let titleCell = newRow.insertCell(4)
         titleCell.innerHTML = reviewsArray[i]["title"]
 
-        let textCell = newRow.insertCell(4)
+        let textCell = newRow.insertCell(5)
         textCell.innerHTML = reviewsArray[i]["reviewText"]
     }
 

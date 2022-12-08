@@ -43,7 +43,7 @@ public class ReviewsServlet extends HttpServlet {
 
         JsonObject infoJSON = new JsonObject();
 
-        if (sessionName != null){
+//        if (sessionName != null){
             JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
@@ -68,6 +68,7 @@ public class ReviewsServlet extends HttpServlet {
                         for (Review r: reviews){
                             JsonObject tempR = jc.createReview(r);
                             reviewArr.add(tempR);
+                            System.out.println(tempR);
                         }
 
                         reviewJSON.add("reviews", reviewArr);
@@ -91,11 +92,11 @@ public class ReviewsServlet extends HttpServlet {
             }
             session.setAttribute("infoJSON", infoJSON);
 
-        }
-        else {
-            //redirect to login or register
-            response.sendRedirect("/login");
-        }
+//        }
+//        else {
+//            //redirect to login or register
+//            response.sendRedirect("/login");
+//        }
 
         PrintWriter out = response.getWriter();
         out.println(infoJSON);
