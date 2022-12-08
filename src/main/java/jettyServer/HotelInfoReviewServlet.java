@@ -67,16 +67,16 @@ public class HotelInfoReviewServlet extends HttpServlet {
 
                     session.setAttribute("hotelName", tempHotel.getName());
                     context.put("hotelName", tempHotel.getName());
-                    List<Review> reviews = dbHandler.findHotelReviews(hotelId);
+//                    List<Review> reviews = dbHandler.findHotelReviews(hotelId);
 
-                    if (reviews != null) {
-                        reviewJSON = jc.createReviewListJson(hotelId, reviews.size());
-                    } else {
-                        reviewJSON = jc.setFailure();
-                        session.setAttribute("hotelName", "invalid");
-                        context.put("hotelName", "invalid");
-                    }
-                    infoJSON.add("hotelReviews", reviewJSON);
+//                    if (reviews != null) {
+//                        reviewJSON = jc.createReviewListJson(hotelId, reviews.size());
+//                    } else {
+//                        reviewJSON = jc.setFailure();
+//                        session.setAttribute("hotelName", "invalid");
+//                        context.put("hotelName", "invalid");
+//                    }
+//                    infoJSON.add("hotelReviews", reviewJSON);
                 } else {
                     hotelJSON = jc.setFailure();
                 }
