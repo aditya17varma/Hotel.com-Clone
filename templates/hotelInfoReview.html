@@ -16,6 +16,7 @@
          integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
          crossorigin=""></script>
  <script src="js/loadMap.js"></script>
+ <script src="js/fetchReviews.js"></script>
 
  <style>
   .flex-container {
@@ -111,8 +112,8 @@
   <div id="map"></div>
 
   <script>
-   window.onload = async function () {
-    await loadMap('$infoJSON.hotelData.lat.getAsString()',
+   window.onload = function () {
+    loadMap('$infoJSON.hotelData.lat.getAsString()',
             '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')
    }
   </script>
@@ -121,7 +122,7 @@
 
 <div class="container">
  <h4> Reviews for $hotelName: </h4>
- <table class="table table-hover">
+ <table class="table table-hover" id="review-table">
   <thead>
   <tr class="w3-light-grey">
    <th>Review Id</th>
@@ -132,23 +133,14 @@
    <th>Review Text</th>
   </tr>
   </thead>
-  #if($infoJSON.hotelReviews.success != false)
-  #foreach($review in $infoJSON.hotelReviews.reviews)
-  <tr>
-   <td>$review.reviewId.getAsString()</td>
-   <td>$review.date.getAsString()</td>
-   <td>$review.user.getAsString()</td>
-   <td>$review.rating.getAsString()</td>
-   <td>$review.title.getAsString()</td>
-   <td>$review.reviewText.getAsString()</td>
-  </tr>
-  #end
-  #else
-  <td>$reviewJSON.hotelId</td>
-  #end
+  <form>
+   <input type ="button" value = "Show More" onclick="fetchReviews('$hotelId')">
+  </form>
+  <tbody id="tableBody">
+
+  </tbody>
 
  </table>
 </div>
-
 </body>
 </html>

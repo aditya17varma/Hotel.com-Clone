@@ -71,6 +71,9 @@ public class PreparedStatements {
     public static final String GET_REVIEW_LIST =
             "SELECT * FROM reviews WHERE hotelId = ? ORDER BY datePosted DESC";
 
+    public static final String GET_REVIEW_LIST_LIMIT =
+            "SELECT * FROM reviews WHERE hotelId = ? ORDER BY datePosted DESC LIMIT ? OFFSET ?";
+
     public static final String HOTEL_KEYWORD_SEARCH =
             "SELECT * FROM hotels WHERE hotelName like ?";
 

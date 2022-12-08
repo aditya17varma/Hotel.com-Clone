@@ -135,6 +135,7 @@ public class JettyServer {
         servletHandler.addServlet(ClearExpediaServlet.class, "/clearExpedia");
         servletHandler.addServlet(UpdateExpediaServlet.class, "/updateExpedia");
         servletHandler.addServlet(WeatherServlet.class, "/weather");
+        servletHandler.addServlet(ReviewsServlet.class, "/reviews");
 
         servletHandler.setAttribute("data", hs);
     }

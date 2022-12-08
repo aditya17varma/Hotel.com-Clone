@@ -509,6 +509,47 @@ public class DatabaseHandler {
         return null;
     }
 
+    public List<Review> findHotelReviewsLimit(String hotelId, int limit, int offset){
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("finding reviews for: " + hotelId + " in db...");
+            statement = connection.prepareStatement(PreparedStatements.GET_REVIEW_LIST_LIMIT);
+
+            statement.setString(1, hotelId);
+            statement.setInt(2, limit);
+            statement.setInt(3, offset);
+
+            ResultSet results = statement.executeQuery();
+
+            List<Review> reviews = new ArrayList<>();
+            while (results.next()){
+                Review tempReview;
+                String reviewId = results.getString("reviewId");
+                String hId = results.getString("hotelId");
+                String rating = results.getString("ratingOverall");
+                String title = results.getString("title");
+                String reviewText = results.getString("reviewText");
+                String user = results.getString("userNickname");
+                String date = results.getString("datePosted");
+
+                tempReview = new Review(hId, reviewId, rating, title, reviewText, user, date);
+                reviews.add(tempReview);
+            }
+            for (Review r: reviews){
+                System.out.println(r.getReviewID() + " " + r.getUserNickname());
+            }
+
+            statement.close();
+            results.close();
+            return reviews;
+
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public List<Hotel> hotelKeywordSearch (String keyword){
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
@@ -638,7 +679,7 @@ public class DatabaseHandler {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
 //        dhandler.createHotelTable();
 //        dhandler.createReviewTable();
-        dbHandler.createExpediaLinksTable();
+//        dbHandler.createExpediaLinksTable();
 //        System.out.println("created a hotel table ");
 //        dhandler.registerUser("luke", "lukeS1k23w");
 //        System.out.println("Registered luke.");
@@ -664,8 +705,18 @@ public class DatabaseHandler {
 //        Review r = dbHandler.findReview("57b5d78e65534f0b7741a9c6");
 //        System.out.println(r);
 
-//        List<Review> reviews = dbHandler.findHotelReviews("12539");
-//        System.out.println(reviews);
+//        List<Review> reviews = dbHandler.findHotelReviewsLimit("12539", 5, 0);
+//        System.out.println("Offset: " + 0);
+//        for (Review r: reviews){
+//            System.out.println(r.getReviewID() + " " + r.getUserNickname());
+//        }
+//
+//        System.out.println();
+//        List<Review> reviews2 = dbHandler.findHotelReviewsLimit("12539", 5, 5);
+//        System.out.println("Offset: " + 5);
+//        for (Review r: reviews2){
+//            System.out.println(r.getReviewID() + " " + r.getUserNickname());
+//        }
 //
 ////        List<Hotel> hotels = dhandler.hotelKeywordSearch("Hilton");
 ////        System.out.println(hotels);
