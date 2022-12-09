@@ -109,5 +109,22 @@ public class PreparedStatements {
     public static final String CLEAR_EXPEDIA_LINKS =
             "DELETE FROM expedia WHERE user = ?;";
 
+    public static final String CREATE_LAST_LOGIN_TABLE =
+            "CREATE TABLE logins (" +
+                    "user VARCHAR(64) PRIMARY KEY, " +
+                    "lastLogin DATETIME NOT NULL);";
+
+    public static final String INSERT_LOGIN =
+            "INSERT IGNORE INTO logins (user, lastLogin) " +
+                    "VALUES (?, ?);";
+
+    public static final String UPDATE_LOGIN =
+            "UPDATE logins SET lastLogin = ?" +
+                    " WHERE user = ?";
+
+    public static final String FIND_LOGIN =
+            "SELECT * FROM logins WHERE user = ?;";
+
+
 
 }

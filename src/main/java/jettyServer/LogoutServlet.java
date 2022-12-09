@@ -49,6 +49,15 @@ public class LogoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
+        DatabaseHandler dbHandler = DatabaseHandler.getInstance();
+        String currentLogin = (String) session.getAttribute("currentLogin");
+        currentLogin = StringEscapeUtils.escapeHtml4(currentLogin);
+        String sessionName = (String) session.getAttribute("username");
+        sessionName = StringEscapeUtils.escapeHtml4(sessionName);
+
+        dbHandler.updateLogin(sessionName, currentLogin);
+        System.out.println("Updated login date in /logout");
+
         session.setAttribute("username", null);
         session.setAttribute("password", null);
 

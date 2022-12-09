@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @SuppressWarnings("serial")
 /**
@@ -20,6 +22,7 @@ import java.io.StringWriter;
  * Queries the database to check the username and password match
  */
 public class LoginServlet extends HttpServlet {
+	private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -89,8 +92,26 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
+
+		LocalDateTime now = LocalDateTime.now();
+		String dtNow = dtf.format(now);
+
+		String lastLogin = dbHandler.findLogin(user);
+		if (lastLogin.equals("")){
+			//no prev login
+			dbHandler.insertLogin(user, dtNow);
+			System.out.println("Inserting Login: " + dtNow);
+		}
+		else {
+			//prev login, update to current
+			dbHandler.updateLogin(user, dtNow);
+			System.out.println("Updated Login: " + dtNow);
+		}
+
 		boolean flag = dbHandler.authenticateUser(user, pass);
 		if (flag) {
+			session.setAttribute("lastLogin", lastLogin);
+			session.setAttribute("currentLogin", dtNow);
 			session.setAttribute("username", user);
 			session.setAttribute("password", pass);
 			response.sendRedirect("/login?username=" + user);

@@ -38,6 +38,10 @@ public class KeywordSearchServlet extends HttpServlet {
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
+        String lastLogin = (String) session.getAttribute("lastLogin");
+        lastLogin = StringEscapeUtils.escapeHtml4(lastLogin);
+
+
         StringWriter writer = new StringWriter();
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
@@ -45,6 +49,9 @@ public class KeywordSearchServlet extends HttpServlet {
         Template template;
 
         context.put("sessionName", sessionName);
+
+        context.put("lastLogin", lastLogin);
+        System.out.println(lastLogin);
 
         if (sessionName != null){
             JsonCreator jsCreator = new JsonCreator(dbHandler);

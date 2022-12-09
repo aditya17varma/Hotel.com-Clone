@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,6 +30,7 @@ public class DatabaseHandler {
     private Properties config; // a "map" of properties
     private String uri = null; // uri to connect to mysql using jdbc
     private Random random = new Random(); // used in password  generation
+    private static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     /**
      * DataBaseHandler is a singleton, we want to prevent other classes
@@ -674,6 +677,93 @@ public class DatabaseHandler {
         return null;
     }
 
+    public void createLastLoginTable() {
+        Statement statement;
+        try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            statement = dbConnection.createStatement();
+            statement.executeUpdate(PreparedStatements.CREATE_LAST_LOGIN_TABLE);
+            statement.close();
+            System.out.println("Last Login table created");
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public void insertLogin(String user, String date) {
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.INSERT_LOGIN);
+                statement.setString(1, user);
+                statement.setString(2, date);
+                statement.executeUpdate();
+                statement.close();
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public void updateLogin(String user, String date) {
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.UPDATE_LOGIN);
+                statement.setString(1, date);
+                statement.setString(2, user);
+                statement.executeUpdate();
+                statement.close();
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+
+    }
+
+    public String findLogin(String user){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.FIND_LOGIN);
+                statement.setString(1, user);
+                ResultSet results = statement.executeQuery();
+
+                String login = "";
+
+                while (results.next()){
+                    login = results.getString("lastLogin");
+                }
+
+                statement.close();
+                return login;
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+        }
+
+        return null;
+    }
+
 
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
@@ -740,6 +830,15 @@ public class DatabaseHandler {
 //        System.out.println(reviews.size());
 //        double rating = dhandler.getAvgRating("12539");
 //        System.out.println(rating);
+//        dbHandler.createLastLoginTable();
+
+        LocalDateTime now = LocalDateTime.now();
+        String dtNow = dtf.format(now);
+
+//        dbHandler.insertLogin("Adi", dtNow);
+//        dbHandler.updateLogin("Adi", dtNow);
+        String lastLogin = dbHandler.findLogin("A");
+        System.out.println("Last Login: " + lastLogin);
 
 
     }

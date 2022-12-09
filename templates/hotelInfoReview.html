@@ -82,42 +82,43 @@
   </tr>
  </table>
  <p id="weather"></p>
-</div>
 
-<div class="flex-container">
- <div class="flex-child" style="margin-left: 5%">
-  <form>
-   <p><button type="button" class="w3-button w3-border w3-hover-orange" onclick="getWeather('$hotelId')">Fetch Weather</button></p>
-  </form>
-  <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
-   <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
-  </form>
- <form method="POST" action="/modifyReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
-  <p><button class="w3-button w3-border w3-hover-blue" type="submit">Modify Review</button></p>
- </form>
-  <form method="POST" action="/updateExpedia" class="expediaForm" onsubmit="openExpediaLink()">
-   <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>
-   <input type="hidden" name="hotelName" value=$infoJSON.hotelData.name/>
-   <input type="hidden" name="expediaLink" id="expediaLink" value=$infoJSON.hotelData.expedia/>
-   <p><button class="w3-button w3-border w3-hover-yellow" type="submit">Visit Expedia Page</button></p>
-  </form>
+ <div class="flex-container">
+  <div class="flex-child" style="margin-left: 0%">
+   <form>
+    <p><button type="button" class="w3-button w3-border w3-hover-orange" onclick="getWeather('$hotelId')">Fetch Weather</button></p>
+   </form>
+   <form method="POST" action="/addReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
+    <p><button class="w3-button w3-border w3-hover-green" type="submit">Add Review</button></p>
+   </form>
+   <form method="POST" action="/modifyReview?hotelId=$infoJSON.hotelData.hotelId&hotelName=$infoJSON.hotelData.name">
+    <p><button class="w3-button w3-border w3-hover-blue" type="submit">Modify Review</button></p>
+   </form>
+   <form method="POST" action="/updateExpedia" class="expediaForm" onsubmit="openExpediaLink()">
+    <input type="hidden" name="hotelId" value=$infoJSON.hotelData.hotelId/>
+    <input type="hidden" name="hotelName" value=$infoJSON.hotelData.name/>
+    <input type="hidden" name="expediaLink" id="expediaLink" value=$infoJSON.hotelData.expedia/>
+    <p><button class="w3-button w3-border w3-hover-yellow" type="submit">Visit Expedia Page</button></p>
+   </form>
 
-  <script>
-   function openExpediaLink(){
-    window.open(document.getElementById("expediaLink").value, '_blank')
-   }
-  </script>
+   <script>
+    function openExpediaLink(){
+     window.open(document.getElementById("expediaLink").value, '_blank')
+    }
+   </script>
+  </div>
+  <div class="flex-child" style="margin-right: 0%">
+   <div id="map"></div>
+
+   <script>
+    window.onload = function () {
+     loadMap('$infoJSON.hotelData.lat.getAsString()',
+             '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')
+    }
+   </script>
+  </div>
  </div>
- <div class="flex-child" style="margin-right: 5%">
-  <div id="map"></div>
 
-  <script>
-   window.onload = function () {
-    loadMap('$infoJSON.hotelData.lat.getAsString()',
-            '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')
-   }
-  </script>
- </div>
 </div>
 
 <div class="container">
@@ -133,6 +134,15 @@
    <th>Review Text</th>
   </tr>
   </thead>
+  <nav aria-label="Page navigation example">
+   <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+   </ul>
+  </nav>
   <form>
    <input type ="button" value = "Show More" onclick="fetchReviews('$hotelId')">
   </form>
