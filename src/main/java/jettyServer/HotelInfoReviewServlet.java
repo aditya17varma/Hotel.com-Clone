@@ -42,21 +42,22 @@ public class HotelInfoReviewServlet extends HttpServlet {
         Template template;
 
         String limitString;
+        int limit;
         if (session.getAttribute("LIMIT") != null){
             limitString = String.valueOf(session.getAttribute("LIMIT"));
             limitString = StringEscapeUtils.escapeHtml4(limitString);
+            limit = Integer.parseInt(limitString);
         }
         else {
-            limitString = "0";
+            limit = DEFAULT_BUTTONS;
         }
 
-        int limit = Integer.parseInt(limitString);
 
 
 
         context.put("sessionName", sessionName);
 
-        if (sessionName != null){
+//        if (sessionName != null){
             JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
@@ -65,27 +66,18 @@ public class HotelInfoReviewServlet extends HttpServlet {
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
             context.put("hotelId", hotelId);
 
-        int reviewCount = dbHandler.reviewCount(hotelId);
+            int reviewCount = dbHandler.reviewCount(hotelId);
 
-        int numButtons;
-        if (limit != 0){
+            int numButtons;
             numButtons = reviewCount / limit;
             int mod = reviewCount % limit;
             if (mod > 0){
                 numButtons += 1;
             }
-        }
-        else {
-            numButtons = reviewCount / DEFAULT_BUTTONS;
-            int mod = reviewCount % DEFAULT_BUTTONS;
-            if (mod > 0){
-                numButtons += 1;
-            }
-        }
 
 
 
-        context.put("numButtons", numButtons);
+            context.put("numButtons", numButtons);
 
             template = ve.getTemplate("templates/hotelInfoReview.html");
 
@@ -110,11 +102,11 @@ public class HotelInfoReviewServlet extends HttpServlet {
             context.put("infoJSON", infoJSON);
             session.setAttribute("infoJSON", infoJSON);
 
-        }
-        else {
-            //redirect to login or register
-            template = ve.getTemplate("templates/noLoginTemplate.html");
-        }
+//        }
+//        else {
+//            //redirect to login or register
+//            template = ve.getTemplate("templates/noLoginTemplate.html");
+//        }
 
         template.merge(context, writer);
         PrintWriter out = response.getWriter();
