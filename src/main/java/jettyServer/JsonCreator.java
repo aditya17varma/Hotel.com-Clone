@@ -156,6 +156,9 @@ public class JsonCreator {
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
         String rating = dbHandler.getAvgRating(hotel.getId());
+        if (rating == null){
+            rating = "0";
+        }
 
         hotelJSON.addProperty("rating", rating);
 

@@ -2,7 +2,6 @@ package hotelapp;
 
 import jettyServer.*;
 import org.apache.velocity.app.VelocityEngine;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 
 public class HotelServer {
 	public static final int PORT = 8080;
