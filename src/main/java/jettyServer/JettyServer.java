@@ -11,11 +11,17 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.TimeUnit;
 
 /** This class uses Jetty & servlets to implement server serving hotel and review info */
 public class JettyServer {
     private Object hs;
     private ServletContextHandler servletHandler;
+    private ExecutorService executor;
+    private Phaser phaser;
 
     /**
      * Function that starts the server
@@ -46,10 +52,12 @@ public class JettyServer {
         hs = new HotelSearch();
         ((HotelSearch)hs).loadHotels(hotelPath);
         ((HotelSearch)hs).loadReviews(reviewPath, threads);
-        ((HotelSearch)hs).createInvertedIndex();
-        ((HotelSearch)hs).createHotelKeywordMap();
     }
 
+    /**
+     * loadHotelsTable
+     * Loads the hotels from the hotel data maps to the database
+     */
     public void loadHotelsTable(){
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
@@ -62,37 +70,33 @@ public class JettyServer {
         System.out.println("Hotels loaded into db!");
     }
 
+    /**
+     * loadReviewsTable
+     * Loads the hotel reviews from the hotel data maps to the database
+     */
     //todo pool of threads instead of threads[]
     public void loadReviewsTable() {
+        executor = Executors.newFixedThreadPool(50);
+        phaser = new Phaser();
+
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         System.out.println("Loading reviews...");
         Map<String, List<Review>> reviewMap = ((HotelSearch)hs).getReviewMap();
-        InsertThread[] threads = new InsertThread[reviewMap.keySet().size()];
-        int i = 0;
         for (String hotelId: reviewMap.keySet()){
             List<Review> tempList = reviewMap.get(hotelId);
-//            for (Review r: tempList){
-//                dbHandler.insertReviews(r);
-//            }
-            threads[i] = new InsertThread(tempList, dbHandler);
+            InsertThread worker = new InsertThread(tempList, dbHandler);
+            phaser.register();
+            executor.submit(worker);
             System.out.println("Thread for :" + hotelId);
-            threads[i].start();
-            i++;
-        }
 
-        try{
-            for (int j = 0; j < threads.length; j++){
-                threads[j].join();
-            }
         }
-        catch (InterruptedException e){
-            System.out.println(e);
-        }
+        shutdownExecutor();
+
         System.out.println("Reviews loaded into db!");
     }
 
-    public static class InsertThread extends Thread {
+    public class InsertThread extends Thread {
         List<Review> threadList;
         DatabaseHandler dbh;
 
@@ -103,8 +107,13 @@ public class JettyServer {
 
         @Override
         public void run() {
-            for (Review r: threadList){
-                dbh.insertReviews(r);
+            try{
+                for (Review r: threadList){
+                    dbh.insertReviews(r);
+                }
+            }
+            finally {
+                phaser.arriveAndDeregister();
             }
         }
     }
@@ -136,8 +145,24 @@ public class JettyServer {
         servletHandler.addServlet(UpdateExpediaServlet.class, "/updateExpedia");
         servletHandler.addServlet(WeatherServlet.class, "/weather");
         servletHandler.addServlet(ReviewsServlet.class, "/reviews");
+        servletHandler.addServlet(HomepageServlet.class, "/home");
 
         servletHandler.setAttribute("data", hs);
+    }
+
+    /**
+     * shutdownExecutor
+     * Shuts down the ExecutorService
+     */
+    public void shutdownExecutor() {
+        System.out.println("Executor Shutdown");
+        this.executor.shutdown();
+        try {
+            this.executor.awaitTermination(2, TimeUnit.SECONDS);
+        }
+        catch (InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
     public void setAttribute(String name, Object value){

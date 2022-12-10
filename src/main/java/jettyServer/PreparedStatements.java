@@ -62,29 +62,53 @@ public class PreparedStatements {
             "INSERT IGNORE INTO reviews (reviewId, hotelId, ratingOverall, title, reviewText, userNickname, datePosted) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
+    /**
+     * For finding a hotel using the hotelId
+     */
     public static final String FIND_HOTEL =
             "SELECT * FROM hotels WHERE hotelId = ?";
 
+    /**
+     * For finding a review using reviewId
+     */
     public static final String FIND_REVIEW =
             "SELECT * FROM reviews WHERE reviewId = ?";
 
+    /**
+     * For getting a list of reviews for a hotel using hotelId, ordered by Date
+     */
     public static final String GET_REVIEW_LIST =
             "SELECT * FROM reviews WHERE hotelId = ? ORDER BY datePosted DESC";
 
+    /**
+     * For getting a list of reviews for a hotel using hotelId, limited and offset, ordered by Date
+     */
     public static final String GET_REVIEW_LIST_LIMIT =
             "SELECT * FROM reviews WHERE hotelId = ? ORDER BY datePosted DESC LIMIT ? OFFSET ?";
 
+    /**
+     * For getting hotels whose names contain the keyword
+     */
     public static final String HOTEL_KEYWORD_SEARCH =
             "SELECT * FROM hotels WHERE hotelName like ?";
 
+    /**
+     * For deleting a review using the reviewId
+     */
     public static final String DELETE_REVIEW =
             "DELETE FROM reviews WHERE reviewId = ?";
 
+    /**
+     *For editing a review
+     */
     public static final String EDIT_REVIEW =
             "UPDATE reviews SET title = ?," +
                     "reviewText = ?," +
                     "ratingOverall = ? WHERE reviewId = ?";
 
+    /**
+     * For getting the average rating for a hotel using hotelId
+     */
     public static final String AVG_RATING =
             "SELECT AVG(ratingOverall) 'Average Rating' FROM reviews WHERE hotelId = ?";
 
@@ -99,32 +123,56 @@ public class PreparedStatements {
                     "dateVisited DATE NOT NULL," +
                     "PRIMARY KEY(hotelId, user));";
 
+    /**
+     * For inserting an expedia links visit into the expedia table
+     */
     public static final String INSERT_EXPEDIA_LINK =
             "INSERT IGNORE INTO expedia (hotelId, hotelName, user, dateVisited) " +
                     "VALUES (?, ?, ?, ?);";
 
+    /**
+     * For finding the expedia visits history from the expedia table
+     */
     public static final String FIND_EXPEDIA_LINKS =
             "SELECT * FROM expedia WHERE user = ?";
 
+    /**
+     * For clearing the expedia table of all the history related to the user
+     */
     public static final String CLEAR_EXPEDIA_LINKS =
             "DELETE FROM expedia WHERE user = ?;";
 
+    /**
+     * For creating a logins table
+     */
     public static final String CREATE_LAST_LOGIN_TABLE =
             "CREATE TABLE logins (" +
                     "user VARCHAR(64) PRIMARY KEY, " +
                     "lastLogin DATETIME NOT NULL);";
 
+    /**
+     * For inserting a lagin history into the login table related to the user and date
+     */
     public static final String INSERT_LOGIN =
             "INSERT IGNORE INTO logins (user, lastLogin) " +
                     "VALUES (?, ?);";
 
+    /**
+     * For updating the user last login datetime in the logins table
+     */
     public static final String UPDATE_LOGIN =
             "UPDATE logins SET lastLogin = ?" +
                     " WHERE user = ?";
 
+    /**
+     * For finding the last login related to the user
+     */
     public static final String FIND_LOGIN =
             "SELECT * FROM logins WHERE user = ?;";
 
+    /**
+     * For finding the number of reviews related to a hotel
+     */
     public static final String REVIEW_COUNT =
             "SELECT COUNT(*) FROM reviews WHERE hotelId= ?;";
 

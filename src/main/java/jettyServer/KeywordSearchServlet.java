@@ -67,7 +67,6 @@ public class KeywordSearchServlet extends HttpServlet {
             context.put("servletPath", request.getServletPath());
 
             if (keyword != null){
-//                Set<Hotel> hotelSet = hs.findHotelByKeyword(keyword);
                 List<Hotel> hotelList = dbHandler.hotelKeywordSearch(keyword);
 
                 if (hotelList != null){

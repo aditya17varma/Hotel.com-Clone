@@ -11,8 +11,8 @@ public class HotelServer {
 		JettyServer js = new JettyServer();
 		js.loadHotelSearch("input/hotels/hotels.json", "input/reviews", 3);
 		js.loadServlets();
-//		js.loadHotelsTable();
-//		js.loadReviewsTable();
+		js.loadHotelsTable();
+		js.loadReviewsTable();
 
 		VelocityEngine velocity = new VelocityEngine();
 		velocity.init();

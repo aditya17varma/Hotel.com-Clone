@@ -3,11 +3,9 @@ package jettyServer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
-import hotelapp.HotelSearch;
 import hotelapp.Review;
 
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -34,7 +32,6 @@ public class JsonCreator {
         reviewJSON.addProperty("success", true);
         reviewJSON.addProperty("hotelId", hotelId);
 
-//        List<Review> reviews = hs.findReviews(hotelId);
         List<Review> reviews = dbHandler.findHotelReviews(hotelId);
 
         JsonArray result = new JsonArray();
@@ -93,8 +90,6 @@ public class JsonCreator {
         reviewJSON.addProperty("hotelId", hotelId);
 
         List<Review> reviews = dbHandler.findHotelReviews(hotelId);
-//                hs.findReviews(hotelId);
-
 
         JsonArray result = new JsonArray();
 
@@ -160,8 +155,6 @@ public class JsonCreator {
         hotelJSON.addProperty("lat", hotel.getLatitude());
         hotelJSON.addProperty("lng", hotel.getLongitude());
 
-        //todo change rating to double
-//        double rating = hs.getHotelRating(hotel.getId());
         String rating = dbHandler.getAvgRating(hotel.getId());
 
         hotelJSON.addProperty("rating", rating);

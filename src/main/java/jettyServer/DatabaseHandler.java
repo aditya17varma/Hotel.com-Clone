@@ -798,8 +798,8 @@ public class DatabaseHandler {
 
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
-//        dhandler.createHotelTable();
-//        dhandler.createReviewTable();
+        dhandler.createHotelTable();
+        dhandler.createReviewTable();
 //        dbHandler.createExpediaLinksTable();
 //        System.out.println("created a hotel table ");
 //        dhandler.registerUser("luke", "lukeS1k23w");
@@ -863,15 +863,15 @@ public class DatabaseHandler {
 //        System.out.println(rating);
 //        dbHandler.createLastLoginTable();
 
-        LocalDateTime now = LocalDateTime.now();
-        String dtNow = dtf.format(now);
+//        LocalDateTime now = LocalDateTime.now();
+//        String dtNow = dtf.format(now);
 
 //        dbHandler.insertLogin("Adi", dtNow);
 //        dbHandler.updateLogin("Adi", dtNow);
 //        String lastLogin = dbHandler.findLogin("A");
 //        System.out.println("Last Login: " + lastLogin);
 
-        System.out.println(dbHandler.reviewCount("12539"));
+//        System.out.println(dbHandler.reviewCount("12539"));
 
 
     }

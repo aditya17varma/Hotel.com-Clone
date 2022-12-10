@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+/**
+ * Class ClearExpediaServlet
+ * Clears expedia table of all history related to the user
+ */
 public class ClearExpediaServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

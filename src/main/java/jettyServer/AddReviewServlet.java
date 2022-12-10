@@ -33,7 +33,6 @@ public class AddReviewServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
 
-//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
@@ -86,7 +85,6 @@ public class AddReviewServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        HotelSearch hs = (HotelSearch) getServletContext().getAttribute("data");
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
@@ -124,7 +122,6 @@ public class AddReviewServlet extends HttpServlet {
         if (rating != null && !rating.equals("")
                 && title != null && !title.equals("")
                 && reviewText != null && !reviewId.equals("")){
-//            hs.addReview(newAddition);
             dbHandler.insertReviews(newAddition);
             response.sendRedirect("/hotelInfoReview?hotelId=" + hotelId);
         }
@@ -144,9 +141,6 @@ public class AddReviewServlet extends HttpServlet {
      */
     public String generateReviewId(){
         UUID id = UUID.randomUUID();
-//        while (hs.checkReviewIds(id.toString().replaceAll("-",""))){
-//            id = UUID.randomUUID();
-//        }
         return id.toString().replaceAll("-","");
     }
 }

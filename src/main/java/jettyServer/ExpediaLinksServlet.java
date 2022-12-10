@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
-import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -18,9 +17,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 
+
+
+/**
+ * Class ExpediaLinksServlet
+ * Queries the database for expedia links history related to the user
+ */
 public class ExpediaLinksServlet extends HttpServlet {
 
     @Override

@@ -61,12 +61,7 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		else if (sessionName != null){
-			response.sendRedirect("/search");
-
-//			context.put("userCheck", true);
-//			context.put("username", sessionName);
-//			Template template = ve.getTemplate("templates/postLogin.html");
-//			template.merge(context, writer);
+			response.sendRedirect("/home");
 		}
 		else {
 			// first page

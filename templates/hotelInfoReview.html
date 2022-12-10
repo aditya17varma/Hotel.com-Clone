@@ -25,7 +25,6 @@
 
   .flex-child {
    flex: 1;
-   border: 2px solid yellow;
    height: 60vh;
    width: 50vw;
   }
@@ -41,10 +40,9 @@
  <nav class="navbar">
   <div class="container-fluid">
    <div class="navbar-header">
-    <a class="navbar-brand" href="/search">Adi's Hotel Search</a>
+    <a class="navbar-brand" href="/home">Adi's Hotel Search</a>
    </div>
    <ul class="nav navbar-nav">
-    <li class="active"><a href="#">Home</a></li>
     <li><a href=/search>Hotel Search</a></li>
     <li><a href=/hotelInfoReview?hotelId=$infoJSON.hotelData.hotelId.getAsString()>Hotel Info</a></li>
     <li><a href=/expedia>Expedia Links</a></li>
@@ -113,7 +111,7 @@
    <script>
     window.onload = function () {
      loadMap('$infoJSON.hotelData.lat.getAsString()',
-             '$infoJSON.hotelData.lng.getAsString()', '$infoJSON.hotelData.name.getAsString()')
+             '$infoJSON.hotelData.lng.getAsString()', "$infoJSON.hotelData.name.getAsString()")
     }
    </script>
   </div>
@@ -138,7 +136,7 @@
    <ul class="pagination" id="pagination-table">
     #foreach($i in [1..$numButtons])
     #set($num=$i+1)
-    <li class="page-item" onclick="fetchReviews('$hotelId', '$i')"><a class="page-link" href="#">$i</a></li>
+    <li class="page-item" onclick="fetchReviews('$hotelId', '$i')"><button class="page-link" href='javascript:void();'>$i</button></li>
     #end
    </ul>
   </nav>

@@ -34,13 +34,7 @@ public class ReviewsServlet extends HttpServlet {
         int pageNum = Integer.parseInt(page);
 
         int offset = LIMIT * pageNum;
-//        Object res = session.getAttribute("offset");
-//        if (res == null) { // loading for the first time
-//            offset = 0;
-//        }
-//        else {
-//            offset = (int)res;
-//        }
+
         session.setAttribute("offset", offset);
 
 
@@ -48,7 +42,7 @@ public class ReviewsServlet extends HttpServlet {
 
         JsonObject infoJSON = new JsonObject();
 
-//        if (sessionName != null){
+        if (sessionName != null){
             JsonCreator jc = new JsonCreator(dbHandler);
 
             String hotelId = request.getParameter("hotelId");
@@ -97,11 +91,11 @@ public class ReviewsServlet extends HttpServlet {
             }
             session.setAttribute("infoJSON", infoJSON);
 
-//        }
-//        else {
-//            //redirect to login or register
-//            response.sendRedirect("/login");
-//        }
+        }
+        else {
+            //redirect to login or register
+            response.sendRedirect("/login");
+        }
 
         PrintWriter out = response.getWriter();
         out.println(infoJSON);
