@@ -29,6 +29,9 @@ public class ReviewsServlet extends HttpServlet {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         HttpSession session = request.getSession();
+
+        session.setAttribute("LIMIT", LIMIT);
+
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 

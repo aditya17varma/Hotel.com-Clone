@@ -22,6 +22,8 @@ import java.io.StringWriter;
  * Given a hotelId, populates the page with Hotel information including Hotel Name, address, Id, average rating, and a list of Reviews
  */
 public class HotelInfoReviewServlet extends HttpServlet {
+    private static final int DEFAULT_BUTTONS = 5;
+
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
@@ -39,6 +41,17 @@ public class HotelInfoReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
+        String limitString;
+        if (session.getAttribute("LIMIT") != null){
+            limitString = String.valueOf(session.getAttribute("LIMIT"));
+            limitString = StringEscapeUtils.escapeHtml4(limitString);
+        }
+        else {
+            limitString = "0";
+        }
+
+        int limit = Integer.parseInt(limitString);
+
 
 
         context.put("sessionName", sessionName);
@@ -53,11 +66,24 @@ public class HotelInfoReviewServlet extends HttpServlet {
             context.put("hotelId", hotelId);
 
         int reviewCount = dbHandler.reviewCount(hotelId);
-        int numButtons = reviewCount / 5;
-        int mod = reviewCount % 5;
-        if (mod > 0){
-            numButtons += 1;
+
+        int numButtons;
+        if (limit != 0){
+            numButtons = reviewCount / limit;
+            int mod = reviewCount % limit;
+            if (mod > 0){
+                numButtons += 1;
+            }
         }
+        else {
+            numButtons = reviewCount / DEFAULT_BUTTONS;
+            int mod = reviewCount % DEFAULT_BUTTONS;
+            if (mod > 0){
+                numButtons += 1;
+            }
+        }
+
+
 
         context.put("numButtons", numButtons);
 
@@ -76,16 +102,6 @@ public class HotelInfoReviewServlet extends HttpServlet {
 
                     session.setAttribute("hotelName", tempHotel.getName());
                     context.put("hotelName", tempHotel.getName());
-//                    List<Review> reviews = dbHandler.findHotelReviews(hotelId);
-
-//                    if (reviews != null) {
-//                        reviewJSON = jc.createReviewListJson(hotelId, reviews.size());
-//                    } else {
-//                        reviewJSON = jc.setFailure();
-//                        session.setAttribute("hotelName", "invalid");
-//                        context.put("hotelName", "invalid");
-//                    }
-//                    infoJSON.add("hotelReviews", reviewJSON);
                 } else {
                     hotelJSON = jc.setFailure();
                 }
