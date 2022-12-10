@@ -15,6 +15,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 
+/**
+ * Class ReviewsServlet
+ * Queries the database for a limited number of reviews related to the hotelId, offset by the pagenumber
+ */
 public class ReviewsServlet extends HttpServlet {
     public final static int LIMIT = 5;
 

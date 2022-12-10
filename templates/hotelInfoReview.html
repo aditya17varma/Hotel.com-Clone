@@ -134,6 +134,7 @@
   </thead>
   <nav aria-label="Page navigation example">
    <ul class="pagination" id="pagination-table">
+    <p>Click on a page number to see reviews</p>
     #foreach($i in [1..$numButtons])
     #set($num=$i+1)
     <li class="page-item" onclick="fetchReviews('$hotelId', '$i')"><button class="page-link" href='javascript:void();'>$i</button></li>
