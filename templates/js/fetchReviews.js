@@ -1,5 +1,17 @@
-async function fetchReviews(hotelId) {
-    let response = await fetch('/reviews'+'?hotelId='+hotelId, {method: 'get'});
+async function fetchReviews(hotelId, pageNum) {
+    let num = pageNum - 1;
+    let params = {
+        "hotelId": hotelId,
+        "pageNumber": num
+    }
+
+    let query = Object.keys(params)
+        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(params[k]))
+        .join('&');
+
+    let url = '/reviews?' + query;
+
+    let response = await fetch(url, {method: 'get'});
 
     let infoJSON = await response.json();
     console.log(infoJSON);

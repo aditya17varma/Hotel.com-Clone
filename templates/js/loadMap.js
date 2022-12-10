@@ -10,10 +10,12 @@ async function loadMap(lat, long, hotelName) {
         zoom: 13.5
     });
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let tileL = await fetch('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    })
+
+    L.tileLayer(tileL).addTo(map);
 
     var marker = L.marker([latitude, longitude]).addTo(map);
 

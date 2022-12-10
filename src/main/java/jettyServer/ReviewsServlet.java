@@ -28,15 +28,20 @@ public class ReviewsServlet extends HttpServlet {
         String sessionName = (String) session.getAttribute("username");
         sessionName = StringEscapeUtils.escapeHtml4(sessionName);
 
-        int offset;
-        Object res = session.getAttribute("offset");
-        if (res == null) { // loading for the first time
-            offset = 0;
-        }
-        else {
-            offset = (int)res;
-        }
-        session.setAttribute("offset", offset + LIMIT);
+        String page = request.getParameter("pageNumber");
+        page = StringEscapeUtils.escapeHtml4(page);
+
+        int pageNum = Integer.parseInt(page);
+
+        int offset = LIMIT * pageNum;
+//        Object res = session.getAttribute("offset");
+//        if (res == null) { // loading for the first time
+//            offset = 0;
+//        }
+//        else {
+//            offset = (int)res;
+//        }
+        session.setAttribute("offset", offset);
 
 
         StringWriter writer = new StringWriter();
@@ -80,7 +85,7 @@ public class ReviewsServlet extends HttpServlet {
                         reviewJSON = jc.setFailure();
                         session.setAttribute("hotelName", "invalid");
 
-                        response.sendRedirect("/reviews"+"?hotelId="+hotelId);
+                        response.sendRedirect("/reviews"+"?hotelId="+hotelId+"&pageNumber="+offset);
                         return;
                     }
                     infoJSON.add("hotelReviews", reviewJSON);

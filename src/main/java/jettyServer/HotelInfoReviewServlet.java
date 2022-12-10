@@ -2,8 +2,6 @@ package jettyServer;
 
 import com.google.gson.JsonObject;
 import hotelapp.Hotel;
-import hotelapp.HotelSearch;
-import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 
 
 /**
@@ -42,6 +39,8 @@ public class HotelInfoReviewServlet extends HttpServlet {
         VelocityContext context = new VelocityContext();
         Template template;
 
+
+
         context.put("sessionName", sessionName);
 
 //        if (sessionName != null){
@@ -49,8 +48,18 @@ public class HotelInfoReviewServlet extends HttpServlet {
 
             String hotelId = request.getParameter("hotelId");
 
+
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
             context.put("hotelId", hotelId);
+
+        int reviewCount = dbHandler.reviewCount(hotelId);
+        int numButtons = reviewCount / 5;
+        int mod = reviewCount % 5;
+        if (mod > 0){
+            numButtons += 1;
+        }
+
+        context.put("numButtons", numButtons);
 
             template = ve.getTemplate("templates/hotelInfoReview.html");
 

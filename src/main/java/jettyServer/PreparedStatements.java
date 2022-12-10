@@ -125,6 +125,9 @@ public class PreparedStatements {
     public static final String FIND_LOGIN =
             "SELECT * FROM logins WHERE user = ?;";
 
+    public static final String REVIEW_COUNT =
+            "SELECT COUNT(*) FROM reviews WHERE hotelId= ?;";
+
 
 
 }

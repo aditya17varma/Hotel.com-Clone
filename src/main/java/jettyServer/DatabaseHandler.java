@@ -764,6 +764,37 @@ public class DatabaseHandler {
         return null;
     }
 
+    public int reviewCount(String hotelId){
+        PreparedStatement statement;
+
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            try {
+                statement = connection.prepareStatement(PreparedStatements.REVIEW_COUNT);
+                statement.setString(1, hotelId);
+                ResultSet results = statement.executeQuery();
+
+                int count = 0;
+
+                while (results.next()){
+                    count = results.getInt("COUNT(*)");
+                }
+
+                statement.close();
+                return count;
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+                String[] eSplit = e.toString().split(": ");
+            }
+        }
+        catch (SQLException ex) {
+            String[] eSplit = ex.toString().split(": ");
+        }
+
+        return 0;
+
+    }
+
 
     public static void main(String[] args) {
         DatabaseHandler dhandler = DatabaseHandler.getInstance();
@@ -837,8 +868,10 @@ public class DatabaseHandler {
 
 //        dbHandler.insertLogin("Adi", dtNow);
 //        dbHandler.updateLogin("Adi", dtNow);
-        String lastLogin = dbHandler.findLogin("A");
-        System.out.println("Last Login: " + lastLogin);
+//        String lastLogin = dbHandler.findLogin("A");
+//        System.out.println("Last Login: " + lastLogin);
+
+        System.out.println(dbHandler.reviewCount("12539"));
 
 
     }
