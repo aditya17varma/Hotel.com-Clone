@@ -38,7 +38,7 @@ public class DatabaseHandler {
      */
     private DatabaseHandler(String propertiesFile){
         this.config = loadConfigFile(propertiesFile);
-        this.uri = "jdbc:mysql://"+ config.getProperty("hostname") + "/" + config.getProperty("username") + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+        this.uri = "jdbc:mysql://"+ config.getProperty("hostname") + "/" + config.getProperty("database") + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
         //System.out.println("uri = " + uri);
     }
 
