@@ -796,9 +796,9 @@ public class DatabaseHandler {
     }
 
 
-//    public static void main(String[] args) {
-//        DatabaseHandler dhandler = DatabaseHandler.getInstance();
-//        dhandler.createHotelTable();
+    public static void main(String[] args) {
+        DatabaseHandler dhandler = DatabaseHandler.getInstance();
+        dhandler.createHotelTable();
 //        dhandler.createReviewTable();
 //        dbHandler.createExpediaLinksTable();
 //        System.out.println("created a hotel table ");
@@ -874,6 +874,6 @@ public class DatabaseHandler {
 //        System.out.println(dbHandler.reviewCount("12539"));
 
 
-//    }
+    }
 }
 
